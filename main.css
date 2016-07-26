@@ -1,0 +1,87 @@
+.vis {
+  display: block;
+  margin: 20px auto;
+}
+
+.axis path {
+  fill: none;
+  /*stroke: #8eafbf;*/
+  stroke: white;
+  shape-rendering: crispEdges;
+}
+
+.axis line {
+  fill: none;
+  stroke: #F2F2F2;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.x-bullet path {
+  fill: none;
+  stroke: #F2F2F2;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.x-bullet text {
+  fill: #8eafbf;
+  stroke: none;
+}
+
+.axis text {
+  fill: #8eafbf;
+  stroke: none;
+}
+
+.title {
+  font-size: 26px;
+  fill: #3a4f5a;
+}
+
+#data {
+  width: 500px;
+}
+
+.a-path {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.connectors {
+  stroke-width: 2px;
+}
+
+ .micro-card {
+   overflow: hidden;
+   display: inline-block;
+   text-align: center;
+ }
+
+ .stat {
+   color: #2975e9;
+   font-size: 5em;
+ }
+
+.card {
+  text-align: center;
+}
+
+.solo-legend {
+  width: 200px;
+  background-color: lightgray;
+}
+
+.check-label {
+  vertical-align: middle;
+  line-height: inherit;
+}
+
+.shared-legend {
+  text-align: center;
+}
+
+.center-piece {
+  text-align: center;
+  padding-top: 75px;
+}
