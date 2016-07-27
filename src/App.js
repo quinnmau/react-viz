@@ -79,7 +79,6 @@ class App extends React.Component {
 // <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
 
 
-// <LegComp data={this.state.c} yVal={this.state.cYVal} />
 // <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
 
 ReactDOM.render(<App />, document.getElementById('app'));

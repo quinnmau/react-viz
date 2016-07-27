@@ -3,9 +3,8 @@
   margin: 20px auto;
 }
 
-.axis path {
+/*.axis path {
   fill: none;
-  /*stroke: #8eafbf;*/
   stroke: white;
   shape-rendering: crispEdges;
 }
@@ -15,7 +14,7 @@
   stroke: #F2F2F2;
   stroke-width: 2px;
   shape-rendering: crispEdges;
-}
+}*/
 
 .x-bullet path {
   fill: none;
