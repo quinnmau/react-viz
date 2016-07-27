@@ -1,9 +1,33 @@
 .axis path {
-  stroke: #F2F2F2;
+  stroke: none;
   fill: none;
 }
 
 .axis line {
-  stroke: #F2F2F2;
+  stroke: #CED2D4;
   fill: none;
+}
+
+.blue {
+  fill: #2975e9;
+}
+
+.orange {
+  fill: #f7922e;
+}
+
+.teal {
+  fill: #3ed6cf;
+}
+
+.purple {
+  fill: #b35cff;
+}
+
+.green {
+  fill: #43b649;
+}
+
+.brown {
+  fill: #b7661a;
 }

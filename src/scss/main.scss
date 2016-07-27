@@ -1,11 +1,37 @@
+@import 'colors';
+
 .axis {
   path {
-    stroke: #F2F2F2;
+    stroke: none;
     fill: none;
   }
 
   line {
-    stroke: #F2F2F2;
+    stroke: $gridline-grey;
     fill: none;
   }
+}
+
+.blue {
+  fill: $blue;
+}
+
+.orange {
+  fill: $orange;
+}
+
+.teal {
+  fill: $teal;
+}
+
+.purple {
+  fill: $purple;
+}
+
+.green {
+  fill: $green;
+}
+
+.brown {
+  fill: $brown;
 }

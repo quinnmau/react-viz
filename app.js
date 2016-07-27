@@ -21399,7 +21399,7 @@
 	        });
 	      });
 
-	      var color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#3ED6CF', '#B35CFF', '#43B649', '#B7661A']).domain(this.props.yReal);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
 	      var color2 = d3.scale.ordinal().range(['#8EB7F4', '#FFC387', '#ADE4E1', '#D3BAE9', '#9DE0A0', '#D6AF8B']).domain(this.props.yReal);
 
 	      //y scale
@@ -21432,11 +21432,11 @@
 
 	      bars.enter().append('rect').attr('x', function (d) {
 	        return xScale(d.name);
-	      }).attr('y', innerH).attr('class', 'rect').attr('width', xScale.rangeBand()).attr('height', 0);
+	      }).attr('y', innerH).attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('width', xScale.rangeBand()).attr('height', 0);
 
-	      bars.attr('fill', function (d) {
-	        return color(d.name);
-	      });
+	      // bars.attr('fill', d => {return color(d.name)});
 
 	      bars.exit().remove();
 
@@ -21463,9 +21463,11 @@
 
 	      legend.enter().append('rect').attr('transform', function (d, i) {
 	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('fill', function (d) {
-	        return color(d);
-	      }).attr('opacity', 0);
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
+	      })
+	      // .attr('fill', d => {return color(d)})
+	      .attr('opacity', 0);
 
 	      legend.transition().duration(1000).attr('opacity', 1);
 
