@@ -193,7 +193,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-md-4' },
-	              _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa'], title: 'This is a title', ticks: 5 })
+	              _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 })
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -22957,34 +22957,34 @@
 	var line = function line() {
 	  return [{
 	    date: '2016-03',
-	    usa: 1
-	    // chn: 4,
-	    // ger: 9
+	    usa: 1,
+	    chn: 4,
+	    ger: 9
 	  }, {
 	    date: '2016-04',
-	    usa: 0
-	    // chn: 11,
-	    // ger: 8
+	    usa: 0,
+	    chn: 2,
+	    ger: 8
 	  }, {
 	    date: '2016-05',
-	    usa: 1
-	    // chn: 9,
-	    // ger: 7
+	    usa: 1,
+	    chn: 3,
+	    ger: 7
 	  }, {
 	    date: '2016-06',
-	    usa: 12
-	    // chn: 9,
-	    // ger: 7
+	    usa: 12,
+	    chn: 1,
+	    ger: 9
 	  }, {
 	    date: '2016-07',
-	    usa: 0
-	    // chn: 9,
-	    // ger: 7
+	    usa: 0,
+	    chn: 5,
+	    ger: 6
 	  }, {
 	    date: '2016-08',
-	    usa: 1
-	    // chn: 9,
-	    // ger: 7
+	    usa: 1,
+	    chn: 10,
+	    ger: 4
 	  }];
 	};
 
@@ -23664,11 +23664,14 @@
 	    value: function render() {
 	      var _this2 = this;
 
+	      var boxes = ['checkbox-blue', 'checkbox-orange', 'checkbox-teal', 'checkbox-purple', 'checkbox-green', 'checkbox-brown'];
+	      var i = -1;
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        this.props.yVal.map(function (item) {
-	          return _react2.default.createElement(_LegendItem2.default, { value: item, checkHandle: _this2.props.checkHandle });
+	          i++;
+	          return _react2.default.createElement(_LegendItem2.default, { currClass: boxes[i], value: item, checkHandle: _this2.props.checkHandle });
 	        })
 	      );
 	    }
@@ -23703,7 +23706,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2.default.createElement(_Checkbox2.default, { value: props.value, checkHandle: props.checkHandle }),
+	    _react2.default.createElement(_Checkbox2.default, { currClass: props.currClass, value: props.value, checkHandle: props.checkHandle }),
 	    _react2.default.createElement(
 	      'span',
 	      null,
@@ -23763,7 +23766,7 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      return _react2.default.createElement("input", { type: "checkbox", value: this.props.value, onChange: this.clickHandle, checked: this.state.isChecked });
+	      return _react2.default.createElement("input", { type: "checkbox", value: this.props.value, className: this.props.currClass, onChange: this.clickHandle, checked: this.state.isChecked });
 	    }
 	  }]);
 

@@ -1,0 +1,10 @@
+.x-bullet {
+  stroke: $gridline-grey;
+  stroke-width: 2px;
+  fill: none;
+
+  text {
+    stroke: none;
+    fill: $gridline-text-grey;
+  }
+}

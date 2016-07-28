@@ -59,7 +59,7 @@ class App extends React.Component {
           </div>
           <div className="row">
             <div className="col-md-4">
-              <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa']} title={'This is a title'} ticks={5}/>
+              <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
             </div>
             <div className="col-md-4">
               <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />

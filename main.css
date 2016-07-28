@@ -5,7 +5,13 @@
 
 .axis line {
   stroke: #CED2D4;
+  stroke-width: 2px;
   fill: none;
+}
+
+.axis text {
+  stroke: none;
+  fill: #9ca7ac;
 }
 
 .blue {
@@ -30,4 +36,51 @@
 
 .brown {
   fill: #b7661a;
+}
+
+.checkbox-blue:checked {
+  background-image: url("src/svg/checkbox-blue.svg") !important;
+}
+
+.checkbox-orange:checked {
+  background-image: url("src/svg/checkbox-orange.svg") !important;
+}
+
+.checkbox-teal:checked {
+  background-image: url("src/svg/checkbox-teal.svg") !important;
+}
+
+.checkbox-purple:checked {
+  background-image: url("src/svg/checkbox-purple.svg") !important;
+}
+
+.checkbox-green:checked {
+  background-image: url("src/svg/checkbox-green.svg") !important;
+}
+
+.checkbox-brown:checked {
+  background-image: url("src/svg/checkbox-brown.svg") !important;
+}
+
+.a-path, .connectors {
+  stroke-width: 2px;
+}
+
+.a-path {
+  fill: none;
+}
+
+.connectors {
+  fill: white;
+}
+
+.x-bullet {
+  stroke: #CED2D4;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.x-bullet text {
+  stroke: none;
+  fill: #9ca7ac;
 }

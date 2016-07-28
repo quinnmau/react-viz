@@ -4,10 +4,13 @@ import LegendItem from './LegendItem';
 class LegendComp extends React.Component {
 
   render() {
+    const boxes = ['checkbox-blue', 'checkbox-orange', 'checkbox-teal', 'checkbox-purple', 'checkbox-green', 'checkbox-brown'];
+    let i = -1;
     return (
       <div>
         {this.props.yVal.map((item) => {
-          return <LegendItem value={item} checkHandle={this.props.checkHandle}/>
+          i++;
+          return <LegendItem currClass={boxes[i]} value={item} checkHandle={this.props.checkHandle}/>
         })}
       </div>
     )

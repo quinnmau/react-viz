@@ -15,7 +15,7 @@ class Checkbox extends React.Component {
 
   render() {
     return (
-      <input type="checkbox" value={this.props.value} onChange={this.clickHandle} checked={this.state.isChecked} />
+      <input type="checkbox" value={this.props.value} className={this.props.currClass} onChange={this.clickHandle} checked={this.state.isChecked} />
     )
   }
 }

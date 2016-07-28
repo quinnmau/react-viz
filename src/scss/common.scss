@@ -1,0 +1,43 @@
+@import 'colors';
+
+.axis {
+  path {
+    stroke: none;
+    fill: none;
+  }
+
+  line {
+    stroke: $gridline-grey;
+    stroke-width: 2px;
+    fill: none;
+  }
+
+  text {
+    stroke: none;
+    fill: $gridline-text-grey;
+  }
+}
+
+.blue {
+  fill: $blue;
+}
+
+.orange {
+  fill: $orange;
+}
+
+.teal {
+  fill: $teal;
+}
+
+.purple {
+  fill: $purple;
+}
+
+.green {
+  fill: $green;
+}
+
+.brown {
+  fill: $brown;
+}
