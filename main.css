@@ -38,6 +38,30 @@
   fill: #b7661a;
 }
 
+.half-blue {
+  fill: #8eb7f4;
+}
+
+.half-orange {
+  fill: #ffc387;
+}
+
+.half-teal {
+  fill: #ade4e1;
+}
+
+.half-purple {
+  fill: #d3bae9;
+}
+
+.half-green {
+  fill: #9de0a0;
+}
+
+.half-brown {
+  fill: #d6af8b;
+}
+
 .checkbox-blue:checked {
   background-image: url("src/svg/checkbox-blue.svg") !important;
 }
@@ -60,6 +84,14 @@
 
 .checkbox-brown:checked {
   background-image: url("src/svg/checkbox-brown.svg") !important;
+}
+
+.center-piece {
+  text-align: center;
+}
+
+.legend-console {
+  margin-top: 50%;
 }
 
 .a-path, .connectors {

@@ -7,7 +7,7 @@ class LegendComp extends React.Component {
     const boxes = ['checkbox-blue', 'checkbox-orange', 'checkbox-teal', 'checkbox-purple', 'checkbox-green', 'checkbox-brown'];
     let i = -1;
     return (
-      <div>
+      <div className="legend-console">
         {this.props.yVal.map((item) => {
           i++;
           return <LegendItem currClass={boxes[i]} value={item} checkHandle={this.props.checkHandle}/>

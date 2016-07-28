@@ -23,7 +23,10 @@ class ColumnChart extends React.Component {
       right: 100,
       top: 75
     };
-    // const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+    let showLegend = this.props.legend;
+    if (!showLegend) {
+      margin.right = 40;
+    }
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
@@ -73,7 +76,7 @@ class ColumnChart extends React.Component {
     });
 
     const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
-    const color2 = d3.scale.ordinal().range(['#8EB7F4', '#FFC387', '#ADE4E1', '#D3BAE9', '#9DE0A0', '#D6AF8B']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 
     //y scale
     const yScale = d3.scale.linear()
@@ -121,12 +124,12 @@ class ColumnChart extends React.Component {
         .attr('height', d => {return (innerH - yScale(d.value))});
 
     bars.on('mouseover', function(d) {
-      bars.attr('fill', d => {return color2(d.name)});
-      d3.select(this).attr('fill', color(d.name));
+      bars.attr('class', d => {return 'rect ' + color2(d.name)});
+      d3.select(this).attr('class', 'rect ' + color(d.name));
     });
 
     bars.on('mouseout', function(d) {
-      bars.attr('fill', d => {return color(d.name)});
+      bars.attr('class', d => {return 'rect ' + color(d.name)});
     });
 
     const legend = g.selectAll('.legend').data(xValues);
@@ -139,7 +142,9 @@ class ColumnChart extends React.Component {
           .attr('class', d => {return 'legend ' + color(d)})
           .attr('opacity', 0);
 
-    legend.transition().duration(1000).attr('opacity', 1);
+    if (showLegend) {
+      legend.transition().duration(1000).attr('opacity', 1);
+    }
 
     const words = g.selectAll('.legend-text').data(xValues);
 
@@ -153,7 +158,9 @@ class ColumnChart extends React.Component {
           .attr('class', 'legend-text')
           .attr('opacity', 0);
 
-    words.transition().duration(1000).attr('opacity', 1);
+    if (showLegend) {
+      words.transition().duration(1000).attr('opacity', 1);
+    }
   }
 
   //update
@@ -167,9 +174,13 @@ class ColumnChart extends React.Component {
       right: 100,
       top: 75
     };
+    let showLegend = this.props.legend;
+    if (!showLegend) {
+      margin.right = 40;
+    }
     const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 
-    const color2 = d3.scale.ordinal().range(['#8EB7F4', '#FFC387', '#ADE4E1', '#D3BAE9', '#9DE0A0', '#D6AF8B']).domain(this.props.yReal);
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
@@ -232,12 +243,12 @@ class ColumnChart extends React.Component {
       .attr('height', d => {return (innerH - yScale(d.value))});
 
       bars.on('mouseover', function(d) {
-        bars.attr('fill', d => {return color2(d.name)});
-        d3.select(this).attr('fill', color(d.name));
+        bars.attr('class', d => {return 'rect ' + color2(d.name)});
+        d3.select(this).attr('class', 'rect ' + color(d.name));
       });
 
       bars.on('mouseout', function(d) {
-        bars.attr('fill', d => {return color(d.name)});
+        bars.attr('class', d => {return 'rect ' + color(d.name)});
       });
 
       const legend = g.selectAll('.legend').data(xValues);
@@ -254,8 +265,12 @@ class ColumnChart extends React.Component {
             .attr('x', innerW + 25)
             .attr('width', 20)
             .attr('height', 20)
-            .attr('class', d => {return 'legend ' + color(d)})
-            .attr('opacity', 1);
+            .attr('opacity', 0)
+            .attr('class', d => {return 'legend ' + color(d)});
+
+      if (showLegend) {
+            legend.attr('opacity', 1);
+      }
 
       const words = g.selectAll('.legend-text').data(xValues);
 
@@ -273,8 +288,12 @@ class ColumnChart extends React.Component {
             .attr('dy', '.35em')
             .style('text-anchor', 'start')
             .text(d => {return d})
-            .attr('class', 'legend-text')
-            .attr('opacity', 1);
+            .attr('opacity', 0)
+            .attr('class', 'legend-text');
+
+      if (showLegend) {
+            words.attr('opacity', 1);
+      }
   }
 
   //exit remove
