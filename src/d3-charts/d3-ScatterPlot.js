@@ -2,7 +2,7 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 100, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
   //container
   const cont = d3.select(elem);

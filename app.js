@@ -145,63 +145,10 @@
 	            'Data Visualization'
 	          )
 	        ),
-	        _react2.default.createElement(_LowerDash2.default, { data: this.state.c, xVal: 'name', yVal: this.state.cYVal }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_DonutChart2.default, { data: this.state.n, indy: 'name', dep: 'population', width: 250, height: 250, title: 'Sales' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s2, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title', yReal: ['freq1', 'freq2'] })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_StackedBarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_BarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_BulletChart2.default, { data: this.state.b, width: 500, height: 200, yVal: 'id', target: 'target', actual: 'actual', range: 'range' })
-	            ),
-	            _react2.default.createElement('div', { className: 'col-md-4' })
-	          )
+	          { className: 'container' },
+	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s2, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
 	        )
 	      );
 	    }
@@ -210,11 +157,48 @@
 	  return App;
 	}(_react2.default.Component);
 
+	/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 	// <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 	// <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
 
 
 	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
+	/*<LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+	<div className="container-fluid">
+	  <div className="row">
+	    <div className="col-md-4">
+	      <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+	    </div>
+	    <div className="col-md-4">
+	      <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+	    </div>
+	    <div className="col-md-4">
+	      <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	    </div>
+	  </div>
+	  <div className="row">
+	    <div className="col-md-4">
+	      <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
+	    </div>
+	    <div className="col-md-4">
+	      <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	    </div>
+	    <div className="col-md-4">
+	      <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	    </div>
+	  </div>
+	  <div className="row">
+	    <div className="col-md-4">
+	      <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
+	    </div>
+	    <div className="col-md-4">
+	      <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
+	    </div>
+	    <div className="col-md-4">
+
+	    </div>
+	  </div>
+	</div>*/
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
@@ -22780,7 +22764,7 @@
 	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
 	  //container
 	  var cont = d3.select(elem);
@@ -23558,6 +23542,12 @@
 
 	var _ColumnChart2 = _interopRequireDefault(_ColumnChart);
 
+	var _DonutChart = __webpack_require__(186);
+
+	var _DonutChart2 = _interopRequireDefault(_DonutChart);
+
+	var _d3DonutChart = __webpack_require__(187);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23616,7 +23606,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-5 col-sm-5 col-md-5 col-lg-5' },
-	            _react2.default.createElement(_ColumnChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, title: 'This is a title', yReal: this.props.yVal, legend: false })
+	            _react2.default.createElement(_DonutChart2.default, { data: this.state.data, indy: 'name', dep: 'freq1', width: 250, height: 250, title: 'Sales' })
 	          ),
 	          _react2.default.createElement(
 	            'div',

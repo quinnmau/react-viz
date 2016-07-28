@@ -33,52 +33,55 @@ class App extends React.Component {
         <div className="billboard bg-light">
           <h1>Data Visualization</h1>
         </div>
-        <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-4">
-              <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
-            </div>
-            <div className="col-md-4">
-              <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
-            </div>
-            <div className="col-md-4">
-              <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
-            </div>
-            <div className="col-md-4">
-              <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-            </div>
-            <div className="col-md-4">
-              <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
-            </div>
-            <div className="col-md-4">
-              <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
-            </div>
-            <div className="col-md-4">
-              {/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/}
-            </div>
-          </div>
+        <div className="container">
+          <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
         </div>
       </div>
     );
   }
 }
 
-
+/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 // <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 // <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
 
 
 // <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
+/*<LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+<div className="container-fluid">
+  <div className="row">
+    <div className="col-md-4">
+      <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+    </div>
+    <div className="col-md-4">
+      <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+    </div>
+    <div className="col-md-4">
+      <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+    </div>
+  </div>
+  <div className="row">
+    <div className="col-md-4">
+      <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
+    </div>
+    <div className="col-md-4">
+      <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+    </div>
+    <div className="col-md-4">
+      <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+    </div>
+  </div>
+  <div className="row">
+    <div className="col-md-4">
+      <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
+    </div>
+    <div className="col-md-4">
+      <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
+    </div>
+    <div className="col-md-4">
+
+    </div>
+  </div>
+</div>*/
 
 ReactDOM.render(<App />, document.getElementById('app'));

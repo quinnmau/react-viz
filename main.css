@@ -62,6 +62,12 @@
   fill: #d6af8b;
 }
 
+.trendline {
+  stroke-width: 3px;
+  stroke: black;
+  fill: none;
+}
+
 .checkbox-blue:checked {
   background-image: url("src/svg/checkbox-blue.svg") !important;
 }
