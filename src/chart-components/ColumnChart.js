@@ -137,7 +137,6 @@ class ColumnChart extends React.Component {
           .attr('width', 20)
           .attr('height', 20)
           .attr('class', d => {return 'legend ' + color(d)})
-          // .attr('fill', d => {return color(d)})
           .attr('opacity', 0);
 
     legend.transition().duration(1000).attr('opacity', 1);
@@ -168,7 +167,8 @@ class ColumnChart extends React.Component {
       right: 100,
       top: 75
     };
-    const color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#3ED6CF', '#B35CFF', '#43B649', '#B7661A']).domain(this.props.yReal);
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+
     const color2 = d3.scale.ordinal().range(['#8EB7F4', '#FFC387', '#ADE4E1', '#D3BAE9', '#9DE0A0', '#D6AF8B']).domain(this.props.yReal);
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
@@ -220,18 +220,16 @@ class ColumnChart extends React.Component {
     bars.exit().transition().duration(1000).attr('height', 0).attr('y', innerH).remove();
 
     bars.enter().append('rect')
-        .attr('class', 'rect')
+        .attr('class', d => {return 'rect ' + color(d.name)})
         .attr('height', 0)
         .attr('y', innerH);
-
-    bars.attr('fill', d => {return color(d.name)});
 
     bars.transition().duration(1000)
       .attr('x', d => {return xScale(d.name)})
       .attr('y', d => {return yScale(d.value)})
       .attr('width', xScale.rangeBand())
-      .attr('height', d => {return (innerH - yScale(d.value))})
-      .attr('fill', d => {return color(d.name)});
+      .attr('class', d => {return 'rect ' + color(d.name)})
+      .attr('height', d => {return (innerH - yScale(d.value))});
 
       bars.on('mouseover', function(d) {
         bars.attr('fill', d => {return color2(d.name)});
@@ -256,8 +254,7 @@ class ColumnChart extends React.Component {
             .attr('x', innerW + 25)
             .attr('width', 20)
             .attr('height', 20)
-            .attr('class', 'legend')
-            .attr('fill', d => {return color(d)})
+            .attr('class', d => {return 'legend ' + color(d)})
             .attr('opacity', 1);
 
       const words = g.selectAll('.legend-text').data(xValues);
