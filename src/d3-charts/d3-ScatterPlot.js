@@ -3,6 +3,7 @@ const create = (elem, props) => {
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
   const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
 
   //container
   const cont = d3.select(elem);
@@ -30,6 +31,7 @@ const create = (elem, props) => {
   gEnter.append('text').attr('class', 'title').text(props.title).attr('transform', 'translate(0, -25)');
 
   /*---------------- set scales----------------*/
+  const xMax = d3.max(props.data, d => {return d[props.xVal]});
 
   const xScale = getXScale(innerW).domain([d3.min(props.data, d => {return d[props.xVal]}), d3.max(props.data, d => {return d[props.xVal]})]);
   const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.yVal]}), d3.max(props.data, d => {return d[props.yVal]})]);
@@ -51,11 +53,18 @@ const create = (elem, props) => {
   const bestFit = g.selectAll('.trendline').data(groupedData);
 
   bestFit.enter().append('line')
-                  .attr('class', 'trendline')
-                  .attr('x1', 0)
-                  .attr('x2', innerW)
-                  .attr('y1', d => {console.log(point(0, d.values, props.xVal, props. yVal)); return point(0, d.values, props.xVal, props. yVal)})
-                  .attr('y2', d => {return point(innerW, d.values, props.xVal, props. yVal)});
+                  .attr('class', d => {return color2(d.key)})
+                  .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); console.log(d3.min(max)); return xScale(d3.min(max))})
+                  .attr('x2', d => {let max = d.values.map(d => {return d[props.xVal]}); console.log(d3.max(max)); return xScale(d3.max(max))})
+                  .attr('y1', d => {
+                    let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
+                    return innerH - pointInfo.intercept;
+                  })
+                  .attr('y2', d => {
+                    let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
+                    let max = d3.max(d.values.map(d => {return d[props.xVal]}));
+                    return innerH - (xScale(max) * pointInfo.slope + pointInfo.intercept);
+                  });
 
   const circles = g.selectAll('circle').data(props.data);
 
@@ -64,7 +73,7 @@ const create = (elem, props) => {
           .attr('cy', innerH)
           .attr('r', 7)
           .attr('opacity', 0)
-          .attr('fill', d => {return color(d[props.iden])});
+          .attr('class', d => {return color(d[props.iden])});
 
   circles.transition().delay(300).duration(1000)
           .attr('opacity', 1)
@@ -84,26 +93,50 @@ const getYScale = (h) => {
   return d3.scale.linear().range([h, 0]);
 }
 
-const yAvg = (arr, y) => {
-  let sum = 0;
-  arr.forEach(d => {
-    sum += d[y];
-  });
-  return sum / arr.length;
-}
+// const yAvg = (arr, y) => {
+//   let sum = 0;
+//   arr.forEach(d => {
+//     sum += d[y];
+//   });
+//   return sum / arr.length;
+// }
+//
+// const xAvg = (arr, x) => {
+//   let sum = 0;
+//   arr.forEach(d => {
+//     sum += d[x];
+//   });
+//   return sum / arr.length;
+// }
+//
+// const point = (val, arr, x, y) => {
+//   let slope = xAvg(arr, x) / yAvg(arr, y);
+//   let yInt = arr[0][y] - slope * arr[0][x];
+//   console.log('line equation: y = ' + slope + ' * ' + val + ' + ' + yInt);
+//   return slope * val - yInt;
+// }
 
-const xAvg = (arr, x) => {
-  let sum = 0;
-  arr.forEach(d => {
-    sum += d[x];
-  });
-  return sum / arr.length;
-}
+const linearRegression = (x, y) => {
+  const lr = {};
+  let n = y.length;
+  let sumX = 0;
+  let sumY = 0;
+  let sumXY = 0;
+  let sumXX = 0;
+  let sumYY = 0;
 
-const point = (val, arr, x, y) => {
-  let slope = xAvg(arr, x) / yAvg(arr, y);
-  let yInt = arr[0][y] - slope * arr[0][x];
-  return slope * val - yInt;
+  for (let i = 0; i < y.length; i++) {
+    sumX += x[i];
+    sumY += y[i];
+    sumXY += (x[i] * y[i]);
+    sumXX += (x[i] * x[i]);
+    sumYY += (y[i] * y[i]);
+  }
+
+  lr.slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+  lr.intercept = (sumY - lr.slope * sumX) / n;
+  console.log(lr);
+  return lr;
 }
 
 export { create, update };

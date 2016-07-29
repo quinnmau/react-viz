@@ -148,7 +148,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s2, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
+	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
 	        )
 	      );
 	    }
@@ -22765,6 +22765,7 @@
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
 	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
 
 	  //container
 	  var cont = d3.select(elem);
@@ -22787,6 +22788,9 @@
 	  gEnter.append('text').attr('class', 'title').text(props.title).attr('transform', 'translate(0, -25)');
 
 	  /*---------------- set scales----------------*/
+	  var xMax = d3.max(props.data, function (d) {
+	    return d[props.xVal];
+	  });
 
 	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
 	    return d[props.xVal];
@@ -22816,17 +22820,40 @@
 
 	  var bestFit = g.selectAll('.trendline').data(groupedData);
 
-	  bestFit.enter().append('line').attr('class', 'trendline').attr('x1', 0).attr('x2', innerW).attr('y1', function (d) {
-	    console.log(point(0, d.values, props.xVal, props.yVal));return point(0, d.values, props.xVal, props.yVal);
+	  bestFit.enter().append('line').attr('class', function (d) {
+	    return color2(d.key);
+	  }).attr('x1', function (d) {
+	    var max = d.values.map(function (d) {
+	      return d[props.xVal];
+	    });console.log(d3.min(max));return xScale(d3.min(max));
+	  }).attr('x2', function (d) {
+	    var max = d.values.map(function (d) {
+	      return d[props.xVal];
+	    });console.log(d3.max(max));return xScale(d3.max(max));
+	  }).attr('y1', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }), d.values.map(function (d) {
+	      return d[props.yVal];
+	    }));
+	    return innerH - pointInfo.intercept;
 	  }).attr('y2', function (d) {
-	    return point(innerW, d.values, props.xVal, props.yVal);
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }), d.values.map(function (d) {
+	      return d[props.yVal];
+	    }));
+	    var max = d3.max(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }));
+	    return innerH - (xScale(max) * pointInfo.slope + pointInfo.intercept);
 	  });
 
 	  var circles = g.selectAll('circle').data(props.data);
 
 	  circles.enter().append('circle').attr('cx', function (d) {
 	    return xScale(d[props.xVal]);
-	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('fill', function (d) {
+	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('class', function (d) {
 	    return color(d[props.iden]);
 	  });
 
@@ -22846,26 +22873,50 @@
 	  return d3.scale.linear().range([h, 0]);
 	};
 
-	var yAvg = function yAvg(arr, y) {
-	  var sum = 0;
-	  arr.forEach(function (d) {
-	    sum += d[y];
-	  });
-	  return sum / arr.length;
-	};
+	// const yAvg = (arr, y) => {
+	//   let sum = 0;
+	//   arr.forEach(d => {
+	//     sum += d[y];
+	//   });
+	//   return sum / arr.length;
+	// }
+	//
+	// const xAvg = (arr, x) => {
+	//   let sum = 0;
+	//   arr.forEach(d => {
+	//     sum += d[x];
+	//   });
+	//   return sum / arr.length;
+	// }
+	//
+	// const point = (val, arr, x, y) => {
+	//   let slope = xAvg(arr, x) / yAvg(arr, y);
+	//   let yInt = arr[0][y] - slope * arr[0][x];
+	//   console.log('line equation: y = ' + slope + ' * ' + val + ' + ' + yInt);
+	//   return slope * val - yInt;
+	// }
 
-	var xAvg = function xAvg(arr, x) {
-	  var sum = 0;
-	  arr.forEach(function (d) {
-	    sum += d[x];
-	  });
-	  return sum / arr.length;
-	};
+	var linearRegression = function linearRegression(x, y) {
+	  var lr = {};
+	  var n = y.length;
+	  var sumX = 0;
+	  var sumY = 0;
+	  var sumXY = 0;
+	  var sumXX = 0;
+	  var sumYY = 0;
 
-	var point = function point(val, arr, x, y) {
-	  var slope = xAvg(arr, x) / yAvg(arr, y);
-	  var yInt = arr[0][y] - slope * arr[0][x];
-	  return slope * val - yInt;
+	  for (var i = 0; i < y.length; i++) {
+	    sumX += x[i];
+	    sumY += y[i];
+	    sumXY += x[i] * y[i];
+	    sumXX += x[i] * x[i];
+	    sumYY += y[i] * y[i];
+	  }
+
+	  lr.slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+	  lr.intercept = (sumY - lr.slope * sumX) / n;
+	  console.log(lr);
+	  return lr;
 	};
 
 	exports.create = create;
@@ -22883,23 +22934,43 @@
 	var scatter = function scatter() {
 	  return [{
 	    name: 'steve',
-	    x: 4,
+	    x: 1,
+	    y: 1
+	  }, {
+	    name: 'steve',
+	    x: 2,
 	    y: 2
 	  }, {
-	    name: 'earl',
-	    x: 6,
-	    y: 12
+	    name: 'steve',
+	    x: 3,
+	    y: 3
 	  }, {
-	    name: 'jimi',
-	    x: 8,
-	    y: 7
+	    name: 'steve',
+	    x: 0,
+	    y: 0
+	  }, {
+	    name: 'wayne',
+	    x: 1,
+	    y: 1
+	  }, {
+	    name: 'wayne',
+	    x: 3,
+	    y: 2
+	  }, {
+	    name: 'wayne',
+	    x: 2,
+	    y: 3
+	  }, {
+	    name: 'wayne',
+	    x: 4,
+	    y: 1
 	  }];
 	};
 
 	var scatter2 = function scatter2(width, height) {
 	  var randomX = d3.random.normal(width / 2, 20);
 	  var randomY = d3.random.normal(height / 2, 20);
-	  var points = d3.range(100).map(function () {
+	  var points = d3.range(20).map(function () {
 	    return { name: randID(), x: randomX(), y: randomY() };
 	  });
 	  return points;

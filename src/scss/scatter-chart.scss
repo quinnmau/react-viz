@@ -1,0 +1,28 @@
+.trendline-blue, .trendline-orange, .trendline-teal, .trendline-purple, .trendline-green, .trendline-brown {
+  stroke-width: 2px;
+  fill: none;
+}
+
+.trendline-blue {
+  stroke: $blue;
+}
+
+.trendline-orange {
+  stroke: $orange;
+}
+
+.trendline-teal {
+  stroke: $teal;
+}
+
+.trendline-purple {
+  stroke: $purple;
+}
+
+.trendline-green {
+  stroke: $green;
+}
+
+.trendline-brown {
+  stroke: $brown;
+}

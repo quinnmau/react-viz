@@ -2,18 +2,43 @@ const scatter = () => {
   return [
     {
       name: 'steve',
-      x: 4,
+      x: 1,
+      y: 1
+    },
+    {
+      name: 'steve',
+      x: 2,
       y: 2
     },
     {
-      name: 'earl',
-      x: 6,
-      y: 12
+      name: 'steve',
+      x: 3,
+      y: 3
     },
     {
-      name: 'jimi',
-      x: 8,
-      y: 7
+      name: 'steve',
+      x: 0,
+      y: 0
+    },
+    {
+      name: 'wayne',
+      x: 1,
+      y: 1
+    },
+    {
+      name: 'wayne',
+      x: 3,
+      y: 2
+    },
+    {
+      name: 'wayne',
+      x: 2,
+      y: 3
+    },
+    {
+      name: 'wayne',
+      x: 4,
+      y: 1
     }
   ];
 }
@@ -21,7 +46,7 @@ const scatter = () => {
 const scatter2 = (width, height) => {
   let randomX = d3.random.normal(width / 2, 20);
   let randomY = d3.random.normal(height / 2, 20);
-  let points = d3.range(100).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
+  let points = d3.range(20).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
   return points;
 }
 
