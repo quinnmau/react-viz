@@ -148,7 +148,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
+	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: false })
 	        )
 	      );
 	    }
@@ -22761,11 +22761,13 @@
 	  value: true
 	});
 	var create = function create(elem, props) {
+	  //global variables
 	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
 	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
+	  var isFit = props.fit;
 
 	  //container
 	  var cont = d3.select(elem);
@@ -22812,14 +22814,18 @@
 
 	  /*--------------- data points ------------------*/
 
+	  //re-select main area where data points go
 	  var g = svg.select('.gEnter');
 
+	  //format data to make groups for the lines of best fit
 	  var groupedData = d3.nest().key(function (d) {
 	    return d[props.iden];
 	  }).entries(props.data);
 
+	  //select all the nonexistent lines of best fit and data join them to newly formatted data
 	  var bestFit = g.selectAll('.trendline').data(groupedData);
 
+	  //append lines of best fit
 	  bestFit.enter().append('line').attr('class', function (d) {
 	    return color2(d.key);
 	  }).attr('x1', function (d) {
@@ -22831,13 +22837,6 @@
 	      return d[props.xVal];
 	    });return xScale(d3.max(max));
 	  }).attr('y1', function (d) {
-	    console.log(d.values);
-	    console.log(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }));
-	    console.log(d.values.map(function (d) {
-	      return d[props.yVal];
-	    }));
 	    var pointInfo = linearRegression(d.values.map(function (d) {
 	      return d[props.xVal];
 	    }), d.values.map(function (d) {
@@ -22854,10 +22853,16 @@
 	      return d[props.xVal];
 	    }));
 	    return yScale(max * pointInfo.slope + pointInfo.intercept);
-	  });
+	  }).attr('opacity', 0);
 
+	  if (isFit) {
+	    bestFit.attr('opacity', 1);
+	  }
+
+	  //data-join cirlces
 	  var circles = g.selectAll('circle').data(props.data);
 
+	  //append and transition cirlces
 	  circles.enter().append('circle').attr('cx', function (d) {
 	    return xScale(d[props.xVal]);
 	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('class', function (d) {
@@ -22872,37 +22877,17 @@
 	//update
 	var update = function update() {};
 
+	//creates and returns x scale without domain
 	var getXScale = function getXScale(w) {
 	  return d3.scale.linear().range([0, w]);
 	};
 
+	//creates and returns y scale without domain
 	var getYScale = function getYScale(h) {
 	  return d3.scale.linear().range([h, 0]);
 	};
 
-	// const yAvg = (arr, y) => {
-	//   let sum = 0;
-	//   arr.forEach(d => {
-	//     sum += d[y];
-	//   });
-	//   return sum / arr.length;
-	// }
-	//
-	// const xAvg = (arr, x) => {
-	//   let sum = 0;
-	//   arr.forEach(d => {
-	//     sum += d[x];
-	//   });
-	//   return sum / arr.length;
-	// }
-	//
-	// const point = (val, arr, x, y) => {
-	//   let slope = xAvg(arr, x) / yAvg(arr, y);
-	//   let yInt = arr[0][y] - slope * arr[0][x];
-	//   console.log('line equation: y = ' + slope + ' * ' + val + ' + ' + yInt);
-	//   return slope * val - yInt;
-	// }
-
+	//calculates line of best fit
 	var linearRegression = function linearRegression(x, y) {
 	  var lr = {};
 	  var n = y.length;

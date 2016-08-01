@@ -1,9 +1,11 @@
 const create = (elem, props) => {
+  //global variables
   const margin = {left: 40, bottom: 40, right: 100, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
   const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
   const color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
+  const isFit = props.fit;
 
   //container
   const cont = d3.select(elem);
@@ -46,20 +48,21 @@ const create = (elem, props) => {
 
   /*--------------- data points ------------------*/
 
+  //re-select main area where data points go
   const g = svg.select('.gEnter');
 
+  //format data to make groups for the lines of best fit
   let groupedData = d3.nest().key(d => {return d[props.iden]}).entries(props.data);
 
+  //select all the nonexistent lines of best fit and data join them to newly formatted data
   const bestFit = g.selectAll('.trendline').data(groupedData);
 
+  //append lines of best fit
   bestFit.enter().append('line')
                   .attr('class', d => {return color2(d.key)})
                   .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
                   .attr('x2', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.max(max))})
                   .attr('y1', d => {
-                    console.log(d.values);
-                    console.log(d.values.map(d => {return d[props.xVal]}));
-                    console.log(d.values.map(d => {return d[props.yVal]}));
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
                     return yScale(pointInfo.intercept);
                   })
@@ -67,10 +70,17 @@ const create = (elem, props) => {
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
                     let max = d3.max(d.values.map(d => {return d[props.xVal]}));
                     return yScale((max * pointInfo.slope + pointInfo.intercept));
-                  });
+                  })
+                  .attr('opacity', 0);
 
+  if (isFit) {
+    bestFit.attr('opacity', 1);
+  }
+
+  //data-join cirlces
   const circles = g.selectAll('circle').data(props.data);
 
+  //append and transition cirlces
   circles.enter().append('circle')
           .attr('cx', d => {return xScale(d[props.xVal])})
           .attr('cy', innerH)
@@ -88,37 +98,17 @@ const update = () => {
 
 }
 
+//creates and returns x scale without domain
 const getXScale = (w) => {
   return d3.scale.linear().range([0, w]);
 }
 
+//creates and returns y scale without domain
 const getYScale = (h) => {
   return d3.scale.linear().range([h, 0]);
 }
 
-// const yAvg = (arr, y) => {
-//   let sum = 0;
-//   arr.forEach(d => {
-//     sum += d[y];
-//   });
-//   return sum / arr.length;
-// }
-//
-// const xAvg = (arr, x) => {
-//   let sum = 0;
-//   arr.forEach(d => {
-//     sum += d[x];
-//   });
-//   return sum / arr.length;
-// }
-//
-// const point = (val, arr, x, y) => {
-//   let slope = xAvg(arr, x) / yAvg(arr, y);
-//   let yInt = arr[0][y] - slope * arr[0][x];
-//   console.log('line equation: y = ' + slope + ' * ' + val + ' + ' + yInt);
-//   return slope * val - yInt;
-// }
-
+//calculates line of best fit
 const linearRegression = (x, y) => {
   const lr = {};
   let n = y.length;
