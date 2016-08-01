@@ -54,16 +54,19 @@ const create = (elem, props) => {
 
   bestFit.enter().append('line')
                   .attr('class', d => {return color2(d.key)})
-                  .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); console.log(d3.min(max)); return xScale(d3.min(max))})
-                  .attr('x2', d => {let max = d.values.map(d => {return d[props.xVal]}); console.log(d3.max(max)); return xScale(d3.max(max))})
+                  .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
+                  .attr('x2', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.max(max))})
                   .attr('y1', d => {
+                    console.log(d.values);
+                    console.log(d.values.map(d => {return d[props.xVal]}));
+                    console.log(d.values.map(d => {return d[props.yVal]}));
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
-                    return innerH - pointInfo.intercept;
+                    return yScale(pointInfo.intercept);
                   })
                   .attr('y2', d => {
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));
                     let max = d3.max(d.values.map(d => {return d[props.xVal]}));
-                    return innerH - (xScale(max) * pointInfo.slope + pointInfo.intercept);
+                    return yScale((max * pointInfo.slope + pointInfo.intercept));
                   });
 
   const circles = g.selectAll('circle').data(props.data);
