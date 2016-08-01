@@ -3,7 +3,7 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 40};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#2CC039']);
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
   const radius = Math.min(innerW, innerH) / 2;
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
@@ -62,7 +62,7 @@ const create = (elem, props) => {
   //actual arcs
   arcs.append('path')
         .attr('d', arc)
-        .attr('fill', d => {return color(d.data[props.indy])});
+        .attr('class', d => {return color(d.data[props.indy])});
 
   //Enlarge arc size on mouseover
   arcs.on('mouseover', function(d) {

@@ -18,6 +18,17 @@
   }
 }
 
+.title {
+  font-size: 28px;
+  stroke: none;
+  fill: $gridline-text-grey;
+}
+
+.legend-text {
+  stroke: none;
+  fill: $gridline-text-grey;
+}
+
 .blue {
   fill: $blue;
 }

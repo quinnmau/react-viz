@@ -145,10 +145,63 @@
 	            'Data Visualization'
 	          )
 	        ),
+	        _react2.default.createElement(_LowerDash2.default, { data: this.state.c, xVal: 'name', yVal: this.state.cYVal }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container' },
-	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: false })
+	          { className: 'container-fluid' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_DonutChart2.default, { data: this.state.n, indy: 'name', dep: 'population', width: 250, height: 250, title: 'Sales' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s2, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title', yReal: ['freq1', 'freq2'] })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_StackedBarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_BarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-md-4' },
+	              _react2.default.createElement(_BulletChart2.default, { data: this.state.b, width: 500, height: 200, yVal: 'id', target: 'target', actual: 'actual', range: 'range' })
+	            ),
+	            _react2.default.createElement('div', { className: 'col-md-4' })
+	          )
 	        )
 	      );
 	    }
@@ -163,42 +216,7 @@
 
 
 	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
-	/*<LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
-	<div className="container-fluid">
-	  <div className="row">
-	    <div className="col-md-4">
-	      <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
-	    </div>
-	    <div className="col-md-4">
-	      <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
-	    </div>
-	    <div className="col-md-4">
-	      <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-	    </div>
-	  </div>
-	  <div className="row">
-	    <div className="col-md-4">
-	      <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
-	    </div>
-	    <div className="col-md-4">
-	      <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-	    </div>
-	    <div className="col-md-4">
-	      <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-	    </div>
-	  </div>
-	  <div className="row">
-	    <div className="col-md-4">
-	      <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
-	    </div>
-	    <div className="col-md-4">
-	      <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
-	    </div>
-	    <div className="col-md-4">
 
-	    </div>
-	  </div>
-	</div>*/
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
@@ -21723,7 +21741,8 @@
 	      });
 	      var groupScale = this.getGroupScale(innerH).domain(yGroups);
 
-	      var color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#37DAD3', '#43B649']);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 
 	      //within group scale
 	      var yValues = globals.xVal.map(function (d) {
@@ -21760,31 +21779,16 @@
 	      });
 
 	      // //actual data bars
-	      var backBars = groups.selectAll('rect').data(function (d) {
-	        return d.groupDetails;
-	      });
-
-	      backBars.enter().append('rect').attr('x', 0).attr('y', function (d) {
-	        return yScale(d.name);
-	      }).attr('width', 0).attr('height', yScale.rangeBand()).attr('fill', 'white');
-
-	      backBars.exit().remove();
-
-	      backBars.transition().duration(1000).attr('width', function (d) {
-	        return xScale(d.value);
-	      });
 
 	      var bars = groups.selectAll('.rect').data(function (d) {
 	        return d.groupDetails;
 	      });
 
-	      bars.enter().append('rect').attr('class', 'rect').attr('x', 0).attr('y', function (d) {
+	      bars.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('x', 0).attr('y', function (d) {
 	        return yScale(d.name);
 	      }).attr('width', 0).attr('height', yScale.rangeBand());
-
-	      bars.attr('fill', function (d) {
-	        return color(d.name);
-	      });
 
 	      bars.on('mouseover', function () {
 	        bars.attr('opacity', 0.5);
@@ -21805,8 +21809,8 @@
 
 	      legend.enter().append('rect').attr('transform', function (d, i) {
 	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('fill', function (d) {
-	        return color(d);
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
 	      }).attr('opacity', 0);
 
 	      legend.transition().duration(1000).attr('opacity', 1);
@@ -22039,7 +22043,8 @@
 	      var vars = this.globals();
 	      var innerW = vars.width - vars.margin.left - vars.margin.right;
 	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	      var color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#37DAD3', '#43B649']);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 
 	      //container to hold everything
 	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
@@ -22105,35 +22110,17 @@
 	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
 	      });
 
-	      var backSegs = groups.selectAll('rect').data(function (d) {
-	        return d.segments;
-	      });
-
-	      backSegs.enter().append('rect').attr('x', function (d) {
-	        return xScale(d[vars.xVal]);
-	      }).attr('y', function (d) {
-	        return yScale(d.y0);
-	      }).attr('width', xScale.rangeBand()).attr('height', 0).attr('fill', 'white');
-
-	      backSegs.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('y', function (d) {
-	        return yScale(d.y1);
-	      }).attr('height', function (d) {
-	        return yScale(d.y0) - yScale(d.y1);
-	      });
-
 	      var segs = groups.selectAll('.rect').data(function (d) {
 	        return d.segments;
 	      });
 
-	      segs.enter().append('rect').attr('class', 'rect').attr('x', function (d) {
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('x', function (d) {
 	        return xScale(d[vars.xVal]);
 	      }).attr('y', function (d) {
 	        return yScale(d.y0);
-	      }).attr('width', xScale.rangeBand()).attr('height', 0).attr('fill', function (d) {
-	        return color(d.name);
-	      });
+	      }).attr('width', xScale.rangeBand()).attr('height', 0);
 
 	      segs.on('mouseover', function () {
 	        segs.attr('opacity', 0.5);
@@ -22156,11 +22143,9 @@
 
 	      legend.enter().append('rect').attr('transform', function (d, i) {
 	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('opacity', 0);
-
-	      legend.attr('fill', function (d) {
-	        return color(d);
-	      });
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
+	      }).attr('opacity', 0);
 
 	      legend.transition().delay(function (d, i) {
 	        return i * 330;
@@ -22280,7 +22265,8 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var vars = this.vars();
-	      var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 	      var innerW = vars.width - vars.margin.left - vars.margin.right;
 	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
@@ -22344,35 +22330,17 @@
 	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
 	      });
 
-	      var backSegs = stacks.selectAll('rect').data(function (d) {
-	        return d.segments;
-	      });
-
-	      backSegs.enter().append('rect').attr('y', function (d) {
-	        return yScale(d[vars.yVal]);
-	      }).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', 0).attr('height', yScale.rangeBand()).attr('fill', 'white');
-
-	      backSegs.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', function (d) {
-	        return xScale(d.x1) - xScale(d.x0);
-	      });
-
 	      var segs = stacks.selectAll('.rect').data(function (d) {
 	        return d.segments;
 	      });
 
-	      segs.enter().append('rect').attr('class', 'rect').attr('y', function (d) {
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('y', function (d) {
 	        return yScale(d[vars.yVal]);
 	      }).attr('x', function (d) {
 	        return xScale(d.x0);
-	      }).attr('width', 0).attr('height', yScale.rangeBand()).attr('fill', function (d) {
-	        return color(d.name);
-	      });
+	      }).attr('width', 0).attr('height', yScale.rangeBand());
 
 	      segs.on('mouseover', function () {
 	        segs.attr('opacity', 0.5);
@@ -22395,11 +22363,9 @@
 
 	      legend.enter().append('rect').attr('transform', function (d, i) {
 	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('opacity', 0);
-
-	      legend.attr('fill', function (d) {
-	        return color(d);
-	      });
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
+	      }).attr('opacity', 0);
 
 	      legend.transition().delay(function (d, i) {
 	        return i * 330;
@@ -22544,7 +22510,9 @@
 	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
+	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
+	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
 	  //container
 	  var cont = d3.select(elem);
@@ -22617,15 +22585,15 @@
 
 	  var paths = g.selectAll('.a-path').data(deps);
 
-	  paths.enter().append('path').attr('class', 'a-path').attr('d', function (d) {
+	  paths.enter().append('path').attr('class', function (d) {
+	    return 'a-path ' + color(d.name);
+	  }).attr('d', function (d) {
 	    var arr = [];
 	    for (var i = 0; i < d.values.length; i++) {
 	      var obj = { x: +d.values[i].x, y: d3.min(yValues) };
 	      arr.push(obj);
 	    }
 	    return line(arr);
-	  }).style('stroke', function (d) {
-	    return color(d.name);
 	  });
 
 	  paths.transition().duration(1000).attr('d', function (d) {
@@ -22640,11 +22608,11 @@
 	    return d.values;
 	  });
 
-	  circles.enter().append('circle').attr('class', 'connectors').attr('r', 4).attr('cx', function (d) {
+	  circles.enter().append('circle').attr('class', function (d) {
+	    return 'connectors ' + color2(d.name);
+	  }).attr('r', 4).attr('cx', function (d) {
 	    return xScale(+d.x) + 25;
-	  }).attr('cy', innerH).attr('fill', 'white').style('stroke', function (d) {
-	    return color(d.name);
-	  });
+	  }).attr('cy', innerH);
 
 	  circles.transition().duration(1000).attr('cy', function (d) {
 	    return yScale(d.y);
@@ -22654,8 +22622,8 @@
 
 	  legend.enter().append('rect').attr('transform', function (d, i) {
 	    return 'translate(0, ' + i * 25 + ')';
-	  }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('fill', function (d) {
-	    return color(d);
+	  }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	    return 'legend ' + color3(d);
 	  }).attr('opacity', 0);
 
 	  legend.transition().duration(1000).attr('opacity', 1);
@@ -22828,11 +22796,9 @@
 	  //append lines of best fit
 	  bestFit.enter().append('line').attr('class', function (d) {
 	    return color2(d.key);
-	  }).attr('x1', function (d) {
-	    var max = d.values.map(function (d) {
-	      return d[props.xVal];
-	    });return xScale(d3.min(max));
-	  }).attr('x2', function (d) {
+	  })
+	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
+	  .attr('x1', 0).attr('x2', function (d) {
 	    var max = d.values.map(function (d) {
 	      return d[props.xVal];
 	    });return xScale(d3.max(max));
@@ -22942,20 +22908,20 @@
 	    y: 0
 	  }, {
 	    name: 'wayne',
-	    x: 1,
-	    y: 1
+	    x: 0,
+	    y: 3
 	  }, {
 	    name: 'wayne',
-	    x: 3,
+	    x: 1,
 	    y: 2
 	  }, {
 	    name: 'wayne',
 	    x: 2,
-	    y: 3
+	    y: 1
 	  }, {
 	    name: 'wayne',
-	    x: 4,
-	    y: 1
+	    x: 3,
+	    y: 0
 	  }];
 	};
 
@@ -23508,7 +23474,7 @@
 	  var margin = { left: 40, bottom: 40, right: 40, top: 40 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#2CC039']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
@@ -23552,7 +23518,7 @@
 	  var arcs = g.selectAll('.arc').data(donut(props.data)).enter().append('g').attr('class', 'arc');
 
 	  //actual arcs
-	  arcs.append('path').attr('d', arc).attr('fill', function (d) {
+	  arcs.append('path').attr('d', arc).attr('class', function (d) {
 	    return color(d.data[props.indy]);
 	  });
 

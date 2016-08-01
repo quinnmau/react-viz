@@ -60,7 +60,8 @@ const create = (elem, props) => {
   //append lines of best fit
   bestFit.enter().append('line')
                   .attr('class', d => {return color2(d.key)})
-                  .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
+                  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
+                  .attr('x1', 0)
                   .attr('x2', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.max(max))})
                   .attr('y1', d => {
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.xVal]}), d.values.map(d => {return d[props.yVal]}));

@@ -63,7 +63,8 @@ class BarChart extends React.Component {
     const yGroups = globals.data.map(d => {return d[globals.yVal]});
     const groupScale = this.getGroupScale(innerH).domain(yGroups);
 
-    const color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#37DAD3', '#43B649']);
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 
     //within group scale
     const yValues = globals.xVal.map(d => {return d});
@@ -105,31 +106,15 @@ class BarChart extends React.Component {
           .attr('transform', d => {return 'translate(0, ' + groupScale(d[globals.yVal]) + ')'});
 
     // //actual data bars
-    const backBars = groups.selectAll('rect').data(d => {return d.groupDetails});
-
-    backBars.enter().append('rect')
-        .attr('x', 0)
-        .attr('y', d => {return yScale(d.name)})
-        .attr('width', 0)
-        .attr('height', yScale.rangeBand())
-        .attr('fill', 'white');
-
-    backBars.exit().remove();
-
-    backBars.transition().duration(1000)
-        .attr('width', d => {return xScale(d.value)});
 
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
 
     bars.enter().append('rect')
-        .attr('class', 'rect')
+        .attr('class', d => {return 'rect ' + color(d.name)})
         .attr('x', 0)
         .attr('y', d => {return yScale(d.name)})
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
-
-
-    bars.attr('fill', d => {return color(d.name)});
 
     bars.on('mouseover', function() {
       bars.attr('opacity', 0.5);
@@ -152,8 +137,7 @@ class BarChart extends React.Component {
           .attr('x', innerW + 25)
           .attr('width', 20)
           .attr('height', 20)
-          .attr('class', 'legend')
-          .attr('fill', d => {return color(d)})
+          .attr('class', d => {return 'legend ' + color(d)})
           .attr('opacity', 0);
 
     legend.transition().duration(1000).attr('opacity', 1);

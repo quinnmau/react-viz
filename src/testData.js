@@ -22,23 +22,23 @@ const scatter = () => {
     },
     {
       name: 'wayne',
-      x: 1,
-      y: 1
+      x: 0,
+      y: 3
     },
     {
       name: 'wayne',
-      x: 3,
+      x: 1,
       y: 2
     },
     {
       name: 'wayne',
       x: 2,
-      y: 3
+      y: 1
     },
     {
       name: 'wayne',
-      x: 4,
-      y: 1
+      x: 3,
+      y: 0
     }
   ];
 }

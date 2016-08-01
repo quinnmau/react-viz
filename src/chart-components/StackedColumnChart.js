@@ -16,7 +16,8 @@ class StackedColumnChart extends React.Component {
     const vars = this.globals();
     const innerW = vars.width - vars.margin.left - vars.margin.right;
     const innerH = vars.height - vars.margin.top - vars.margin.bottom;
-    const color = d3.scale.ordinal().range(['#2975E9', '#F7922E', '#37DAD3', '#43B649']);
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 
     //container to hold everything
     const cont = d3.select(ReactDOM.findDOMNode(this));
@@ -80,28 +81,14 @@ class StackedColumnChart extends React.Component {
                     .attr('class', 'groups')
                     .attr('transform', d => {return 'translate(' + xScale(d[vars.xVal]) + ', 0)'});
 
-    const backSegs = groups.selectAll('rect').data(d => {return d.segments});
-
-    backSegs.enter().append('rect')
-        .attr('x', d => {return xScale(d[vars.xVal])})
-        .attr('y', d => {return yScale(d.y0)})
-        .attr('width', xScale.rangeBand())
-        .attr('height', 0)
-        .attr('fill', 'white');
-
-    backSegs.transition().delay(function(d, i) {return i * 330}).duration(330)
-            .attr('y', d => {return yScale(d.y1)})
-            .attr('height', d => {return yScale(d.y0) - yScale(d.y1)});
-
     const segs = groups.selectAll('.rect').data(d => {return d.segments});
 
     segs.enter().append('rect')
-        .attr('class', 'rect')
+        .attr('class', d => {return 'rect ' + color(d.name)})
         .attr('x', d => {return xScale(d[vars.xVal])})
         .attr('y', d => {return yScale(d.y0)})
         .attr('width', xScale.rangeBand())
-        .attr('height', 0)
-        .attr('fill', d => {return color(d.name)});
+        .attr('height', 0);
 
     segs.on('mouseover', function() {
       segs.attr('opacity', 0.5);
@@ -123,10 +110,8 @@ class StackedColumnChart extends React.Component {
           .attr('x', innerW + 25)
           .attr('width', 20)
           .attr('height', 20)
-          .attr('class', 'legend')
+          .attr('class', d => {return 'legend ' + color(d)})
           .attr('opacity', 0);
-
-    legend.attr('fill', d => {return color(d)});
 
     legend.transition().delay(function(d, i) {return i * 330}).duration(330).attr('opacity', 1);
 

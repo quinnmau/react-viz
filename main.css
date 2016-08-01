@@ -14,6 +14,17 @@
   fill: #9ca7ac;
 }
 
+.title {
+  font-size: 28px;
+  stroke: none;
+  fill: #9ca7ac;
+}
+
+.legend-text {
+  stroke: none;
+  fill: #9ca7ac;
+}
+
 .blue {
   fill: #2975e9;
 }
@@ -104,6 +115,30 @@
 
 .connectors {
   fill: white;
+}
+
+.circle-blue, .line-blue {
+  stroke: #2975e9;
+}
+
+.circle-orange, .line-orange {
+  stroke: #f7922e;
+}
+
+.circle-teal, .line-teal {
+  stroke: #3ed6cf;
+}
+
+.circle-purple, .line-purple {
+  stroke: #b35cff;
+}
+
+.circle-green, .line-green {
+  stroke: #43b649;
+}
+
+.circle-brown, .line-brown {
+  stroke: #b7661a;
 }
 
 .x-bullet {

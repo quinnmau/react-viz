@@ -4,7 +4,9 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 100, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+  const color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
+  const color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
+  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
   //container
   const cont = d3.select(elem);
@@ -76,7 +78,7 @@ const create = (elem, props) => {
   const paths = g.selectAll('.a-path').data(deps);
 
   paths.enter().append('path')
-        .attr('class', 'a-path')
+        .attr('class', d => {return 'a-path ' + color(d.name)})
         .attr('d', d => {
           let arr = [];
           for (let i = 0; i < d.values.length; i++) {
@@ -84,8 +86,7 @@ const create = (elem, props) => {
             arr.push(obj);
           }
           return line(arr);
-        })
-        .style('stroke', d => {return color(d.name)});
+        });
 
   paths.transition().duration(1000)
         .attr('d', d => {return line(d.values)});
@@ -98,12 +99,10 @@ const create = (elem, props) => {
   const circles = circlesG.selectAll('circle').data(d => {return d.values});
 
   circles.enter().append('circle')
-          .attr('class', 'connectors')
+          .attr('class', d => {return 'connectors ' + color2(d.name)})
           .attr('r', 4)
           .attr('cx', d => {return xScale(+d.x) + 25})
-          .attr('cy', innerH)
-          .attr('fill', 'white')
-          .style('stroke', d => {return color(d.name)});
+          .attr('cy', innerH);
 
   circles.transition().duration(1000)
             .attr('cy', d => {return yScale(d.y)});
@@ -115,8 +114,7 @@ const create = (elem, props) => {
         .attr('x', innerW + 25)
         .attr('width', 20)
         .attr('height', 20)
-        .attr('class', 'legend')
-        .attr('fill', d => {return color(d)})
+        .attr('class', d => {return 'legend ' + color3(d)})
         .attr('opacity', 0);
 
   legend.transition().duration(1000).attr('opacity', 1);
