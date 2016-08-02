@@ -42,7 +42,7 @@ class App extends React.Component {
           <h1>Data Visualization</h1>
         </div>
         <div className="container">
-          <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} title={'This is a title'} />
+          <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} title={'This is a title'} />
           <button onClick={this.clickHandle}>switch the data up!</button>
         </div>
       </div>

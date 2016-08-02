@@ -150,7 +150,118 @@ class StackedBarChart extends React.Component {
 
   //update
   componentDidUpdate() {
+    const vars = this.vars();
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+    const innerW = vars.width - vars.margin.left - vars.margin.right;
+    const innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
+    //container
+    const cont = d3.select(ReactDOM.findDOMNode(this));
+
+    const svg = cont.selectAll('svg');
+
+    const gEnter = svg.select('.gEnter');
+
+    const yValues = vars.data.map(d => {return d[vars.yVal]});
+    const yScale = this.getYScale(innerH).domain(yValues);
+
+    //x scale
+    const xScale = this.getXScale(innerW);
+
+    //format data
+    vars.data.forEach(d => {
+      let x0 = 0;
+      d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
+      d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+    });
+
+    const xAxis = d3.svg.axis()
+                    .orient('bottom')
+                    .scale(xScale)
+                    .tickFormat(d3.format('.0%'))
+                    .innerTickSize(-innerH)
+                    .outerTickSize(0)
+                    .ticks(5)
+                    .tickPadding(10);
+
+    gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
+                    .transition()
+                    .duration(1000)
+                    .call(xAxis);
+
+    const yAxis = d3.svg.axis()
+                    .orient('left')
+                    .scale(yScale)
+                    .outerTickSize(0)
+                    .tickPadding(10);
+    gEnter.select('.y')
+                    .transition()
+                    .duration(1000)
+                    .call(yAxis);
+                    const g = svg.select('.gEnter');
+
+    const stacks = g.selectAll('.groups').data(vars.data);
+
+    stacks.exit().remove();
+
+    stacks.enter().append('g')
+          .attr('class', 'groups')
+          .attr('transform', d => {return 'translate(0, ' + yScale(d[vars.yVal]) + ')'});
+
+    const segs = stacks.selectAll('.rect').data(d => {return d.segments});
+
+    segs.exit().remove();
+
+    segs.enter().append('rect')
+        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('y', d => {return yScale(d[vars.yVal])})
+        .attr('x', d => {return xScale(d.x0)})
+        .attr('width', 0)
+        .attr('height', yScale.rangeBand());
+
+      segs.on('mouseover', function(d) {
+        segs.attr('class', d => {return 'rect ' + color2(d.name)});
+        d3.select(this).attr('class', 'rect ' + color(d.name));
+      });
+
+      segs.on('mouseout', function(d) {
+        segs.attr('class', d => {return 'rect ' + color(d.name)});
+      });
+
+    segs.transition().duration(500)
+            .attr('x', d => {return xScale(d.x0)})
+            .attr('width', d => {return xScale(d.x1) - xScale(d.x0)});
+
+    const legend = g.selectAll('.legend').data(vars.xVal);
+
+    legend.exit().remove();
+
+    legend.enter().append('rect')
+          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+          .attr('x', innerW + 25)
+          .attr('width', 20)
+          .attr('height', 20)
+          .attr('class', d => {return 'legend ' + color(d)})
+          .attr('opacity', 0);
+
+    legend.transition().delay(function(d, i) {return i * 330}).duration(330).attr('opacity', 1);
+
+    const words = g.selectAll('.legend-text').data(vars.xVal);
+
+    words.exit().remove();
+
+    words.enter().append('text')
+          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+          .attr('x', innerW + 50)
+          .attr('y', 9)
+          .attr('dy', '.35em')
+          .style('text-anchor', 'start')
+          .text(d => {return d})
+          .attr('class', 'legend-text')
+          .attr('opacity', 0);
+
+    words.transition().delay(function(d, i) {return i * 330}).duration(330).duration(1000).attr('opacity', 1);
   }
 
   componentWillUnmount() {

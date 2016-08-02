@@ -157,7 +157,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], title: 'This is a title' }),
+	          _react2.default.createElement(_StackedBarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], title: 'This is a title' }),
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.clickHandle },
@@ -22509,7 +22509,116 @@
 
 	  }, {
 	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {}
+	    value: function componentDidUpdate() {
+	      var vars = this.vars();
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+
+	      //container
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	      var svg = cont.selectAll('svg');
+
+	      var gEnter = svg.select('.gEnter');
+
+	      var yValues = vars.data.map(function (d) {
+	        return d[vars.yVal];
+	      });
+	      var yScale = this.getYScale(innerH).domain(yValues);
+
+	      //x scale
+	      var xScale = this.getXScale(innerW);
+
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var x0 = 0;
+	        d.segments = vars.xVal.map(function (type) {
+	          return { name: type, x0: x0, x1: x0 += +d[type] };
+	        });
+	        d.segments.forEach(function (d) {
+	          d.x0 /= x0;d.x1 /= x0;
+	        });
+	      });
+
+	      var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
+
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	      var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
+	      var g = svg.select('.gEnter');
+
+	      var stacks = g.selectAll('.groups').data(vars.data);
+
+	      stacks.exit().remove();
+
+	      stacks.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
+	      });
+
+	      var segs = stacks.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
+
+	      segs.exit().remove();
+
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('y', function (d) {
+	        return yScale(d[vars.yVal]);
+	      }).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', 0).attr('height', yScale.rangeBand());
+
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
+
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
+
+	      segs.transition().duration(500).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', function (d) {
+	        return xScale(d.x1) - xScale(d.x0);
+	      });
+
+	      var legend = g.selectAll('.legend').data(vars.xVal);
+
+	      legend.exit().remove();
+
+	      legend.enter().append('rect').attr('transform', function (d, i) {
+	        return 'translate(0, ' + i * 25 + ')';
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
+	      }).attr('opacity', 0);
+
+	      legend.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).attr('opacity', 1);
+
+	      var words = g.selectAll('.legend-text').data(vars.xVal);
+
+	      words.exit().remove();
+
+	      words.enter().append('text').attr('transform', function (d, i) {
+	        return 'translate(0, ' + i * 25 + ')';
+	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
+	        return d;
+	      }).attr('class', 'legend-text').attr('opacity', 0);
+
+	      words.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).duration(1000).attr('opacity', 1);
+	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {}
