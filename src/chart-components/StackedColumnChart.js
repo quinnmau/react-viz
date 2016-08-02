@@ -132,7 +132,104 @@ class StackedColumnChart extends React.Component {
 
   //update chart
   componentDidUpdate() {
+    const vars = this.globals();
+    const innerW = vars.width - vars.margin.left - vars.margin.right;
+    const innerH = vars.height - vars.margin.top - vars.margin.bottom;
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
 
+    //container to hold everything
+    const cont = d3.select(ReactDOM.findDOMNode(this));
+
+    const svg = cont.selectAll('svg');
+
+    const gEnter = svg.select('.gEnter');
+
+    const xValues = vars.data.map(d => {return d[vars.xVal]});
+    const xScale = this.getXScale(innerW).domain(xValues);
+    //format data
+    vars.data.forEach(d => {
+      let y0 = 0;
+      d.segments = vars.yVal.map(type => {return {name: type, y0: y0, y1: y0 += +d[type]};});
+      d.segments.forEach(d => {d.y0 /= y0; d.y1 /= y0;});
+    });
+
+    //y scale
+    const yScale = this.getYScale(innerH);
+
+    const xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+
+    gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
+            .transition().duration(1000).call(xAxis);
+
+    const yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+
+    gEnter.select('.y').transition().duration(1000).call(yAxis);
+
+    const g = svg.select('.gEnter');
+
+    //'stacks'
+    const groups = g.selectAll('.groups').data(vars.data);
+
+    groups.exit().remove();
+
+    groups.enter().append('g')
+                  .attr('class', 'groups')
+                  .attr('transform', d => {return 'translate(' + xScale(d[vars.xVal]) + ', 0)'});
+
+    const segs = groups.selectAll('.rect').data(d => {return d.segments});
+
+    segs.exit().remove();
+
+    segs.enter().append('rect')
+        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('x', d => {return xScale(d[vars.xVal])})
+        .attr('y', d => {return yScale(d.y0)})
+        .attr('width', xScale.rangeBand())
+        .attr('height', 0);
+
+    segs.on('mouseover', function(d) {
+      segs.attr('class', d => {return 'rect ' + color2(d.name)});
+      d3.select(this).attr('class', 'rect ' + color(d.name));
+    });
+
+    segs.on('mouseout', function(d) {
+      segs.attr('class', d => {return 'rect ' + color(d.name)});
+    });
+
+    segs.transition().duration(500)
+            .attr('y', d => {return yScale(d.y1)})
+            .attr('height', d => {return yScale(d.y0) - yScale(d.y1)});
+
+    const legend = g.selectAll('.legend').data(vars.yVal);
+
+    legend.exit().remove();
+
+    legend.enter().append('rect')
+          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+          .attr('x', innerW + 25)
+          .attr('width', 20)
+          .attr('height', 20)
+          .attr('class', d => {return 'legend ' + color(d)})
+          .attr('opacity', 0);
+
+    legend.transition().delay(function(d, i) {return i * 330}).duration(330).attr('opacity', 1);
+
+    const words = g.selectAll('.legend-text').data(vars.yVal);
+
+    words.exit().remove();
+
+    words.enter().append('text')
+          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+          .attr('x', innerW + 50)
+          .attr('y', 9)
+          .attr('dy', '.35em')
+          .style('text-anchor', 'start')
+          .text(d => {return d})
+          .attr('class', 'legend-text')
+          .attr('opacity', 0);
+
+    words.transition().delay(function(d, i) {return i * 330}).duration(330).duration(1000).attr('opacity', 1);
   }
 
   //remove chart

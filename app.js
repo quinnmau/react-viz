@@ -117,6 +117,7 @@
 	var nutData = (0, _testData.nut)();
 	var scat = (0, _testData.scatter2)(100, 100);
 	var secondl = (0, _testData.l2)();
+	var secC = (0, _testData.secondColumn)();
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -136,7 +137,7 @@
 	    key: 'clickHandle',
 	    value: function clickHandle() {
 	      console.log(this);
-	      this.setState({ l: secondl });
+	      this.setState({ c: secC });
 	    }
 	  }, {
 	    key: 'render',
@@ -156,7 +157,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 }),
+	          _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], title: 'This is a title' }),
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.clickHandle },
@@ -22173,7 +22174,118 @@
 
 	  }, {
 	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {}
+	    value: function componentDidUpdate() {
+	      var vars = this.globals();
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+
+	      //container to hold everything
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	      var svg = cont.selectAll('svg');
+
+	      var gEnter = svg.select('.gEnter');
+
+	      var xValues = vars.data.map(function (d) {
+	        return d[vars.xVal];
+	      });
+	      var xScale = this.getXScale(innerW).domain(xValues);
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var y0 = 0;
+	        d.segments = vars.yVal.map(function (type) {
+	          return { name: type, y0: y0, y1: y0 += +d[type] };
+	        });
+	        d.segments.forEach(function (d) {
+	          d.y0 /= y0;d.y1 /= y0;
+	        });
+	      });
+
+	      //y scale
+	      var yScale = this.getYScale(innerH);
+
+	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	      var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
+
+	      var g = svg.select('.gEnter');
+
+	      //'stacks'
+	      var groups = g.selectAll('.groups').data(vars.data);
+
+	      groups.exit().remove();
+
+	      groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
+	      });
+
+	      var segs = groups.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
+
+	      segs.exit().remove();
+
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('x', function (d) {
+	        return xScale(d[vars.xVal]);
+	      }).attr('y', function (d) {
+	        return yScale(d.y0);
+	      }).attr('width', xScale.rangeBand()).attr('height', 0);
+
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
+
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
+
+	      segs.transition().duration(500).attr('y', function (d) {
+	        return yScale(d.y1);
+	      }).attr('height', function (d) {
+	        return yScale(d.y0) - yScale(d.y1);
+	      });
+
+	      var legend = g.selectAll('.legend').data(vars.yVal);
+
+	      legend.exit().remove();
+
+	      legend.enter().append('rect').attr('transform', function (d, i) {
+	        return 'translate(0, ' + i * 25 + ')';
+	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	        return 'legend ' + color(d);
+	      }).attr('opacity', 0);
+
+	      legend.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).attr('opacity', 1);
+
+	      var words = g.selectAll('.legend-text').data(vars.yVal);
+
+	      words.exit().remove();
+
+	      words.enter().append('text').attr('transform', function (d, i) {
+	        return 'translate(0, ' + i * 25 + ')';
+	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
+	        return d;
+	      }).attr('class', 'legend-text').attr('opacity', 0);
+
+	      words.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).duration(1000).attr('opacity', 1);
+	    }
 
 	    //remove chart
 
@@ -23193,6 +23305,25 @@
 	  }];
 	};
 
+	var secondColumn = function secondColumn() {
+	  return [{
+	    name: 'steve',
+	    freq1: 6,
+	    freq2: 17,
+	    freq3: 4
+	  }, {
+	    name: 'earl',
+	    freq1: 15,
+	    freq2: 7,
+	    freq3: 9
+	  }, {
+	    name: 'jimi',
+	    freq1: 9,
+	    freq2: 2,
+	    freq3: 14
+	  }];
+	};
+
 	var nut = function nut() {
 	  return [{
 	    name: 'gomez',
@@ -23281,6 +23412,7 @@
 	exports.nut = nut;
 	exports.scatter2 = scatter2;
 	exports.l2 = l2;
+	exports.secondColumn = secondColumn;
 
 /***/ },
 /* 181 */

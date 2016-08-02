@@ -93,6 +93,29 @@ const column = () => {
   ];
 }
 
+const secondColumn = () => {
+  return [
+    {
+      name: 'steve',
+      freq1: 6,
+      freq2: 17,
+      freq3: 4
+    },
+    {
+      name: 'earl',
+      freq1: 15,
+      freq2: 7,
+      freq3: 9
+    },
+    {
+      name: 'jimi',
+      freq1: 9,
+      freq2: 2,
+      freq3: 14
+    }
+  ];
+}
+
 const nut = () => {
   return [
     {
@@ -192,4 +215,4 @@ const l2 = () => {
   ];
 }
 
-export { scatter, column, line, bullet, nut, scatter2, l2 };
+export { scatter, column, line, bullet, nut, scatter2, l2, secondColumn };
