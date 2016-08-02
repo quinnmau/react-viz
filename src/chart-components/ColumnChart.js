@@ -85,7 +85,7 @@ class ColumnChart extends React.Component {
 
     //set axes
     const xAxis = d3.svg.axis().orient('bottom').scale(groupScale).tickPadding(10);
-    const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+    const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).ticks(5).tickPadding(10);
 
     //call axes
     svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')')

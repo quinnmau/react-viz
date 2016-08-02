@@ -145,7 +145,6 @@
 	            'Data Visualization'
 	          )
 	        ),
-	        _react2.default.createElement(_LowerDash2.default, { data: this.state.c, xVal: 'name', yVal: this.state.cYVal }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container-fluid' },
@@ -209,7 +208,7 @@
 
 	  return App;
 	}(_react2.default.Component);
-
+	// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
 	/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 	// <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 	// <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
@@ -21416,7 +21415,7 @@
 
 	      //set axes
 	      var xAxis = d3.svg.axis().orient('bottom').scale(groupScale).tickPadding(10);
-	      var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+	      var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).ticks(5).tickPadding(10);
 
 	      //call axes
 	      svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')').transition().duration(1000).call(xAxis);
@@ -21707,7 +21706,6 @@
 	    value: function componentDidMount() {
 	      //global variables
 	      var globals = this.globals();
-	      // const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
 	      var innerW = globals.width - globals.margin.left - globals.margin.right;
 	      var innerH = globals.height - globals.margin.top - globals.margin.bottom;
 
@@ -21756,6 +21754,8 @@
 	        });
 	      });
 
+	      console.log(globals.data);
+
 	      var xScale = this.getXScale(innerW).domain([0, d3.max(globals.data, function (d) {
 	        return d3.max(d.groupDetails, function (d) {
 	          return d.value;
@@ -21763,7 +21763,7 @@
 	      })]);
 
 	      /*----------set axes --------------*/
-	      var xAxis = this.getXAxis(xScale).innerTickSize(-innerH).tickPadding(10);
+	      var xAxis = this.getXAxis(xScale).innerTickSize(-innerH).ticks(5).tickPadding(10);
 	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
 	      var yAxis = this.getYAxis(groupScale).tickPadding(10);
@@ -21790,13 +21790,17 @@
 	        return yScale(d.name);
 	      }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	      bars.on('mouseover', function () {
-	        bars.attr('opacity', 0.5);
-	        d3.select(this).attr('opacity', 1.0);
+	      bars.on('mouseover', function (d) {
+	        bars.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
 	      });
 
-	      bars.on('mouseout', function () {
-	        bars.attr('opacity', 1.0);
+	      bars.on('mouseout', function (d) {
+	        bars.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
 	      });
 
 	      bars.exit().remove();
@@ -22098,7 +22102,7 @@
 
 	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	      var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
 
 	      gEnter.select('.y').transition().duration(1000).call(yAxis);
 	      /*---------------make stacks----------------------------*/
@@ -22122,13 +22126,17 @@
 	        return yScale(d.y0);
 	      }).attr('width', xScale.rangeBand()).attr('height', 0);
 
-	      segs.on('mouseover', function () {
-	        segs.attr('opacity', 0.5);
-	        d3.select(this).attr('opacity', 1.0);
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
 	      });
 
-	      segs.on('mouseout', function () {
-	        segs.attr('opacity', 1.0);
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
 	      });
 
 	      segs.transition().delay(function (d, i) {
@@ -22315,7 +22323,7 @@
 	      });
 
 	      /*------------------------set axes-------------------------------------*/
-	      var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).tickPadding(10);
+	      var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
 
 	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
@@ -22342,13 +22350,17 @@
 	        return xScale(d.x0);
 	      }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	      segs.on('mouseover', function () {
-	        segs.attr('opacity', 0.5);
-	        d3.select(this).attr('opacity', 1.0);
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
 	      });
 
-	      segs.on('mouseout', function () {
-	        segs.attr('opacity', 1.0);
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
 	      });
 
 	      segs.transition().delay(function (d, i) {
@@ -23323,7 +23335,9 @@
 	            var margin = { left: 40, bottom: 40, right: 40, top: 75 };
 	            var innerW = props.width - margin.left - margin.right;
 	            var innerH = props.height - margin.top - margin.bottom;
-	            var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color2 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
 	            //container
 	            var cont = d3.select(elem);
@@ -23372,9 +23386,11 @@
 
 	            var secondaryBars = g.selectAll('.second-bar').data(props.data);
 
-	            secondaryBars.enter().append('rect').attr('class', 'second-bar').attr('x', 0).attr('y', function (d) {
+	            secondaryBars.enter().append('rect').attr('class', function (d) {
+	                        console.log(d);return 'second-bar ' + color(d[props.yVal]);
+	            }).attr('x', 0).attr('y', function (d) {
 	                        return yScale(d[props.yVal]);
-	            }).attr('width', 0).attr('height', yScale.rangeBand()).attr('fill', '#2975E9').attr('opacity', 0.25);
+	            }).attr('width', 0).attr('height', yScale.rangeBand()).attr('opacity', 0.25);
 
 	            secondaryBars.transition().duration(1000).attr('width', function (d) {
 	                        return xScale(d[props.range]);
@@ -23382,9 +23398,11 @@
 
 	            var actualBars = g.selectAll('.actual-bar').data(props.data);
 
-	            actualBars.enter().append('rect').attr('class', 'actual-bar').attr('x', 0).attr('y', function (d) {
+	            actualBars.enter().append('rect').attr('class', function (d) {
+	                        console.log(d);return 'actual-bar ' + color2(d[props.yVal]);
+	            }).attr('x', 0).attr('y', function (d) {
 	                        return yScale(d[props.yVal]) + yScale.rangeBand() * 0.25;
-	            }).attr('width', 0).attr('height', yScale.rangeBand() * 0.5).attr('fill', '#2975E9');
+	            }).attr('width', 0).attr('height', yScale.rangeBand() * 0.5);
 
 	            actualBars.transition().duration(1000).attr('width', function (d) {
 	                        return xScale(d[props.actual]);
@@ -23392,9 +23410,11 @@
 
 	            var targetBar = g.selectAll('.target-bar').data(props.data);
 
-	            targetBar.enter().append('rect').attr('class', 'targer-bar').attr('y', function (d) {
+	            targetBar.enter().append('rect').attr('class', function (d) {
+	                        console.log(d);return 'targer-bar ' + color3(d[props.yVal]);
+	            }).attr('y', function (d) {
 	                        return yScale(d[props.yVal]) + yScale.rangeBand() * (1 / 6) * .5;
-	            }).attr('x', 0).attr('height', yScale.rangeBand() * (5 / 6)).attr('width', 0).attr('fill', '#2975E9');
+	            }).attr('x', 0).attr('height', yScale.rangeBand() * (5 / 6)).attr('width', 0);
 
 	            targetBar.transition().duration(1000).attr('x', function (d) {
 	                        return xScale(d[props.target]);

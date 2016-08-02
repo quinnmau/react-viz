@@ -68,7 +68,7 @@ class StackedColumnChart extends React.Component {
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
             .transition().duration(1000).call(xAxis);
 
-    const yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+    const yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
 
     gEnter.select('.y').transition().duration(1000).call(yAxis);
     /*---------------make stacks----------------------------*/
@@ -90,13 +90,13 @@ class StackedColumnChart extends React.Component {
         .attr('width', xScale.rangeBand())
         .attr('height', 0);
 
-    segs.on('mouseover', function() {
-      segs.attr('opacity', 0.5);
-      d3.select(this).attr('opacity', 1.0);
+    segs.on('mouseover', function(d) {
+      segs.attr('class', d => {return 'rect ' + color2(d.name)});
+      d3.select(this).attr('class', 'rect ' + color(d.name));
     });
 
-    segs.on('mouseout', function() {
-      segs.attr('opacity', 1.0);
+    segs.on('mouseout', function(d) {
+      segs.attr('class', d => {return 'rect ' + color(d.name)});
     });
 
     segs.transition().delay(function(d, i) {return i * 330}).duration(330)

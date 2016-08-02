@@ -70,6 +70,7 @@ class StackedBarChart extends React.Component {
                     .tickFormat(d3.format('.0%'))
                     .innerTickSize(-innerH)
                     .outerTickSize(0)
+                    .ticks(5)
                     .tickPadding(10);
 
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
@@ -107,14 +108,14 @@ class StackedBarChart extends React.Component {
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
 
-    segs.on('mouseover', function() {
-      segs.attr('opacity', 0.5);
-      d3.select(this).attr('opacity', 1.0);
-    });
+      segs.on('mouseover', function(d) {
+        segs.attr('class', d => {return 'rect ' + color2(d.name)});
+        d3.select(this).attr('class', 'rect ' + color(d.name));
+      });
 
-    segs.on('mouseout', function() {
-      segs.attr('opacity', 1.0);
-    });
+      segs.on('mouseout', function(d) {
+        segs.attr('class', d => {return 'rect ' + color(d.name)});
+      });
 
     segs.transition().delay(function(d, i) {return i * 330}).duration(330)
             .attr('x', d => {return xScale(d.x0)})

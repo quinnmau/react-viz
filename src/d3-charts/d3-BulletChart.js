@@ -3,7 +3,9 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color2 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
   //container
   const cont = d3.select(elem);
@@ -52,12 +54,11 @@ const create = (elem, props) => {
   const secondaryBars = g.selectAll('.second-bar').data(props.data);
 
   secondaryBars.enter().append('rect')
-              .attr('class', 'second-bar')
+              .attr('class', d => {console.log(d); return 'second-bar ' + color(d[props.yVal])})
               .attr('x', 0)
               .attr('y', d => {return yScale(d[props.yVal])})
               .attr('width', 0)
               .attr('height', yScale.rangeBand())
-              .attr('fill', '#2975E9')
               .attr('opacity', 0.25);
 
   secondaryBars.transition().duration(1000)
@@ -66,12 +67,11 @@ const create = (elem, props) => {
   const actualBars = g.selectAll('.actual-bar').data(props.data);
 
   actualBars.enter().append('rect')
-              .attr('class', 'actual-bar')
+              .attr('class', d => {console.log(d); return 'actual-bar ' + color2(d[props.yVal])})
               .attr('x', 0)
               .attr('y', d => {return yScale(d[props.yVal]) + yScale.rangeBand() * 0.25})
               .attr('width', 0)
-              .attr('height', yScale.rangeBand() * 0.5)
-              .attr('fill', '#2975E9');
+              .attr('height', yScale.rangeBand() * 0.5);
 
   actualBars.transition().duration(1000)
               .attr('width', d => {return xScale(d[props.actual])});
@@ -79,12 +79,11 @@ const create = (elem, props) => {
   const targetBar = g.selectAll('.target-bar').data(props.data);
 
   targetBar.enter().append('rect')
-            .attr('class', 'targer-bar')
+            .attr('class', d => {console.log(d); return 'targer-bar ' + color3(d[props.yVal])})
             .attr('y', d => {return yScale(d[props.yVal]) + yScale.rangeBand() * (1 / 6) * .5})
             .attr('x', 0)
             .attr('height', yScale.rangeBand() * (5 / 6))
-            .attr('width', 0)
-            .attr('fill', '#2975E9');
+            .attr('width', 0);
 
   targetBar.transition().duration(1000)
               .attr('x', d => {return xScale(d[props.target])})

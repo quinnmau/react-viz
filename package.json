@@ -27,7 +27,9 @@
     "webpack-stream": "^3.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app",
+    "postinstall": "gulp default"
   },
   "author": "",
   "license": "ISC"

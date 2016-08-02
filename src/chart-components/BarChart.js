@@ -26,7 +26,6 @@ class BarChart extends React.Component {
   componentDidMount() {
     //global variables
     const globals = this.globals();
-    // const color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
     const innerW = globals.width - globals.margin.left - globals.margin.right;
     const innerH = globals.height - globals.margin.top - globals.margin.bottom;
 
@@ -77,6 +76,8 @@ class BarChart extends React.Component {
       });
     });
 
+    console.log(globals.data);
+
     const xScale = this.getXScale(innerW).domain([0, d3.max(globals.data, d => {
       return d3.max(d.groupDetails, d => {
         return d.value;
@@ -85,7 +86,7 @@ class BarChart extends React.Component {
 
 
     /*----------set axes --------------*/
-    const xAxis = this.getXAxis(xScale).innerTickSize(-innerH).tickPadding(10);
+    const xAxis = this.getXAxis(xScale).innerTickSize(-innerH).ticks(5).tickPadding(10);
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
                        .transition()
                        .duration(1000)
@@ -116,13 +117,13 @@ class BarChart extends React.Component {
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
 
-    bars.on('mouseover', function() {
-      bars.attr('opacity', 0.5);
-      d3.select(this).attr('opacity', 1.0);
+    bars.on('mouseover', function(d) {
+      bars.attr('class', d => {return 'rect ' + color2(d.name)});
+      d3.select(this).attr('class', 'rect ' + color(d.name));
     });
 
-    bars.on('mouseout', function() {
-      bars.attr('opacity', 1.0);
+    bars.on('mouseout', function(d) {
+      bars.attr('class', d => {return 'rect ' + color(d.name)});
     });
 
     bars.exit().remove();

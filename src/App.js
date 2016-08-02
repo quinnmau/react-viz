@@ -33,7 +33,7 @@ class App extends React.Component {
         <div className="billboard bg-light">
           <h1>Data Visualization</h1>
         </div>
-        <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-4">
@@ -73,7 +73,7 @@ class App extends React.Component {
     );
   }
 }
-
+// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
 /*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 // <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 // <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
