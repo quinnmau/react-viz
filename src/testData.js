@@ -46,7 +46,8 @@ const scatter = () => {
 const scatter2 = (width, height) => {
   let randomX = d3.random.normal(width / 2, 20);
   let randomY = d3.random.normal(height / 2, 20);
-  let points = d3.range(20).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
+  let points = d3.range(10).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
+  console.log(points);
   return points;
 }
 

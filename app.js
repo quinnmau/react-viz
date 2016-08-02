@@ -127,10 +127,17 @@
 
 	    _this.state = { s: scatterData, c: columnData, l: lineData, b: bulletData, n: nutData, s2: scat,
 	      cYVal: ['freq1', 'freq2', 'freq3'], change: _this.changeData };
+	    _this.clickHandle = _this.clickHandle.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'clickHandle',
+	    value: function clickHandle() {
+	      console.log(this);
+	      this.setState({ s: scat });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -147,59 +154,12 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid' },
+	          { className: 'container' },
+	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true }),
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_DonutChart2.default, { data: this.state.n, indy: 'name', dep: 'population', width: 250, height: 250, title: 'Sales' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s2, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title', yReal: ['freq1', 'freq2'] })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_StackedBarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_BarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2'], title: 'This is a title' })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-md-4' },
-	              _react2.default.createElement(_BulletChart2.default, { data: this.state.b, width: 500, height: 200, yVal: 'id', target: 'target', actual: 'actual', range: 'range' })
-	            ),
-	            _react2.default.createElement('div', { className: 'col-md-4' })
+	            'button',
+	            { onClick: this.clickHandle },
+	            'switch the data up!'
 	          )
 	        )
 	      );
@@ -215,6 +175,42 @@
 
 
 	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
+
+	// <div className="container-fluid">
+	//   <div className="row">
+	//     <div className="col-md-4">
+	//       <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+	//     </div>
+	//     <div className="col-md-4">
+	//       <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+	//     </div>
+	//     <div className="col-md-4">
+	//       <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	//     </div>
+	//   </div>
+	//   <div className="row">
+	//     <div className="col-md-4">
+	//       <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
+	//     </div>
+	//     <div className="col-md-4">
+	//       <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	//     </div>
+	//     <div className="col-md-4">
+	//       <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	//     </div>
+	//   </div>
+	//   <div className="row">
+	//     <div className="col-md-4">
+	//       <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
+	//     </div>
+	//     <div className="col-md-4">
+	//       <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
+	//     </div>
+	//     <div className="col-md-4">
+	//
+	//     </div>
+	//   </div>
+	// </div>
 
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
@@ -22722,7 +22718,8 @@
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      (0, _d3ScatterPlot.update)();
+	      var elem = _reactDom2.default.findDOMNode(this);
+	      (0, _d3ScatterPlot.update)(elem, this.props);
 	    }
 	  }]);
 
@@ -22807,7 +22804,7 @@
 
 	  //append lines of best fit
 	  bestFit.enter().append('line').attr('class', function (d) {
-	    return color2(d.key);
+	    return 'trendline ' + color2(d.key);
 	  })
 	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
 	  .attr('x1', 0).attr('x2', function (d) {
@@ -22853,7 +22850,95 @@
 	};
 
 	//update
-	var update = function update() {};
+	var update = function update(elem, props) {
+	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var innerW = props.width - margin.left - margin.right;
+	  var innerH = props.height - margin.top - margin.bottom;
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
+	  var isFit = props.fit;
+
+	  var cont = d3.select(elem);
+
+	  var svg = cont.selectAll('svg');
+
+	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
+	    return d[props.xVal];
+	  }), d3.max(props.data, function (d) {
+	    return d[props.xVal];
+	  })]);
+	  var yScale = getYScale(innerH).domain([d3.min(props.data, function (d) {
+	    return d[props.yVal];
+	  }), d3.max(props.data, function (d) {
+	    return d[props.yVal];
+	  })]);
+
+	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10);
+	  var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+
+	  var gEnter = svg.select('.gEnter');
+
+	  gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	  gEnter.select('.y').transition().duration(1000).call(yAxis);
+
+	  //re-select main area where data points go
+	  var g = svg.select('.gEnter');
+
+	  //format data to make groups for the lines of best fit
+	  var groupedData = d3.nest().key(function (d) {
+	    return d[props.iden];
+	  }).entries(props.data);
+
+	  //select all the nonexistent lines of best fit and data join them to newly formatted data
+	  var bestFit = g.selectAll('.trendline').data(groupedData);
+
+	  bestFit.exit().remove();
+
+	  //transition lines of best fit
+	  bestFit.enter().append('line').attr('class', function (d) {
+	    return 'trendline ' + color2(d.key);
+	  })
+	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
+	  .attr('x1', 0).attr('x2', function (d) {
+	    var max = d.values.map(function (d) {
+	      return d[props.xVal];
+	    });return xScale(d3.max(max));
+	  }).attr('y1', innerH).attr('y2', innerH).attr('opacity', 0);
+
+	  bestFit.transition().duration(1000).attr('y1', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }), d.values.map(function (d) {
+	      return d[props.yVal];
+	    }));
+	    return yScale(pointInfo.intercept);
+	  }).attr('y2', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }), d.values.map(function (d) {
+	      return d[props.yVal];
+	    }));
+	    var max = d3.max(d.values.map(function (d) {
+	      return d[props.xVal];
+	    }));
+	    return yScale(max * pointInfo.slope + pointInfo.intercept);
+	  }).attr('opacity', 1);
+	  //data-join cirlces
+	  var circles = g.selectAll('circle').data(props.data);
+
+	  circles.exit().remove();
+
+	  //append and transition cirlces
+	  circles.enter().append('circle').attr('cx', function (d) {
+	    return xScale(d[props.xVal]);
+	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('class', function (d) {
+	    return color(d[props.iden]);
+	  });
+
+	  circles.transition().delay(300).duration(1000).attr('opacity', 1).attr('cy', function (d) {
+	    return yScale(d[props.yVal]);
+	  });
+	};
 
 	//creates and returns x scale without domain
 	var getXScale = function getXScale(w) {
@@ -22885,7 +22970,6 @@
 
 	  lr.slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
 	  lr.intercept = (sumY - lr.slope * sumX) / n;
-	  console.log(lr);
 	  return lr;
 	};
 
@@ -22940,9 +23024,10 @@
 	var scatter2 = function scatter2(width, height) {
 	  var randomX = d3.random.normal(width / 2, 20);
 	  var randomY = d3.random.normal(height / 2, 20);
-	  var points = d3.range(20).map(function () {
+	  var points = d3.range(10).map(function () {
 	    return { name: randID(), x: randomX(), y: randomY() };
 	  });
+	  console.log(points);
 	  return points;
 	};
 
