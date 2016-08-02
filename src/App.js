@@ -6,7 +6,7 @@ import StackedColumnChart from './chart-components/StackedColumnChart';
 import StackedBarChart from './chart-components/StackedBarChart';
 import LineChart from './chart-components/LineChart';
 import ScatterPlot from './chart-components/ScatterPlot';
-import { scatter, column, line, bullet, nut, scatter2 } from './testData';
+import { scatter, column, line, bullet, nut, scatter2, l2 } from './testData';
 import Random from './chart-components/Random';
 import SparklineChart from './chart-components/SparklineChart';
 import BulletChart from './chart-components/BulletChart';
@@ -19,6 +19,7 @@ const lineData = line();
 const bulletData = bullet();
 const nutData = nut();
 const scat = scatter2(100, 100);
+const secondl = l2();
 
 class App extends React.Component {
   constructor() {
@@ -30,7 +31,7 @@ class App extends React.Component {
 
   clickHandle() {
     console.log(this);
-    this.setState({s: scat});
+    this.setState({l: secondl});
   }
 
   render() {
@@ -40,7 +41,7 @@ class App extends React.Component {
           <h1>Data Visualization</h1>
         </div>
         <div className="container">
-          <ScatterPlot data={this.state.s} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+          <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
           <button onClick={this.clickHandle}>switch the data up!</button>
         </div>
       </div>

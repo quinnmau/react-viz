@@ -116,6 +116,7 @@
 	var bulletData = (0, _testData.bullet)();
 	var nutData = (0, _testData.nut)();
 	var scat = (0, _testData.scatter2)(100, 100);
+	var secondl = (0, _testData.l2)();
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -135,7 +136,7 @@
 	    key: 'clickHandle',
 	    value: function clickHandle() {
 	      console.log(this);
-	      this.setState({ s: scat });
+	      this.setState({ l: secondl });
 	    }
 	  }, {
 	    key: 'render',
@@ -155,7 +156,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ScatterPlot2.default, { data: this.state.s, width: 500, height: 500, iden: 'name', xVal: 'x', yVal: 'y', title: 'This is a title', fit: true }),
+	          _react2.default.createElement(_LineChart2.default, { data: this.state.l, width: 500, height: 500, xVal: 'date', yVal: ['usa', 'ger', 'chn'], title: 'This is a title', ticks: 5 }),
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.clickHandle },
@@ -22494,7 +22495,8 @@
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      (0, _d3LineChart.update)();
+	      var elem = _reactDom2.default.findDOMNode(this);
+	      (0, _d3LineChart.update)(elem, this.props);
 	    }
 	  }]);
 
@@ -22648,8 +22650,132 @@
 	};
 
 	//update chart
-	var update = function update(elem) {
-	  console.log(elem);
+	var update = function update(elem, props) {
+	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var innerW = props.width - margin.left - margin.right;
+	  var innerH = props.height - margin.top - margin.bottom;
+	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
+	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
+	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+
+	  var cont = d3.select(elem);
+
+	  var svg = cont.selectAll('svg');
+
+	  var gEnter = svg.select('.gEnter');
+
+	  var xValues = props.data.map(function (d) {
+	    return d3.time.format('%Y-%m').parse(d[props.xVal]);
+	  });
+	  var xScale = getXScale(innerW - 50).domain(d3.extent(xValues, function (d) {
+	    return d;
+	  }));
+
+	  var yValues = [];
+	  props.data.forEach(function (d) {
+	    for (var i in d) {
+	      if (props.yVal.indexOf(i) !== -1) {
+	        yValues.push(d[i]);
+	      }
+	    }
+	  });
+
+	  var yScale = getYScale(innerH).domain([0, d3.max(yValues, function (d) {
+	    return d;
+	  })]);
+
+	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
+	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
+
+	  gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	  gEnter.select('.y').transition().duration(1000).call(yAxis);
+
+	  var line = d3.svg.line()
+	  // .interpolate('basis')
+	  .x(function (d) {
+	    return xScale(d.x) + 25;
+	  }).y(function (d) {
+	    return yScale(d.y);
+	  });
+
+	  var deps = d3.keys(props.data[0]).filter(function (key) {
+	    return key !== props.xVal;
+	  }).map(function (name) {
+	    return {
+	      name: name,
+	      values: props.data.map(function (a) {
+	        return { x: d3.time.format('%Y-%m').parse(a[props.xVal]), y: +a[name], name: name };
+	      })
+	    };
+	  });
+
+	  var g = svg.select('.gEnter');
+
+	  var paths = g.selectAll('.a-path').data(deps);
+
+	  paths.exit().remove();
+
+	  paths.enter().append('path').attr('class', function (d) {
+	    return 'a-path ' + color(d.name);
+	  }).attr('d', function (d) {
+	    var arr = [];
+	    for (var i = 0; i < d.values.length; i++) {
+	      var obj = { x: +d.values[i].x, y: d3.min(yValues) };
+	      arr.push(obj);
+	    }
+	    return line(arr);
+	  });
+
+	  paths.transition().duration(1000).attr('d', function (d) {
+	    return line(d.values);
+	  });
+
+	  var circlesG = g.selectAll('.circle-g').data(deps);
+
+	  circlesG.exit().remove();
+
+	  circlesG.enter().append('g').attr('class', 'circle-g');
+
+	  var circles = circlesG.selectAll('circle').data(function (d) {
+	    return d.values;
+	  });
+
+	  circles.exit().remove();
+
+	  circles.enter().append('circle').attr('class', function (d) {
+	    return 'connectors ' + color2(d.name);
+	  }).attr('r', 4).attr('cx', function (d) {
+	    return xScale(+d.x) + 25;
+	  }).attr('cy', innerH);
+
+	  circles.transition().duration(1000).attr('cy', function (d) {
+	    return yScale(d.y);
+	  });
+
+	  var legend = g.selectAll('.legend').data(props.yVal);
+
+	  legend.exit().remove();
+
+	  legend.enter().append('rect').attr('transform', function (d, i) {
+	    return 'translate(0, ' + i * 25 + ')';
+	  }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
+	    return 'legend ' + color3(d);
+	  }).attr('opacity', 0);
+
+	  legend.transition().duration(1000).attr('opacity', 1);
+
+	  var words = g.selectAll('.legend-text').data(props.yVal);
+
+	  words.exit().remove();
+
+	  words.enter().append('text').attr('transform', function (d, i) {
+	    return 'translate(0, ' + i * 25 + ')';
+	  }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
+	    return d;
+	  }).attr('class', 'legend-text').attr('opacity', 0);
+
+	  words.transition().duration(1000).attr('opacity', 1);
 	};
 
 	//returns an x scale. Set domain later
@@ -22931,7 +23057,7 @@
 	  //append and transition cirlces
 	  circles.enter().append('circle').attr('cx', function (d) {
 	    return xScale(d[props.xVal]);
-	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('class', function (d) {
+	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('filter', 'blur(10px)').attr('class', function (d) {
 	    return color(d[props.iden]);
 	  });
 
@@ -23114,12 +23240,47 @@
 	  }];
 	};
 
+	var l2 = function l2() {
+	  return [{
+	    date: '2016-03',
+	    usa: 4,
+	    chn: 2,
+	    ger: 7
+	  }, {
+	    date: '2016-04',
+	    usa: 9,
+	    chn: 4,
+	    ger: 0
+	  }, {
+	    date: '2016-05',
+	    usa: 3,
+	    chn: 3,
+	    ger: 1
+	  }, {
+	    date: '2016-06',
+	    usa: 15,
+	    chn: 4,
+	    ger: 8
+	  }, {
+	    date: '2016-07',
+	    usa: 4,
+	    chn: 0,
+	    ger: 9
+	  }, {
+	    date: '2016-08',
+	    usa: 2,
+	    chn: 0,
+	    ger: 1
+	  }];
+	};
+
 	exports.scatter = scatter;
 	exports.column = column;
 	exports.line = line;
 	exports.bullet = bullet;
 	exports.nut = nut;
 	exports.scatter2 = scatter2;
+	exports.l2 = l2;
 
 /***/ },
 /* 181 */

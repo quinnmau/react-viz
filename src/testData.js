@@ -151,4 +151,45 @@ const line = () => {
   ];
 }
 
-export { scatter, column, line, bullet, nut, scatter2 };
+const l2 = () => {
+  return [
+    {
+      date: '2016-03',
+      usa: 4,
+      chn: 2,
+      ger: 7
+    },
+    {
+      date: '2016-04',
+      usa: 9,
+      chn: 4,
+      ger: 0
+    },
+    {
+      date: '2016-05',
+      usa: 3,
+      chn: 3,
+      ger: 1
+    },
+    {
+      date: '2016-06',
+      usa: 15,
+      chn: 4,
+      ger: 8
+    },
+    {
+      date: '2016-07',
+      usa: 4,
+      chn: 0,
+      ger: 9
+    },
+    {
+      date: '2016-08',
+      usa: 2,
+      chn: 0,
+      ger: 1
+    }
+  ];
+}
+
+export { scatter, column, line, bullet, nut, scatter2, l2 };

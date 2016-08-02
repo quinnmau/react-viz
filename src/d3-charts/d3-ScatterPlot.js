@@ -162,6 +162,7 @@ const update = (elem, props) => {
           .attr('cy', innerH)
           .attr('r', 7)
           .attr('opacity', 0)
+          .attr('filter', 'blur(10px)')
           .attr('class', d => {return color(d[props.iden])});
 
   circles.transition().delay(300).duration(1000)

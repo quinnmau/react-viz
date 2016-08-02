@@ -17,7 +17,8 @@ class LineChart extends React.Component {
   }
 
   componentDidUpdate() {
-    update();
+    const elem = ReactDOM.findDOMNode(this);
+    update(elem, this.props);
   }
 }
 
