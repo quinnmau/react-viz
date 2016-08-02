@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {create} from '../d3-charts/d3-DonutChart';
+import {create, update} from '../d3-charts/d3-DonutChart';
 
 class DonutChart extends React.Component {
   render() {
@@ -14,6 +14,11 @@ class DonutChart extends React.Component {
   componentDidMount() {
     const el = ReactDOM.findDOMNode(this);
     create(el, this.props);
+  }
+
+  componentDidUpdate() {
+    const elem = ReactDOM.findDOMNode(this);
+    update(elem, this.props);
   }
 
 }

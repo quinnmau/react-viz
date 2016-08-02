@@ -94,4 +94,77 @@ const create = (elem, props) => {
 
 }
 
-export {create};
+const update = (elem, props) => {
+  const margin = {left: 40, bottom: 40, right: 40, top: 40};
+  const innerW = props.width - margin.left - margin.right;
+  const innerH = props.height - margin.top - margin.bottom;
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const radius = Math.min(innerW, innerH) / 2;
+  const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+                          .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+
+  const donut = d3.layout.pie().sort(null).value(d => {return d[props.dep]});
+
+  const cont = d3.select(elem);
+
+  const svg = cont.selectAll('svg');
+
+  const g = svg.select('.gEnter');
+
+  console.log(props.data);
+
+  let total = 0;
+  props.data.forEach(d => {
+    total += d[props.dep];
+  });
+  props.data.total = total;
+
+  //arc groups
+  const arcs = g.selectAll('.arc')
+                .data(donut(props.data));
+
+  arcs.exit().remove();
+
+  arcs.enter().append('g')
+              .attr('class', 'arc');
+
+  //actual arcs
+  const realArcs = arcs.selectAll('path').data(donut(props.data));
+
+  realArcs.exit().remove();
+
+  realArcs.append('path')
+        .transition().duration(1000)
+        .attr('d', arc)
+        .attr('class', d => {return color(d.data[props.indy])});
+
+  //Enlarge arc size on mouseover
+  arcs.on('mouseover', function(d) {
+    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
+                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
+
+    const curr = d3.select(this).select('path')
+                    .transition().duration(500)
+                    .attr('d', cover);
+
+    let format = d3.format('%');
+
+    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
+    g.select('.small-num').text(d.data[props.indy]);
+  });
+
+  //make size normal when mouse leaves arc
+  arcs.on('mouseout', function() {
+    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+
+    const curr = d3.select(this).select('path')
+                    .transition().duration(500)
+                    .attr('d', cover);
+
+    g.select('.big-num').text('');
+    g.select('.small-num').text('');
+  });
+}
+
+export {create, update};

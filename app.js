@@ -118,6 +118,7 @@
 	var scat = (0, _testData.scatter2)(100, 100);
 	var secondl = (0, _testData.l2)();
 	var secC = (0, _testData.secondColumn)();
+	var nuts = (0, _testData.nutting)();
 
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -137,7 +138,7 @@
 	    key: 'clickHandle',
 	    value: function clickHandle() {
 	      console.log(this);
-	      this.setState({ c: secC });
+	      this.setState({ n: nuts });
 	    }
 	  }, {
 	    key: 'render',
@@ -157,7 +158,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_StackedBarChart2.default, { data: this.state.c, width: 500, height: 500, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], title: 'This is a title' }),
+	          _react2.default.createElement(_DonutChart2.default, { data: this.state.n, indy: 'name', dep: 'population', width: 250, height: 250, title: 'Sales' }),
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: this.clickHandle },
@@ -23446,6 +23447,19 @@
 	  }];
 	};
 
+	var nutting = function nutting() {
+	  return [{
+	    name: 'gomez',
+	    population: 50
+	  }, {
+	    name: 'wong po',
+	    population: 30
+	  }, {
+	    name: 'barret',
+	    population: 78
+	  }];
+	};
+
 	var line = function line() {
 	  return [{
 	    date: '2016-03',
@@ -23522,6 +23536,7 @@
 	exports.scatter2 = scatter2;
 	exports.l2 = l2;
 	exports.secondColumn = secondColumn;
+	exports.nutting = nutting;
 
 /***/ },
 /* 181 */
@@ -23960,6 +23975,12 @@
 	      var el = _reactDom2.default.findDOMNode(this);
 	      (0, _d3DonutChart.create)(el, this.props);
 	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var elem = _reactDom2.default.findDOMNode(this);
+	      (0, _d3DonutChart.update)(elem, this.props);
+	    }
 	  }]);
 
 	  return DonutChart;
@@ -24052,7 +24073,73 @@
 	  });
 	};
 
+	var update = function update(elem, props) {
+	  var margin = { left: 40, bottom: 40, right: 40, top: 40 };
+	  var innerW = props.width - margin.left - margin.right;
+	  var innerH = props.height - margin.top - margin.bottom;
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var radius = Math.min(innerW, innerH) / 2;
+	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
+
+	  var donut = d3.layout.pie().sort(null).value(function (d) {
+	    return d[props.dep];
+	  });
+
+	  var cont = d3.select(elem);
+
+	  var svg = cont.selectAll('svg');
+
+	  var g = svg.select('.gEnter');
+
+	  console.log(props.data);
+
+	  var total = 0;
+	  props.data.forEach(function (d) {
+	    total += d[props.dep];
+	  });
+	  props.data.total = total;
+
+	  //arc groups
+	  var arcs = g.selectAll('.arc').data(donut(props.data));
+
+	  arcs.exit().remove();
+
+	  arcs.enter().append('g').attr('class', 'arc');
+
+	  //actual arcs
+	  var realArcs = arcs.selectAll('path').data(donut(props.data));
+
+	  realArcs.exit().remove();
+
+	  realArcs.append('path').transition().duration(1000).attr('d', arc).attr('class', function (d) {
+	    return color(d.data[props.indy]);
+	  });
+
+	  //Enlarge arc size on mouseover
+	  arcs.on('mouseover', function (d) {
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+
+	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
+
+	    var format = d3.format('%');
+
+	    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
+	    g.select('.small-num').text(d.data[props.indy]);
+	  });
+
+	  //make size normal when mouse leaves arc
+	  arcs.on('mouseout', function () {
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
+
+	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
+
+	    g.select('.big-num').text('');
+	    g.select('.small-num').text('');
+	  });
+	};
+
 	exports.create = create;
+	exports.update = update;
 
 /***/ },
 /* 188 */

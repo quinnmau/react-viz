@@ -133,6 +133,23 @@ const nut = () => {
   ];
 }
 
+const nutting = () => {
+  return [
+    {
+      name: 'gomez',
+      population: 50
+    },
+    {
+      name: 'wong po',
+      population: 30
+    },
+    {
+      name: 'barret',
+      population: 78
+    }
+  ];
+}
+
 const line = () => {
   return [
     {
@@ -215,4 +232,4 @@ const l2 = () => {
   ];
 }
 
-export { scatter, column, line, bullet, nut, scatter2, l2, secondColumn };
+export { scatter, column, line, bullet, nut, scatter2, l2, secondColumn, nutting };
