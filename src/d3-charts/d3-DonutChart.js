@@ -120,7 +120,7 @@ const update = (elem, props) => {
 
   paths.transition().duration(750).attrTween("d", arcTween);
 
-  const arcTween = (a) => {
+  function arcTween(a) {
     console.log(this);
     let i = d3.interpolate(this._current, a);
     this._current = i(0);

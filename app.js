@@ -24103,10 +24103,10 @@
 
 	  paths.transition().duration(750).attrTween("d", arcTween);
 
-	  var arcTween = function arcTween(a) {
-	    console.log(undefined);
-	    var i = d3.interpolate(undefined._current, a);
-	    undefined._current = i(0);
+	  function arcTween(a) {
+	    console.log(this);
+	    var i = d3.interpolate(this._current, a);
+	    this._current = i(0);
 	    return function (t) {
 	      return arc(i(t));
 	    };
