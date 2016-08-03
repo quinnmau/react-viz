@@ -32,7 +32,6 @@ class App extends React.Component {
   }
 
   clickHandle() {
-    console.log(this);
     this.setState({n: nuts});
   }
 
@@ -45,12 +44,14 @@ class App extends React.Component {
         <div className="container">
           <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
           <button onClick={this.clickHandle}>switch the data up!</button>
+
         </div>
+
       </div>
     );
   }
 }
-// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+
 /*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 // <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 // <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
@@ -58,6 +59,9 @@ class App extends React.Component {
 
 // <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
 
+
+
+// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
 // <div className="container-fluid">
 //   <div className="row">
 //     <div className="col-md-4">

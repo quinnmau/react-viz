@@ -137,7 +137,6 @@
 	  _createClass(App, [{
 	    key: 'clickHandle',
 	    value: function clickHandle() {
-	      console.log(this);
 	      this.setState({ n: nuts });
 	    }
 	  }, {
@@ -171,7 +170,7 @@
 
 	  return App;
 	}(_react2.default.Component);
-	// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+
 	/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
 	// <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
 	// <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
@@ -179,6 +178,8 @@
 
 	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
 
+
+	// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
 	// <div className="container-fluid">
 	//   <div className="row">
 	//     <div className="col-md-4">
@@ -23375,7 +23376,6 @@
 	  var points = d3.range(10).map(function () {
 	    return { name: randID(), x: randomX(), y: randomY() };
 	  });
-	  console.log(points);
 	  return points;
 	};
 
@@ -24042,13 +24042,14 @@
 	  });
 	  props.data.total = total;
 
-	  //arc groups
-	  var arcs = g.selectAll('.arc').data(donut(props.data)).enter().append('g').attr('class', 'arc');
-
 	  //actual arcs
-	  arcs.append('path').attr('d', arc).attr('class', function (d) {
+	  var arcs = gEnter.selectAll('path').data(donut(props.data)).enter().append('path').attr('d', arc).attr('class', function (d) {
 	    return color(d.data[props.indy]);
+	  }).each(function (d) {
+	    this._current = d;
 	  });
+
+	  console.log(arcs);
 
 	  //Enlarge arc size on mouseover
 	  arcs.on('mouseover', function (d) {
@@ -24073,6 +24074,7 @@
 	  });
 	};
 
+	//UPDATE
 	var update = function update(elem, props) {
 	  var margin = { left: 40, bottom: 40, right: 40, top: 40 };
 	  var innerW = props.width - margin.left - margin.right;
@@ -24081,9 +24083,11 @@
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
-	  var donut = d3.layout.pie().sort(null).value(function (d) {
-	    return d[props.dep];
+	  var total = 0;
+	  props.data.forEach(function (d) {
+	    total += d[props.dep];
 	  });
+	  props.data.total = total;
 
 	  var cont = d3.select(elem);
 
@@ -24091,51 +24095,22 @@
 
 	  var g = svg.select('.gEnter');
 
-	  console.log(props.data);
-
-	  var total = 0;
-	  props.data.forEach(function (d) {
-	    total += d[props.dep];
-	  });
-	  props.data.total = total;
-
-	  //arc groups
-	  var arcs = g.selectAll('.arc').data(donut(props.data));
-
-	  arcs.exit().remove();
-
-	  arcs.enter().append('g').attr('class', 'arc');
-
-	  //actual arcs
-	  var realArcs = arcs.selectAll('path').data(donut(props.data));
-
-	  realArcs.exit().remove();
-
-	  realArcs.append('path').transition().duration(1000).attr('d', arc).attr('class', function (d) {
-	    return color(d.data[props.indy]);
+	  var donut = d3.layout.pie().sort(null).value(function (d) {
+	    return d[props.dep];
 	  });
 
-	  //Enlarge arc size on mouseover
-	  arcs.on('mouseover', function (d) {
-	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+	  var paths = g.selectAll('path').data(donut(props.data));
 
-	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
+	  paths.transition().duration(750).attrTween("d", arcTween);
 
-	    var format = d3.format('%');
-
-	    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
-	    g.select('.small-num').text(d.data[props.indy]);
-	  });
-
-	  //make size normal when mouse leaves arc
-	  arcs.on('mouseout', function () {
-	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
-
-	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
-
-	    g.select('.big-num').text('');
-	    g.select('.small-num').text('');
-	  });
+	  var arcTween = function arcTween(a) {
+	    console.log(undefined);
+	    var i = d3.interpolate(undefined._current, a);
+	    undefined._current = i(0);
+	    return function (t) {
+	      return arc(i(t));
+	    };
+	  };
 	};
 
 	exports.create = create;
