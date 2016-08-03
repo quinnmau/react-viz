@@ -24055,7 +24055,7 @@
 	  arcs.on('mouseover', function (d) {
 	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
 
-	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
 
 	    var format = d3.format('%');
 
@@ -24067,7 +24067,7 @@
 	  arcs.on('mouseout', function () {
 	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
-	    var curr = d3.select(this).select('path').transition().duration(500).attr('d', cover);
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
 
 	    g.select('.big-num').text('');
 	    g.select('.small-num').text('');

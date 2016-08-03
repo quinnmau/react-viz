@@ -67,9 +67,8 @@ const create = (elem, props) => {
     const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                             .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
-    const curr = d3.select(this).select('path')
-                    .transition().duration(500)
-                    .attr('d', cover);
+    const curr = d3.select(this).transition().duration(500)
+            .attr('d', cover);
 
     let format = d3.format('%');
 
@@ -82,7 +81,7 @@ const create = (elem, props) => {
     const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                             .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
-    const curr = d3.select(this).select('path')
+    const curr = d3.select(this)
                     .transition().duration(500)
                     .attr('d', cover);
 
