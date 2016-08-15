@@ -58,7 +58,7 @@ class ColumnChart extends React.Component {
     gEnter.append('g').attr('class', 'y axis');
 
     //title
-    gEnter.append('text').attr('class', 'title').text(this.props.title)
+    gEnter.append('text').attr('class', 'title-text').text(this.props.title)
                   .attr('transform', 'translate(0, -25)');
 
     //group scale

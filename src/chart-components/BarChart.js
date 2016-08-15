@@ -55,7 +55,7 @@ class BarChart extends React.Component {
     gEnter.append('g').attr('class', 'y axis');
 
     //add text for title
-    gEnter.append('text').attr('class', 'title').text(globals.title).attr('transform', 'translate(0, -25)');
+    gEnter.append('text').attr('class', 'title-text').text(globals.title).attr('transform', 'translate(0, -25)');
 
     /*---------------set scales --------------------*/
     //group scale

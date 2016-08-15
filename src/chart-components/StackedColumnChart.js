@@ -46,7 +46,7 @@ class StackedColumnChart extends React.Component {
     gEnter.append('g').attr('class', 'y axis');
 
     //text for title
-    gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -25)').text(vars.title);
+    gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -25)').text(vars.title);
 
     /*---------------set scales and format data---------------------------*/
     //x scale

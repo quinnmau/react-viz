@@ -44,7 +44,7 @@ class StackedBarChart extends React.Component {
     gEnter.append('g').attr('class', 'y axis');
 
     //add text for title
-    gEnter.append('text').attr('class', 'title')
+    gEnter.append('text').attr('class', 'title-text')
             .text(vars.title)
             .attr('transform', 'translate(0, -25)');
 
