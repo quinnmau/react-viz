@@ -53,6 +53,9 @@ const create = (elem, props) => {
   });
   props.data.total = total;
 
+  const cover2 = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
+                          .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
+
   //actual arcs
   const arcs = gEnter.selectAll('path').data(donut(props.data))
         .enter().append('path')
@@ -60,10 +63,21 @@ const create = (elem, props) => {
         .attr('class', d => {return color(d.data[props.indy])})
         .each(function(d) {this._current = d});
 
-  console.log(arcs);
+  const first = d3.select('.blue').transition().duration(500)
+                  .attr('d', cover2);
+
+  let format = d3.format('%');
+  console.log(props.data);
+
+
+  gEnter.select('.big-num').text(format(props.data[0][props.dep] / props.data.total));
+  gEnter.select('.small-num').text(props.data[0][props.indy]);
 
   //Enlarge arc size on mouseover
   arcs.on('mouseover', function(d) {
+    const fir = d3.select('.blue').transition().duration(500)
+          .attr('d', arc);
+
     const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                             .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
