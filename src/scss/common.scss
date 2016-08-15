@@ -76,3 +76,16 @@
 .half-brown {
   fill: $half-brown;
 }
+
+.title-text {
+  font-family: "Proxima Nova Light";
+  font-size: 16px;
+  stroke: none;
+  fill: $gridline-text-grey;
+}
+
+.label-text {
+  font-family: "Proxima Nova Light";
+  stroke: none;
+  fill: $gridline-text-grey;
+}

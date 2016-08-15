@@ -31,7 +31,7 @@ const create = (elem, props) => {
   //groups for axes and title
   gEnter.append('g').attr('class', 'x axis');
   gEnter.append('g').attr('class', 'y axis');
-  gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -40)').text(props.title);
+  gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -40)').text(props.title);
 
   /*-------------------set scales---------------------------*/
   const xValues = props.data.map(d => {
