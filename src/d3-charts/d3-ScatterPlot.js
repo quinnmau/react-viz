@@ -39,8 +39,8 @@ const create = (elem, props) => {
   const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.yVal]}), d3.max(props.data, d => {return d[props.yVal]})]);
 
   /*--------------- set axes ------------------*/
-  const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10);
-  const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+  const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
+  const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10).ticks(5);
 
   gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
                       .transition().duration(1000).call(xAxis);
@@ -110,8 +110,8 @@ const update = (elem, props) => {
   const xScale = getXScale(innerW).domain([d3.min(props.data, d => {return d[props.xVal]}), d3.max(props.data, d => {return d[props.xVal]})]);
   const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.yVal]}), d3.max(props.data, d => {return d[props.yVal]})]);
 
-  const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10);
-  const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+  const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
+  const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10).ticks(5);
 
   const gEnter = svg.select('.gEnter');
 
