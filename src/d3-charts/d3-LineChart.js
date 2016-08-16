@@ -4,9 +4,9 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
-  const color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
-  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']).domain(props.yReal);
+  const color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']).domain(props.yReal);
+  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 
   //container
   const cont = d3.select(elem);
@@ -124,9 +124,9 @@ const update = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 75};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
-  const color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
-  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']).domain(props.yReal);
+  const color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']).domain(props.yReal);
+  const color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 
   const cont = d3.select(elem);
 
@@ -200,7 +200,8 @@ const update = (elem, props) => {
         });
 
   paths.transition().duration(1000)
-        .attr('d', d => {return line(d.values)});
+        .attr('d', d => {return line(d.values)})
+        .attr('class', d => {return 'a-path ' + color(d.name)});
 
   const circlesG = g.selectAll('.circle-g').data(deps);
 
@@ -220,7 +221,8 @@ const update = (elem, props) => {
           .attr('cy', innerH);
 
   circles.transition().duration(1000)
-            .attr('cy', d => {return yScale(d.y)});
+            .attr('cy', d => {return yScale(d.y)})
+            .attr('class', d => {return 'connectors ' + color2(d.name)});
 
 }
 
