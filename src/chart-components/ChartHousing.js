@@ -46,7 +46,7 @@ class ChartHousing extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-9">
-            <LineChart check={this.state.checks} data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+            <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
           </div>
           <div className="col-xs-3">
             <LegendComp yVal={this.props.yVal} checkHandle={this._checkHandler} />
@@ -58,4 +58,5 @@ class ChartHousing extends React.Component {
 }
 
 export default ChartHousing;
-// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
+
+// <LineChart check={this.state.checks} data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />

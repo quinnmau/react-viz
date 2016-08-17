@@ -143,7 +143,7 @@ class ColumnChart extends React.Component {
     const margin = {
       left: 40,
       bottom: 40,
-      right: 100,
+      right: 40,
       top: 75
     };
 
@@ -197,19 +197,28 @@ class ColumnChart extends React.Component {
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
 
     //make bars transition out!!!!!!!!!!!!!!!!
-    bars.exit().transition().duration(1000).attr('height', 0).attr('y', innerH).remove();
+    // bars.exit().transition().duration(1000).attr('height', 0).attr('y', innerH).remove();
+    //
+    // bars.enter().append('rect')
+    //     .attr('class', d => {return 'rect ' + color(d.name)})
+    //     .attr('height', 0)
+    //     .attr('y', innerH);
+    //
+    // bars.transition().duration(1000)
+    //   .attr('x', d => {return xScale(d.name)})
+    //   .attr('y', d => {return yScale(d.value)})
+    //   .attr('width', xScale.rangeBand())
+    //   .attr('class', d => {return 'rect ' + color(d.name)})
+    //   .attr('height', d => {return (innerH - yScale(d.value))});
+    bars.exit().remove();
 
     bars.enter().append('rect')
-        .attr('class', d => {return 'rect ' + color(d.name)})
-        .attr('height', 0)
-        .attr('y', innerH);
+          .attr('class', d => {return 'rect ' + color(d.name)})
+          .attr('x', d => {return xScale(d.name)})
+          .attr('y', d => {return yScale(d.value)})
+          .attr('width', xScale.rangeBand())
+          .attr('height', d => {return (innerH - yScale(d.value))});
 
-    bars.transition().duration(1000)
-      .attr('x', d => {return xScale(d.name)})
-      .attr('y', d => {return yScale(d.value)})
-      .attr('width', xScale.rangeBand())
-      .attr('class', d => {return 'rect ' + color(d.name)})
-      .attr('height', d => {return (innerH - yScale(d.value))});
 
       bars.on('mouseover', function(d) {
         bars.attr('class', d => {return 'rect ' + color2(d.name)});
@@ -220,7 +229,7 @@ class ColumnChart extends React.Component {
         bars.attr('class', d => {return 'rect ' + color(d.name)});
       });
 
-      
+
   }
 
   //exit remove
