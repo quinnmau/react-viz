@@ -96,7 +96,8 @@ const create = (elem, props) => {
             arr.push(obj);
           }
           return line(arr);
-        });
+        })
+        .attr('id', d => {return d.name});
 
   paths.transition().duration(1000)
         .attr('d', d => {return line(d.values)});
@@ -139,10 +140,12 @@ const update = (elem, props) => {
   });
   const xScale = getXScale(innerW - 50).domain(d3.extent(xValues, d => {return d}));
 
+
+  //change yreal back to yval
   const yValues = [];
   props.data.forEach(d => {
     for (let i in d) {
-      if (props.yVal.indexOf(i) !== -1) {
+      if (props.yReal.indexOf(i) !== -1) {
         yValues.push(d[i]);
       }
     }
@@ -150,9 +153,11 @@ const update = (elem, props) => {
 
   const yScale = getYScale(innerH).domain([0, d3.max(yValues, d => {return d})]);
 
+
   const xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
   const yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
 
+  //dont update axes
   gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')')
                       .transition().duration(1000)
                       .call(xAxis);
@@ -173,7 +178,8 @@ const update = (elem, props) => {
   //   };
   // });
 
-  const deps = props.yVal.map(name => {
+//change yreal to yval
+  const deps = props.yReal.map(name => {
     return {
       name: name,
       values: props.data.map(a => {
@@ -197,11 +203,21 @@ const update = (elem, props) => {
             arr.push(obj);
           }
           return line(arr);
-        });
-
-  paths.transition().duration(1000)
-        .attr('d', d => {return line(d.values)})
-        .attr('class', d => {return 'a-path ' + color(d.name)});
+        })
+        .attr('id', d => {return d.name});
+  //
+  // paths.transition().duration(1000)
+  //       .attr('d', d => {return line(d.values)})
+  //       .attr('class', d => {return 'a-path ' + color(d.name)})
+  //       .attr('id', d => {return d.name});
+    paths.transition().duration(0)
+            .attr('opacity', d => {
+              if (props.check[d.name]) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
 
   const circlesG = g.selectAll('.circle-g').data(deps);
 
@@ -214,15 +230,30 @@ const update = (elem, props) => {
 
   circles.exit().remove();
 
-  circles.enter().append('circle')
-          .attr('class', d => {return 'connectors ' + color2(d.name)})
-          .attr('r', 4)
-          .attr('cx', d => {return xScale(+d.x) + 25})
-          .attr('cy', innerH);
+  // circles.enter().append('circle')
+  //         .attr('class', d => {return 'connectors ' + color2(d.name)})
+  //         .attr('r', 4)
+  //         .attr('cx', d => {return xScale(+d.x) + 25})
+  //         .attr('cy', innerH);
+  //
+  // circles.transition().duration(1000)
+  //           .attr('cy', d => {return yScale(d.y)})
+  //           .attr('class', d => {return 'connectors ' + color2(d.name)});
 
-  circles.transition().duration(1000)
-            .attr('cy', d => {return yScale(d.y)})
-            .attr('class', d => {return 'connectors ' + color2(d.name)});
+  circles.enter().append('circle')
+            .attr('class', d => {return 'connectors ' + color2(d.name)})
+            .attr('r', 4)
+            .attr('cx', d => {return xScale(+d.x) +25})
+            .attr('cy', d => {return yScale(d.y)});
+
+  circles.transition().duration(0)
+          .attr('opacity', d => {
+            if (props.check[d.name]) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
 
 }
 
