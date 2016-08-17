@@ -9,6 +9,7 @@ class Checkbox extends React.Component {
 
   //handles change to checkbox
   clickHandle() {
+    console.log(this.props.value);
     this.props.checkHandle(this.props.value, !this.state.isChecked);
     this.setState({isChecked: !this.state.isChecked});
   }

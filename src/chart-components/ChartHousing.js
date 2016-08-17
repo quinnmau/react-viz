@@ -5,7 +5,7 @@ import LineChart from './LineChart';
 import ColumnChart from './ColumnChart';
 import LegendComp from './LegendComp';
 
-//takes data, xval, and yval as props
+//takes data, xval, yREal and yval as props
 class ChartHousing extends React.Component {
   constructor(props) {
     super(props);
@@ -27,10 +27,6 @@ class ChartHousing extends React.Component {
 
   //callback function passed down to children components to change state
   _checkHandler(name, val) {
-    let currData = this.state.data;
-    currData.filter(function(obj) {
-
-    })
 
     //filter currY
     let currChecks = this.state.checks;
@@ -46,12 +42,11 @@ class ChartHousing extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-9">
-            <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+            <LineChart check={this.state.checks} data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
           </div>
           <div className="col-xs-3">
             <LegendComp yVal={this.props.yVal} checkHandle={this._checkHandler} />

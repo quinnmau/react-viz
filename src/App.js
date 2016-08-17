@@ -12,6 +12,7 @@ import SparklineChart from './chart-components/SparklineChart';
 import BulletChart from './chart-components/BulletChart';
 import DonutChart from './chart-components/DonutChart';
 import LowerDash from './Dashboard/LowerDash';
+import ChartHousing from './chart-components/ChartHousing';
 
 const scatterData = scatter();
 const columnData = column();
@@ -42,9 +43,7 @@ class App extends React.Component {
           <h1>Data Visualization</h1>
         </div>
         <div className="container">
-          <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
-          <button onClick={this.clickHandle}>switch the data up!</button>
-
+          <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger']} yReal={['usa', 'chn', 'ger']} />
         </div>
 
       </div>
@@ -58,10 +57,12 @@ class App extends React.Component {
 
 
 // <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
-
+// <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+// <button onClick={this.clickHandle}>switch the data up!</button>
 
 
 // <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+
 // <div className="container-fluid">
 //   <div className="row">
 //     <div className="col-md-4">
@@ -97,7 +98,6 @@ class App extends React.Component {
 //     </div>
 //   </div>
 // </div>
-
 
 
 ReactDOM.render(<App />, document.getElementById('app'));
