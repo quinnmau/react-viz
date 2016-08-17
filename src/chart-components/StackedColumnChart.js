@@ -103,31 +103,7 @@ class StackedColumnChart extends React.Component {
             .attr('y', d => {return yScale(d.y1)})
             .attr('height', d => {return yScale(d.y0) - yScale(d.y1)});
 
-    const legend = g.selectAll('.legend').data(vars.yVal);
 
-    legend.enter().append('rect')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 25)
-          .attr('width', 20)
-          .attr('height', 20)
-          .attr('class', d => {return 'legend ' + color(d)})
-          .attr('opacity', 0);
-
-    legend.transition().delay(function(d, i) {return i * 330}).duration(330).attr('opacity', 1);
-
-    const words = g.selectAll('.legend-text').data(vars.yVal);
-
-    words.enter().append('text')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 50)
-          .attr('y', 9)
-          .attr('dy', '.35em')
-          .style('text-anchor', 'start')
-          .text(d => {return d})
-          .attr('class', 'legend-text')
-          .attr('opacity', 0);
-
-    words.transition().delay(function(d, i) {return i * 330}).duration(330).duration(1000).attr('opacity', 1);
   }
 
   //update chart
@@ -201,35 +177,7 @@ class StackedColumnChart extends React.Component {
             .attr('y', d => {return yScale(d.y1)})
             .attr('height', d => {return yScale(d.y0) - yScale(d.y1)});
 
-    const legend = g.selectAll('.legend').data(vars.yVal);
 
-    legend.exit().remove();
-
-    legend.enter().append('rect')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 25)
-          .attr('width', 20)
-          .attr('height', 20)
-          .attr('class', d => {return 'legend ' + color(d)})
-          .attr('opacity', 0);
-
-    legend.transition().delay(function(d, i) {return i * 330}).duration(330).attr('opacity', 1);
-
-    const words = g.selectAll('.legend-text').data(vars.yVal);
-
-    words.exit().remove();
-
-    words.enter().append('text')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 50)
-          .attr('y', 9)
-          .attr('dy', '.35em')
-          .style('text-anchor', 'start')
-          .text(d => {return d})
-          .attr('class', 'legend-text')
-          .attr('opacity', 0);
-
-    words.transition().delay(function(d, i) {return i * 330}).duration(330).duration(1000).attr('opacity', 1);
   }
 
   //remove chart
@@ -244,7 +192,7 @@ class StackedColumnChart extends React.Component {
     return {
       width: this.props.width,
       height: this.props.height,
-      margin: {top: 75, left: 60, bottom: 40, right: 100},
+      margin: {top: 75, left: 60, bottom: 40, right: 40},
       data: this.props.data,
       title: this.props.title,
       yVal: this.props.yVal,

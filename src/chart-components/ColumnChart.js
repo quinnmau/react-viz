@@ -20,7 +20,7 @@ class ColumnChart extends React.Component {
     const margin = {
       left: 40,
       bottom: 40,
-      right: 100,
+      right: 40,
       top: 75
     };
     let showLegend = this.props.legend;
@@ -132,35 +132,7 @@ class ColumnChart extends React.Component {
       bars.attr('class', d => {return 'rect ' + color(d.name)});
     });
 
-    const legend = g.selectAll('.legend').data(xValues);
 
-    legend.enter().append('rect')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 25)
-          .attr('width', 20)
-          .attr('height', 20)
-          .attr('class', d => {return 'legend ' + color(d)})
-          .attr('opacity', 0);
-
-    if (showLegend) {
-      legend.transition().duration(1000).attr('opacity', 1);
-    }
-
-    const words = g.selectAll('.legend-text').data(xValues);
-
-    words.enter().append('text')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 50)
-          .attr('y', 9)
-          .attr('dy', '.35em')
-          .style('text-anchor', 'start')
-          .text(d => {return d})
-          .attr('class', 'legend-text')
-          .attr('opacity', 0);
-
-    if (showLegend) {
-      words.transition().duration(1000).attr('opacity', 1);
-    }
   }
 
   //update
@@ -174,10 +146,7 @@ class ColumnChart extends React.Component {
       right: 100,
       top: 75
     };
-    let showLegend = this.props.legend;
-    if (!showLegend) {
-      margin.right = 40;
-    }
+
     const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
     const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 
@@ -251,49 +220,7 @@ class ColumnChart extends React.Component {
         bars.attr('class', d => {return 'rect ' + color(d.name)});
       });
 
-      const legend = g.selectAll('.legend').data(xValues);
-
-      legend.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-      legend.enter().append('rect')
-            .attr('fill', d => {return color(d)})
-            .attr('opacity', 0)
-            .attr('transform', 'translate(0, 100)');
-
-      legend.transition().duration(1000)
-            .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-            .attr('x', innerW + 25)
-            .attr('width', 20)
-            .attr('height', 20)
-            .attr('opacity', 0)
-            .attr('class', d => {return 'legend ' + color(d)});
-
-      if (showLegend) {
-            legend.attr('opacity', 1);
-      }
-
-      const words = g.selectAll('.legend-text').data(xValues);
-
-      words.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-      words.enter().append('text')
-            .text(d => {return d})
-            .attr('opacity', 0)
-            .attr('transform', 'translate(0, 100)');
-
-      words.transition().duration(1000)
-            .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-            .attr('x', innerW + 50)
-            .attr('y', 9)
-            .attr('dy', '.35em')
-            .style('text-anchor', 'start')
-            .text(d => {return d})
-            .attr('opacity', 0)
-            .attr('class', 'legend-text');
-
-      if (showLegend) {
-            words.attr('opacity', 1);
-      }
+      
   }
 
   //exit remove

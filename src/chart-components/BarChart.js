@@ -14,7 +14,7 @@ class BarChart extends React.Component {
     return {
       width: this.props.width,
       height: this.props.height,
-      margin: {top: 75, left: 60, bottom: 40, right: 100},
+      margin: {top: 75, left: 60, bottom: 40, right: 40},
       data: this.props.data,
       title: this.props.title,
       xVal: this.props.yVal,
@@ -131,31 +131,31 @@ class BarChart extends React.Component {
     bars.transition().duration(1000)
         .attr('width', d => {return xScale(d.value)});
 
-    const legend = g.selectAll('.legend').data(yValues);
-
-    legend.enter().append('rect')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 25)
-          .attr('width', 20)
-          .attr('height', 20)
-          .attr('class', d => {return 'legend ' + color(d)})
-          .attr('opacity', 0);
-
-    legend.transition().duration(1000).attr('opacity', 1);
-
-    const words = g.selectAll('.legend-text').data(yValues);
-
-    words.enter().append('text')
-          .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-          .attr('x', innerW + 50)
-          .attr('y', 9)
-          .attr('dy', '.35em')
-          .style('text-anchor', 'start')
-          .text(d => {return d})
-          .attr('class', 'legend-text')
-          .attr('opacity', 0);
-
-    words.transition().duration(1000).attr('opacity', 1);
+    // const legend = g.selectAll('.legend').data(yValues);
+    //
+    // legend.enter().append('rect')
+    //       .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+    //       .attr('x', innerW + 25)
+    //       .attr('width', 20)
+    //       .attr('height', 20)
+    //       .attr('class', d => {return 'legend ' + color(d)})
+    //       .attr('opacity', 0);
+    //
+    // legend.transition().duration(1000).attr('opacity', 1);
+    //
+    // const words = g.selectAll('.legend-text').data(yValues);
+    //
+    // words.enter().append('text')
+    //       .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+    //       .attr('x', innerW + 50)
+    //       .attr('y', 9)
+    //       .attr('dy', '.35em')
+    //       .style('text-anchor', 'start')
+    //       .text(d => {return d})
+    //       .attr('class', 'legend-text')
+    //       .attr('opacity', 0);
+    //
+    // words.transition().duration(1000).attr('opacity', 1);
   }
 
   //updates chart
@@ -240,42 +240,6 @@ class BarChart extends React.Component {
           .attr('y', d => {return yScale(d.name)})
           .attr('height', yScale.rangeBand());
 
-     const legend = g.selectAll('.legend').data(yValues);
-
-     legend.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-     legend.enter().append('rect')
-           .attr('fill', d => {return color(d)})
-           .attr('opacity', 0)
-           .attr('transform', 'translate(0, 100)');
-
-     legend.transition().duration(1000)
-           .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-           .attr('x', innerW + 25)
-           .attr('width', 20)
-           .attr('height', 20)
-           .attr('class', 'legend')
-           .attr('fill', d => {return color(d)})
-           .attr('opacity', 1);
-
-     const words = g.selectAll('.legend-text').data(yValues);
-
-     words.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-     words.enter().append('text')
-           .text(d => {return d})
-           .attr('opacity', 0)
-           .attr('transform', 'translate(0, 100)');
-
-     words.transition().duration(1000)
-           .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
-           .attr('x', innerW + 50)
-           .attr('y', 9)
-           .attr('dy', '.35em')
-           .style('text-anchor', 'start')
-           .text(d => {return d})
-           .attr('class', 'legend-text')
-           .attr('opacity', 1);
   }
 
   //removes chart
