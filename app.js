@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.l, xVal: 'date', yVal: ['chn', 'usa', 'ger'], yReal: ['chn', 'usa', 'ger'] })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'] })
 	        )
 	      );
 	    }
@@ -21686,8 +21686,8 @@
 	      });
 	      var groupScale = this.getGroupScale(innerH).domain(yGroups);
 
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 
 	      //within group scale
 	      var yValues = globals.xVal.map(function (d) {
@@ -21788,9 +21788,12 @@
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
+	      var _this2 = this;
+
 	      //global variables
 	      var globals = this.globals();
-	      var color = d3.scale.ordinal().range(['#2975E9', '#37dad3', '#fd810e', '#ffcf3z']);
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 	      var innerW = globals.width - globals.margin.left - globals.margin.right;
 	      var innerH = globals.height - globals.margin.top - globals.margin.bottom;
 
@@ -21815,11 +21818,14 @@
 	        });
 	      });
 
-	      var xScale = this.getXScale(innerW).domain([0, d3.max(globals.data, function (d) {
-	        return d3.max(d.groupDetails, function (d) {
-	          return d.value;
+	      var allX = [];
+	      globals.data.forEach(function (d) {
+	        _this2.props.yReal.map(function (name) {
+	          allX.push(d[name]);
 	        });
-	      })]);
+	      });
+
+	      var xScale = this.getXScale(innerW).domain([0, d3.max(allX)]);
 	      //
 	      //update axes
 	      var xAxis = this.getXAxis(xScale).innerTickSize(-innerH);
@@ -21835,7 +21841,7 @@
 
 	      groups.exit().remove();
 
-	      groups.transition().duration(1000).attr('transform', function (d) {
+	      groups.transition().duration(0).attr('transform', function (d) {
 	        return 'translate(0, ' + groupScale(d[globals.yVal]) + ')';
 	      });
 
@@ -21844,28 +21850,30 @@
 	        return d.groupDetails;
 	      });
 
-	      bars.exit().transition().duration(1000).attr('width', 0).remove();
+	      bars.exit().transition().duration(0).attr('width', 0).remove();
 
 	      bars.enter().append('rect').attr('width', 0);
 
-	      bars.on('mouseover', function () {
-	        bars.attr('opacity', 0.5);
-	        d3.select(this).attr('opacity', 1.0);
+	      bars.on('mouseover', function (d) {
+	        bars.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
 	      });
 
-	      bars.on('mouseout', function () {
-	        bars.attr('opacity', 1.0);
+	      bars.on('mouseout', function (d) {
+	        bars.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
 	      });
 
-	      bars.attr('fill', function (d) {
-	        return color(d.name);
-	      });
-
-	      bars.transition().duration(1000).attr('width', function (d) {
+	      bars.transition().duration(0).attr('width', function (d) {
 	        return xScale(d.value);
 	      }).attr('x', 0).attr('y', function (d) {
 	        return yScale(d.name);
-	      }).attr('height', yScale.rangeBand());
+	      }).attr('height', yScale.rangeBand()).attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      });
 	    }
 
 	    //removes chart
@@ -24217,6 +24225,10 @@
 
 	var _ColumnChart2 = _interopRequireDefault(_ColumnChart);
 
+	var _BarChart = __webpack_require__(173);
+
+	var _BarChart2 = _interopRequireDefault(_BarChart);
+
 	var _LegendComp = __webpack_require__(193);
 
 	var _LegendComp2 = _interopRequireDefault(_LegendComp);
@@ -24289,7 +24301,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal })
+	            _react2.default.createElement(_BarChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, yReal: this.props.yReal, width: 500, height: 500, title: 'This is a title' })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -24307,6 +24319,7 @@
 	exports.default = ChartHousing;
 
 	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
+	// <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
 
 /***/ },
 /* 193 */
