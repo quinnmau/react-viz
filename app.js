@@ -22273,7 +22273,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22295,267 +22295,301 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var StackedBarChart = function (_React$Component) {
-	    _inherits(StackedBarChart, _React$Component);
+	  _inherits(StackedBarChart, _React$Component);
 
-	    function StackedBarChart() {
-	        _classCallCheck(this, StackedBarChart);
+	  function StackedBarChart() {
+	    _classCallCheck(this, StackedBarChart);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedBarChart).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedBarChart).apply(this, arguments));
+	  }
+
+	  _createClass(StackedBarChart, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('div', { className: 'vis' });
 	    }
 
-	    _createClass(StackedBarChart, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement('div', { className: 'vis' });
+	    //create
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      var vars = this.vars();
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var normalized = this.props.normalized;
+
+	      //container
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	      //svg to work with
+	      var svg = cont.selectAll('svg').data([vars.data]);
+
+	      //main group to hold actual data points
+	      var gEnter = svg.enter().append('svg')
+	      // .attr('width', vars.width)
+	      // .attr('height', vars.height)
+	      .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+
+	      //positioning and size
+	      gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+
+	      //add groups for axes
+	      gEnter.append('g').attr('class', 'x axis');
+
+	      gEnter.append('g').attr('class', 'y axis');
+
+	      //add text for title
+	      gEnter.append('text').attr('class', 'title-text').text(vars.title).attr('transform', 'translate(0, -25)');
+
+	      /*---------------------set scales, format data---------------------------------------*/
+	      //y scale
+	      var yValues = vars.data.map(function (d) {
+	        return d[vars.yVal];
+	      });
+	      var yScale = this.getYScale(innerH).domain(yValues);
+
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var x0 = 0;
+	        d.segments = vars.xVal.map(function (type) {
+	          return { name: type, x0: x0, x1: x0 += +d[type] };
+	        });
+	        if (normalized) {
+	          d.segments.forEach(function (d) {
+	            d.x0 /= x0;d.x1 /= x0;
+	          });
+	        } else {
+	          d.total = d.segments[d.segments.length - 1].x1;
 	        }
+	      });
+	      if (!normalized) {
+	        vars.data.forEach(function (d) {
+	          var x0 = 0;
+	          d.segReal = _this2.props.yReal.map(function (type) {
+	            return { name: type, x0: x0, x1: x0 += +d[type] };
+	          });
+	          d.total = d.segReal[d.segReal.length - 1].x1;
+	        });
+	      }
 
-	        //create
+	      //y scale
+	      var xScale = this.getXScale(innerH);
+	      if (!normalized) {
+	        xScale.domain([0, d3.max(vars.data, function (d) {
+	          return +d.total;
+	        })]);
+	      }
 
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            var vars = this.vars();
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
-	            var innerW = vars.width - vars.margin.left - vars.margin.right;
-	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	            var normalized = this.props.normalized;
+	      /*------------------------set axes-------------------------------------*/
+	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      if (normalized) {
+	        xAxis.tickFormat(d3.format('.0%'));
+	      }
 
-	            //container
-	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	            //svg to work with
-	            var svg = cont.selectAll('svg').data([vars.data]);
+	      var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
 
-	            //main group to hold actual data points
-	            var gEnter = svg.enter().append('svg')
-	            // .attr('width', vars.width)
-	            // .attr('height', vars.height)
-	            .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+	      /*--------------------------actual data points--------------------------*/
+	      //reselect gEnter
+	      var g = svg.select('.gEnter');
 
-	            //positioning and size
-	            gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+	      var stacks = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
+	      });
 
-	            //add groups for axes
-	            gEnter.append('g').attr('class', 'x axis');
+	      var segs = stacks.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
 
-	            gEnter.append('g').attr('class', 'y axis');
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('y', function (d) {
+	        return yScale(d[vars.yVal]);
+	      }).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	            //add text for title
-	            gEnter.append('text').attr('class', 'title-text').text(vars.title).attr('transform', 'translate(0, -25)');
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
 
-	            /*---------------------set scales, format data---------------------------------------*/
-	            //y scale
-	            var yValues = vars.data.map(function (d) {
-	                return d[vars.yVal];
-	            });
-	            var yScale = this.getYScale(innerH).domain(yValues);
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
 
-	            //x scale
-	            var xScale = this.getXScale(innerW);
+	      segs.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', function (d) {
+	        return xScale(d.x1) - xScale(d.x0);
+	      });
+	    }
 
-	            //format data
-	            vars.data.forEach(function (d) {
-	                var x0 = 0;
-	                d.segments = vars.xVal.map(function (type) {
-	                    return { name: type, x0: x0, x1: x0 += +d[type] };
-	                });
-	                // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
-	                d.total = d.segments[d.segments.length - 1].x1;
-	            });
+	    //update
 
-	            //new shit
-	            xScale.domain([0, d3.max(vars.data, function (d) {
-	                return +d.total;
-	            })]);
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var _this3 = this;
 
-	            /*------------------------set axes-------------------------------------*/
-	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
+	      var vars = this.vars();
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var normalized = this.props.normalized;
 
-	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	      //container
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
 
-	            var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
-	            gEnter.select('.y').transition().duration(1000).call(yAxis);
+	      var svg = cont.selectAll('svg');
 
-	            /*--------------------------actual data points--------------------------*/
-	            //reselect gEnter
-	            var g = svg.select('.gEnter');
+	      var gEnter = svg.select('.gEnter');
 
-	            var stacks = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	                return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
-	            });
+	      var yValues = vars.data.map(function (d) {
+	        return d[vars.yVal];
+	      });
+	      var yScale = this.getYScale(innerH).domain(yValues);
 
-	            var segs = stacks.selectAll('.rect').data(function (d) {
-	                return d.segments;
-	            });
-
-	            segs.enter().append('rect').attr('class', function (d) {
-	                return 'rect ' + color(d.name);
-	            }).attr('y', function (d) {
-	                return yScale(d[vars.yVal]);
-	            }).attr('x', function (d) {
-	                return xScale(d.x0);
-	            }).attr('width', 0).attr('height', yScale.rangeBand());
-
-	            segs.on('mouseover', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color2(d.name);
-	                });
-	                d3.select(this).attr('class', 'rect ' + color(d.name));
-	            });
-
-	            segs.on('mouseout', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color(d.name);
-	                });
-	            });
-
-	            segs.transition().delay(function (d, i) {
-	                return i * 330;
-	            }).duration(330).attr('x', function (d) {
-	                return xScale(d.x0);
-	            }).attr('width', function (d) {
-	                return xScale(d.x1) - xScale(d.x0);
-	            });
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var x0 = 0;
+	        d.segments = vars.xVal.map(function (type) {
+	          return { name: type, x0: x0, x1: x0 += +d[type] };
+	        });
+	        if (normalized) {
+	          d.segments.forEach(function (d) {
+	            d.x0 /= x0;d.x1 /= x0;
+	          });
+	        } else {
+	          d.total = d.segments[d.segments.length - 1].x1;
 	        }
+	      });
+	      if (!normalized) {
+	        vars.data.forEach(function (d) {
+	          var x0 = 0;
+	          d.segReal = _this3.props.yReal.map(function (type) {
+	            return { name: type, x0: x0, x1: x0 += +d[type] };
+	          });
+	          d.total = d.segReal[d.segReal.length - 1].x1;
+	        });
+	      }
 
-	        //update
+	      //y scale
+	      var xScale = this.getXScale(innerH);
+	      if (!normalized) {
+	        xScale.domain([0, d3.max(vars.data, function (d) {
+	          return +d.total;
+	        })]);
+	      }
 
-	    }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	            var vars = this.vars();
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
-	            var innerW = vars.width - vars.margin.left - vars.margin.right;
-	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      if (normalized) {
+	        xAxis.tickFormat(d3.format('.0%'));
+	      }
 
-	            //container
-	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	            var svg = cont.selectAll('svg');
+	      var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
+	      var g = svg.select('.gEnter');
 
-	            var gEnter = svg.select('.gEnter');
+	      var stacks = g.selectAll('.groups').data(vars.data);
 
-	            var yValues = vars.data.map(function (d) {
-	                return d[vars.yVal];
-	            });
-	            var yScale = this.getYScale(innerH).domain(yValues);
+	      stacks.exit().remove();
 
-	            //x scale
-	            var xScale = this.getXScale(innerW);
+	      stacks.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
+	      });
 
-	            // //format data
-	            // vars.data.forEach(d => {
-	            //   let x0 = 0;
-	            //   d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
-	            //   d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
-	            // });
+	      var segs = stacks.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
 
-	            //format data
-	            vars.data.forEach(function (d) {
-	                var x0 = 0;
-	                d.segments = vars.xVal.map(function (type) {
-	                    return { name: type, x0: x0, x1: x0 += +d[type] };
-	                });
-	                // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
-	                d.total = d.segments[d.segments.length - 1].x1;
-	            });
+	      segs.exit().remove();
 
-	            //new shit
-	            xScale.domain([0, d3.max(vars.data, function (d) {
-	                return +d.total;
-	            })]);
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('y', function (d) {
+	        return yScale(d[vars.yVal]);
+	      }).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
 
-	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
 
-	            var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
-	            gEnter.select('.y').transition().duration(1000).call(yAxis);
-	            var g = svg.select('.gEnter');
+	      segs.transition().duration(0).attr('x', function (d) {
+	        return xScale(d.x0);
+	      }).attr('width', function (d) {
+	        return xScale(d.x1) - xScale(d.x0);
+	      }).attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      });
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
 
-	            var stacks = g.selectAll('.groups').data(vars.data);
+	    /*-------------const and scales functions------------------*/
 
-	            stacks.exit().remove();
+	    //returns all props in obj
 
-	            stacks.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	                return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
-	            });
+	  }, {
+	    key: 'vars',
+	    value: function vars() {
+	      return {
+	        width: this.props.width,
+	        height: this.props.height,
+	        margin: { top: 75, left: 60, bottom: 40, right: 40 },
+	        data: this.props.data,
+	        title: this.props.title,
+	        xVal: this.props.yVal,
+	        yVal: this.props.xVal
+	      };
+	    }
 
-	            var segs = stacks.selectAll('.rect').data(function (d) {
-	                return d.segments;
-	            });
+	    //sets x scale with given width passed in for range.
 
-	            segs.exit().remove();
+	  }, {
+	    key: 'getXScale',
+	    value: function getXScale(w) {
+	      return d3.scale.linear().rangeRound([0, w]);
+	    }
 
-	            segs.enter().append('rect').attr('class', function (d) {
-	                return 'rect ' + color(d.name);
-	            }).attr('y', function (d) {
-	                return yScale(d[vars.yVal]);
-	            }).attr('x', function (d) {
-	                return xScale(d.x0);
-	            }).attr('width', 0).attr('height', yScale.rangeBand());
+	    //sets y scale w/ given height passed for range. Set domain later
 
-	            segs.on('mouseover', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color2(d.name);
-	                });
-	                d3.select(this).attr('class', 'rect ' + color(d.name));
-	            });
+	  }, {
+	    key: 'getYScale',
+	    value: function getYScale(h) {
+	      return d3.scale.ordinal().rangeRoundBands([h, 0], 0.4);
+	    }
+	  }]);
 
-	            segs.on('mouseout', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color(d.name);
-	                });
-	            });
-
-	            segs.transition().duration(500).attr('x', function (d) {
-	                return xScale(d.x0);
-	            }).attr('width', function (d) {
-	                return xScale(d.x1) - xScale(d.x0);
-	            });
-	        }
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {}
-
-	        /*-------------const and scales functions------------------*/
-
-	        //returns all props in obj
-
-	    }, {
-	        key: 'vars',
-	        value: function vars() {
-	            return {
-	                width: this.props.width,
-	                height: this.props.height,
-	                margin: { top: 75, left: 60, bottom: 40, right: 40 },
-	                data: this.props.data,
-	                title: this.props.title,
-	                xVal: this.props.yVal,
-	                yVal: this.props.xVal
-	            };
-	        }
-
-	        //sets x scale with given width passed in for range.
-
-	    }, {
-	        key: 'getXScale',
-	        value: function getXScale(w) {
-	            return d3.scale.linear().rangeRound([0, w]);
-	        }
-
-	        //sets y scale w/ given height passed for range. Set domain later
-
-	    }, {
-	        key: 'getYScale',
-	        value: function getYScale(h) {
-	            return d3.scale.ordinal().rangeRoundBands([h, 0], 0.4);
-	        }
-	    }]);
-
-	    return StackedBarChart;
+	  return StackedBarChart;
 	}(_react2.default.Component);
 
 	exports.default = StackedBarChart;
@@ -24379,7 +24413,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: true })
+	            _react2.default.createElement(_StackedBarChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: false })
 	          ),
 	          _react2.default.createElement(
 	            'div',

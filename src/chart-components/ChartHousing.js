@@ -50,7 +50,7 @@ class ChartHousing extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-9">
-            <StackedColumnChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={true}/>
+            <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
           </div>
           <div className="col-xs-3">
             <LegendComp yVal={this.props.yVal} checkHandle={this._checkHandler} />
