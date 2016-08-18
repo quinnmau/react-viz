@@ -21935,7 +21935,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21957,261 +21957,311 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var StackedColumnChart = function (_React$Component) {
-	    _inherits(StackedColumnChart, _React$Component);
+	  _inherits(StackedColumnChart, _React$Component);
 
-	    function StackedColumnChart() {
-	        _classCallCheck(this, StackedColumnChart);
+	  function StackedColumnChart() {
+	    _classCallCheck(this, StackedColumnChart);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedColumnChart).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedColumnChart).apply(this, arguments));
+	  }
+
+	  _createClass(StackedColumnChart, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('div', { className: 'vis' });
 	    }
 
-	    _createClass(StackedColumnChart, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement('div', { className: 'vis' });
+	    //create chart
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      //dimensions of data points area
+	      var vars = this.globals();
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+	      var normalized = this.props.normalized;
+	      console.log(normalized);
+	      //container to hold everything
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	      //svg to work with
+	      var svg = cont.selectAll('svg').data([vars.data]);
+
+	      //group that holds all data points and axes and legend
+	      var gEnter = svg.enter().append('svg')
+	      // .attr('width', vars.width)
+	      // .attr('height', vars.height)
+	      .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+
+	      //position gEnter
+	      gEnter.attr('class', 'gEnter')
+	      // .attr('width', innerW)
+	      // .attr('height', innerH)
+	      .attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+
+	      //group for x axis
+	      gEnter.append('g').attr('class', 'x axis');
+
+	      //group for y axis
+	      gEnter.append('g').attr('class', 'y axis');
+
+	      //text for title
+	      gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -25)').text(vars.title);
+
+	      /*---------------set scales and format data---------------------------*/
+	      //x scale
+	      var xValues = vars.data.map(function (d) {
+	        return d[vars.xVal];
+	      });
+	      var xScale = this.getXScale(innerW).domain(xValues);
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var y0 = 0;
+	        d.segments = vars.yVal.map(function (type) {
+	          return { name: type, y0: y0, y1: y0 += +d[type] };
+	        });
+	        if (normalized) {
+	          d.segments.forEach(function (d) {
+	            d.y0 /= y0;d.y1 /= y0;
+	          });
+	        } else {
+	          d.total = d.segments[d.segments.length - 1].y1;
 	        }
+	      });
+	      if (!normalized) {
+	        vars.data.forEach(function (d) {
+	          var y0 = 0;
+	          d.segReal = _this2.props.yReal.map(function (type) {
+	            return { name: type, y0: y0, y1: y0 += +d[type] };
+	          });
+	          d.total = d.segReal[d.segReal.length - 1].y1;
+	        });
+	      }
 
-	        //create chart
+	      //y scale
+	      var yScale = this.getYScale(innerH);
+	      if (!normalized) {
+	        yScale.domain([0, d3.max(vars.data, function (d) {
+	          return +d.total;
+	        })]);
+	      }
 
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            //dimensions of data points area
-	            var vars = this.globals();
-	            var innerW = vars.width - vars.margin.left - vars.margin.right;
-	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	      /*---------------set axes-----------------------------*/
+	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
 
-	            //container to hold everything
-	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	            //svg to work with
-	            var svg = cont.selectAll('svg').data([vars.data]);
+	      var yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      if (normalized) {
+	        yAxis.tickFormat(d3.format('.0%'));
+	      }
 
-	            //group that holds all data points and axes and legend
-	            var gEnter = svg.enter().append('svg')
-	            // .attr('width', vars.width)
-	            // .attr('height', vars.height)
-	            .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
+	      /*---------------make stacks----------------------------*/
+	      //reselect data points container, gEnter
+	      var g = svg.select('.gEnter');
 
-	            //position gEnter
-	            gEnter.attr('class', 'gEnter')
-	            // .attr('width', innerW)
-	            // .attr('height', innerH)
-	            .attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+	      //'stacks'
+	      var groups = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
+	      });
 
-	            //group for x axis
-	            gEnter.append('g').attr('class', 'x axis');
+	      var segs = groups.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
 
-	            //group for y axis
-	            gEnter.append('g').attr('class', 'y axis');
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('x', function (d) {
+	        return xScale(d[vars.xVal]);
+	      }).attr('y', function (d) {
+	        return yScale(d.y0);
+	      }).attr('width', xScale.rangeBand()).attr('height', 0);
 
-	            //text for title
-	            gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -25)').text(vars.title);
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
 
-	            /*---------------set scales and format data---------------------------*/
-	            //x scale
-	            var xValues = vars.data.map(function (d) {
-	                return d[vars.xVal];
-	            });
-	            var xScale = this.getXScale(innerW).domain(xValues);
-	            //format data
-	            vars.data.forEach(function (d) {
-	                var y0 = 0;
-	                d.segments = vars.yVal.map(function (type) {
-	                    return { name: type, y0: y0, y1: y0 += +d[type] };
-	                });
-	                d.segments.forEach(function (d) {
-	                    d.y0 /= y0;d.y1 /= y0;
-	                });
-	            });
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
 
-	            //y scale
-	            var yScale = this.getYScale(innerH);
+	      segs.transition().delay(function (d, i) {
+	        return i * 330;
+	      }).duration(330).attr('y', function (d) {
+	        return yScale(d.y1);
+	      }).attr('height', function (d) {
+	        return yScale(d.y0) - yScale(d.y1);
+	      });
+	    }
 
-	            /*---------------set axes-----------------------------*/
-	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+	    //update chart
 
-	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var _this3 = this;
 
-	            var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      var vars = this.globals();
+	      var innerW = vars.width - vars.margin.left - vars.margin.right;
+	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+	      var normalized = this.props.normalized;
+	      //container to hold everything
+	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
 
-	            gEnter.select('.y').transition().duration(1000).call(yAxis);
-	            /*---------------make stacks----------------------------*/
-	            //reselect data points container, gEnter
-	            var g = svg.select('.gEnter');
+	      var svg = cont.selectAll('svg');
 
-	            //'stacks'
-	            var groups = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	                return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
-	            });
+	      var gEnter = svg.select('.gEnter');
 
-	            var segs = groups.selectAll('.rect').data(function (d) {
-	                return d.segments;
-	            });
+	      var xValues = vars.data.map(function (d) {
+	        return d[vars.xVal];
+	      });
+	      var xScale = this.getXScale(innerW).domain(xValues);
 
-	            segs.enter().append('rect').attr('class', function (d) {
-	                return 'rect ' + color(d.name);
-	            }).attr('x', function (d) {
-	                return xScale(d[vars.xVal]);
-	            }).attr('y', function (d) {
-	                return yScale(d.y0);
-	            }).attr('width', xScale.rangeBand()).attr('height', 0);
-
-	            segs.on('mouseover', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color2(d.name);
-	                });
-	                d3.select(this).attr('class', 'rect ' + color(d.name));
-	            });
-
-	            segs.on('mouseout', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color(d.name);
-	                });
-	            });
-
-	            segs.transition().delay(function (d, i) {
-	                return i * 330;
-	            }).duration(330).attr('y', function (d) {
-	                return yScale(d.y1);
-	            }).attr('height', function (d) {
-	                return yScale(d.y0) - yScale(d.y1);
-	            });
+	      //format data
+	      vars.data.forEach(function (d) {
+	        var y0 = 0;
+	        d.segments = vars.yVal.map(function (type) {
+	          return { name: type, y0: y0, y1: y0 += +d[type] };
+	        });
+	        if (normalized) {
+	          d.segments.forEach(function (d) {
+	            d.y0 /= y0;d.y1 /= y0;
+	          });
+	        } else {
+	          d.total = d.segments[d.segments.length - 1].y1;
 	        }
+	      });
+	      if (!normalized) {
+	        vars.data.forEach(function (d) {
+	          var y0 = 0;
+	          d.segReal = _this3.props.yReal.map(function (type) {
+	            return { name: type, y0: y0, y1: y0 += +d[type] };
+	          });
+	          d.total = d.segReal[d.segReal.length - 1].y1;
+	        });
+	      }
 
-	        //update chart
+	      //y scale
+	      var yScale = this.getYScale(innerH);
+	      if (!normalized) {
+	        yScale.domain([0, d3.max(vars.data, function (d) {
+	          return +d.total;
+	        })]);
+	      }
 
-	    }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	            var vars = this.globals();
-	            var innerW = vars.width - vars.margin.left - vars.margin.right;
-	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
 
-	            //container to hold everything
-	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	            var svg = cont.selectAll('svg');
+	      var yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      if (normalized) {
+	        yAxis.tickFormat(d3.format('.0%'));
+	      }
 
-	            var gEnter = svg.select('.gEnter');
+	      gEnter.select('.y').transition().duration(1000).call(yAxis);
 
-	            var xValues = vars.data.map(function (d) {
-	                return d[vars.xVal];
-	            });
-	            var xScale = this.getXScale(innerW).domain(xValues);
-	            //format data
-	            vars.data.forEach(function (d) {
-	                var y0 = 0;
-	                d.segments = vars.yVal.map(function (type) {
-	                    return { name: type, y0: y0, y1: y0 += +d[type] };
-	                });
-	                d.segments.forEach(function (d) {
-	                    d.y0 /= y0;d.y1 /= y0;
-	                });
-	            });
+	      var g = svg.select('.gEnter');
 
-	            //y scale
-	            var yScale = this.getYScale(innerH);
+	      //'stacks'
+	      var groups = g.selectAll('.groups').data(vars.data);
 
-	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+	      groups.exit().remove();
 
-	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	      groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
+	      });
 
-	            var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+	      var segs = groups.selectAll('.rect').data(function (d) {
+	        return d.segments;
+	      });
 
-	            gEnter.select('.y').transition().duration(1000).call(yAxis);
+	      segs.exit().remove();
 
-	            var g = svg.select('.gEnter');
+	      segs.enter().append('rect').attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      }).attr('x', function (d) {
+	        return xScale(d[vars.xVal]);
+	      }).attr('y', function (d) {
+	        return yScale(d.y0);
+	      }).attr('width', xScale.rangeBand()).attr('height', 0);
 
-	            //'stacks'
-	            var groups = g.selectAll('.groups').data(vars.data);
+	      segs.on('mouseover', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color2(d.name);
+	        });
+	        d3.select(this).attr('class', 'rect ' + color(d.name));
+	      });
 
-	            groups.exit().remove();
+	      segs.on('mouseout', function (d) {
+	        segs.attr('class', function (d) {
+	          return 'rect ' + color(d.name);
+	        });
+	      });
 
-	            groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	                return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
-	            });
+	      segs.transition().duration(0).attr('y', function (d) {
+	        return yScale(d.y1);
+	      }).attr('height', function (d) {
+	        return yScale(d.y0) - yScale(d.y1);
+	      }).attr('class', function (d) {
+	        return 'rect ' + color(d.name);
+	      });
+	    }
 
-	            var segs = groups.selectAll('.rect').data(function (d) {
-	                return d.segments;
-	            });
+	    //remove chart
 
-	            segs.exit().remove();
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
 
-	            segs.enter().append('rect').attr('class', function (d) {
-	                return 'rect ' + color(d.name);
-	            }).attr('x', function (d) {
-	                return xScale(d[vars.xVal]);
-	            }).attr('y', function (d) {
-	                return yScale(d.y0);
-	            }).attr('width', xScale.rangeBand()).attr('height', 0);
+	    /*--------------scales, axes, props functions--------------*/
 
-	            segs.on('mouseover', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color2(d.name);
-	                });
-	                d3.select(this).attr('class', 'rect ' + color(d.name));
-	            });
+	    //returns all props in an obj
 
-	            segs.on('mouseout', function (d) {
-	                segs.attr('class', function (d) {
-	                    return 'rect ' + color(d.name);
-	                });
-	            });
+	  }, {
+	    key: 'globals',
+	    value: function globals() {
+	      return {
+	        width: this.props.width,
+	        height: this.props.height,
+	        margin: { top: 75, left: 60, bottom: 40, right: 40 },
+	        data: this.props.data,
+	        title: this.props.title,
+	        yVal: this.props.yVal,
+	        xVal: this.props.xVal
+	      };
+	    }
 
-	            segs.transition().duration(500).attr('y', function (d) {
-	                return yScale(d.y1);
-	            }).attr('height', function (d) {
-	                return yScale(d.y0) - yScale(d.y1);
-	            });
-	        }
+	    //returns x scale without domain-- set that later
 
-	        //remove chart
+	  }, {
+	    key: 'getXScale',
+	    value: function getXScale(w) {
+	      return d3.scale.ordinal().rangeRoundBands([0, w], 0.4);
+	    }
 
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {}
+	    //returns y scale without domain-- set that later
 
-	        /*--------------scales, axes, props functions--------------*/
+	  }, {
+	    key: 'getYScale',
+	    value: function getYScale(h) {
+	      return d3.scale.linear().rangeRound([h, 0]);
+	    }
+	  }]);
 
-	        //returns all props in an obj
-
-	    }, {
-	        key: 'globals',
-	        value: function globals() {
-	            return {
-	                width: this.props.width,
-	                height: this.props.height,
-	                margin: { top: 75, left: 60, bottom: 40, right: 40 },
-	                data: this.props.data,
-	                title: this.props.title,
-	                yVal: this.props.yVal,
-	                xVal: this.props.xVal
-	            };
-	        }
-
-	        //returns x scale without domain-- set that later
-
-	    }, {
-	        key: 'getXScale',
-	        value: function getXScale(w) {
-	            return d3.scale.ordinal().rangeRoundBands([0, w], 0.4);
-	        }
-
-	        //returns y scale without domain-- set that later
-
-	    }, {
-	        key: 'getYScale',
-	        value: function getYScale(h) {
-	            return d3.scale.linear().rangeRound([h, 0]);
-	        }
-	    }]);
-
-	    return StackedColumnChart;
+	  return StackedColumnChart;
 	}(_react2.default.Component);
 
 	exports.default = StackedColumnChart;
@@ -22265,10 +22315,11 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var vars = this.vars();
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 	            var innerW = vars.width - vars.margin.left - vars.margin.right;
 	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	            var normalized = this.props.normalized;
 
 	            //container
 	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
@@ -22309,10 +22360,14 @@
 	                d.segments = vars.xVal.map(function (type) {
 	                    return { name: type, x0: x0, x1: x0 += +d[type] };
 	                });
-	                d.segments.forEach(function (d) {
-	                    d.x0 /= x0;d.x1 /= x0;
-	                });
+	                // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+	                d.total = d.segments[d.segments.length - 1].x1;
 	            });
+
+	            //new shit
+	            xScale.domain([0, d3.max(vars.data, function (d) {
+	                return +d.total;
+	            })]);
 
 	            /*------------------------set axes-------------------------------------*/
 	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
@@ -22370,8 +22425,8 @@
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate() {
 	            var vars = this.vars();
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
 	            var innerW = vars.width - vars.margin.left - vars.margin.right;
 	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
@@ -22390,16 +22445,27 @@
 	            //x scale
 	            var xScale = this.getXScale(innerW);
 
+	            // //format data
+	            // vars.data.forEach(d => {
+	            //   let x0 = 0;
+	            //   d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
+	            //   d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+	            // });
+
 	            //format data
 	            vars.data.forEach(function (d) {
 	                var x0 = 0;
 	                d.segments = vars.xVal.map(function (type) {
 	                    return { name: type, x0: x0, x1: x0 += +d[type] };
 	                });
-	                d.segments.forEach(function (d) {
-	                    d.x0 /= x0;d.x1 /= x0;
-	                });
+	                // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+	                d.total = d.segments[d.segments.length - 1].x1;
 	            });
+
+	            //new shit
+	            xScale.domain([0, d3.max(vars.data, function (d) {
+	                return +d.total;
+	            })]);
 
 	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
 
@@ -24229,6 +24295,18 @@
 
 	var _BarChart2 = _interopRequireDefault(_BarChart);
 
+	var _DonutChart = __webpack_require__(186);
+
+	var _DonutChart2 = _interopRequireDefault(_DonutChart);
+
+	var _StackedBarChart = __webpack_require__(175);
+
+	var _StackedBarChart2 = _interopRequireDefault(_StackedBarChart);
+
+	var _StackedColumnChart = __webpack_require__(174);
+
+	var _StackedColumnChart2 = _interopRequireDefault(_StackedColumnChart);
+
 	var _LegendComp = __webpack_require__(193);
 
 	var _LegendComp2 = _interopRequireDefault(_LegendComp);
@@ -24301,7 +24379,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_BarChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, yReal: this.props.yReal, width: 500, height: 500, title: 'This is a title' })
+	            _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: true })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -24320,6 +24398,8 @@
 
 	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 	// <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+
+	// <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
 
 /***/ },
 /* 193 */

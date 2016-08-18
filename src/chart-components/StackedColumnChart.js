@@ -16,9 +16,10 @@ class StackedColumnChart extends React.Component {
     const vars = this.globals();
     const innerW = vars.width - vars.margin.left - vars.margin.right;
     const innerH = vars.height - vars.margin.top - vars.margin.bottom;
-    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+    const normalized = this.props.normalized;
+    console.log(normalized);
     //container to hold everything
     const cont = d3.select(ReactDOM.findDOMNode(this));
 
@@ -56,11 +57,25 @@ class StackedColumnChart extends React.Component {
     vars.data.forEach(d => {
       let y0 = 0;
       d.segments = vars.yVal.map(type => {return {name: type, y0: y0, y1: y0 += +d[type]};});
-      d.segments.forEach(d => {d.y0 /= y0; d.y1 /= y0;});
+      if (normalized) {
+        d.segments.forEach(d => {d.y0 /= y0; d.y1 /= y0;});
+      } else {
+        d.total = d.segments[d.segments.length - 1].y1;
+      }
     });
+    if (!normalized) {
+      vars.data.forEach(d => {
+        let y0 = 0;
+        d.segReal = this.props.yReal.map(type => {return {name: type, y0: y0, y1: y0 += +d[type]};});
+        d.total = d.segReal[d.segReal.length - 1].y1;
+      });
+    }
 
     //y scale
     const yScale = this.getYScale(innerH);
+    if (!normalized) {
+      yScale.domain([0, d3.max(vars.data, d => {return +d.total})]);
+    }
 
     /*---------------set axes-----------------------------*/
     const xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
@@ -68,7 +83,10 @@ class StackedColumnChart extends React.Component {
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
             .transition().duration(1000).call(xAxis);
 
-    const yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+    const yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+    if (normalized) {
+      yAxis.tickFormat(d3.format('.0%'));
+    }
 
     gEnter.select('.y').transition().duration(1000).call(yAxis);
     /*---------------make stacks----------------------------*/
@@ -111,9 +129,9 @@ class StackedColumnChart extends React.Component {
     const vars = this.globals();
     const innerW = vars.width - vars.margin.left - vars.margin.right;
     const innerH = vars.height - vars.margin.top - vars.margin.bottom;
-    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+    const normalized = this.props.normalized;
     //container to hold everything
     const cont = d3.select(ReactDOM.findDOMNode(this));
 
@@ -123,23 +141,42 @@ class StackedColumnChart extends React.Component {
 
     const xValues = vars.data.map(d => {return d[vars.xVal]});
     const xScale = this.getXScale(innerW).domain(xValues);
+
+
     //format data
     vars.data.forEach(d => {
       let y0 = 0;
       d.segments = vars.yVal.map(type => {return {name: type, y0: y0, y1: y0 += +d[type]};});
-      d.segments.forEach(d => {d.y0 /= y0; d.y1 /= y0;});
+      if (normalized) {
+        d.segments.forEach(d => {d.y0 /= y0; d.y1 /= y0;});
+      } else {
+        d.total = d.segments[d.segments.length - 1].y1;
+      }
     });
+    if (!normalized) {
+      vars.data.forEach(d => {
+        let y0 = 0;
+        d.segReal = this.props.yReal.map(type => {return {name: type, y0: y0, y1: y0 += +d[type]};});
+        d.total = d.segReal[d.segReal.length - 1].y1;
+      });
+    }
 
     //y scale
     const yScale = this.getYScale(innerH);
+    if (!normalized) {
+      yScale.domain([0, d3.max(vars.data, d => {return +d.total})]);
+    }
 
     const xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
 
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
             .transition().duration(1000).call(xAxis);
 
-    const yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
-
+    const yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+    if (normalized) {
+      yAxis.tickFormat(d3.format('.0%'));
+    }
+    
     gEnter.select('.y').transition().duration(1000).call(yAxis);
 
     const g = svg.select('.gEnter');
@@ -173,9 +210,10 @@ class StackedColumnChart extends React.Component {
       segs.attr('class', d => {return 'rect ' + color(d.name)});
     });
 
-    segs.transition().duration(500)
+    segs.transition().duration(0)
             .attr('y', d => {return yScale(d.y1)})
-            .attr('height', d => {return yScale(d.y0) - yScale(d.y1)});
+            .attr('height', d => {return yScale(d.y0) - yScale(d.y1)})
+            .attr('class', d => {return 'rect ' + color(d.name)});
 
 
   }

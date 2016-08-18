@@ -13,10 +13,11 @@ class StackedBarChart extends React.Component {
   //create
   componentDidMount() {
     const vars = this.vars();
-    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
     const innerW = vars.width - vars.margin.left - vars.margin.right;
     const innerH = vars.height - vars.margin.top - vars.margin.bottom;
+    const normalized = this.props.normalized;
 
     //container
     const cont = d3.select(ReactDOM.findDOMNode(this));
@@ -60,8 +61,12 @@ class StackedBarChart extends React.Component {
     vars.data.forEach(d => {
       let x0 = 0;
       d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
-      d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+      // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+      d.total = d.segments[d.segments.length - 1].x1;
     });
+
+    //new shit
+    xScale.domain([0, d3.max(vars.data, d => {return +d.total})]);
 
     /*------------------------set axes-------------------------------------*/
     const xAxis = d3.svg.axis()
@@ -127,8 +132,8 @@ class StackedBarChart extends React.Component {
   //update
   componentDidUpdate() {
     const vars = this.vars();
-    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+    const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+    const color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
     const innerW = vars.width - vars.margin.left - vars.margin.right;
     const innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
@@ -145,12 +150,23 @@ class StackedBarChart extends React.Component {
     //x scale
     const xScale = this.getXScale(innerW);
 
+    // //format data
+    // vars.data.forEach(d => {
+    //   let x0 = 0;
+    //   d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
+    //   d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+    // });
+
     //format data
     vars.data.forEach(d => {
       let x0 = 0;
       d.segments = vars.xVal.map(type => {return {name: type, x0: x0, x1: x0 += +d[type]}; });
-      d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+      // d.segments.forEach(d => {d.x0 /= x0; d.x1 /= x0;});
+      d.total = d.segments[d.segments.length - 1].x1;
     });
+
+    //new shit
+    xScale.domain([0, d3.max(vars.data, d => {return +d.total})]);
 
     const xAxis = d3.svg.axis()
                     .orient('bottom')

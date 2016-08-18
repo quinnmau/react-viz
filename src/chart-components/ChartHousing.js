@@ -4,6 +4,9 @@ import React from 'react';
 import LineChart from './LineChart';
 import ColumnChart from './ColumnChart';
 import BarChart from './BarChart';
+import DonutChart from './DonutChart';
+import StackedBarChart from './StackedBarChart';
+import StackedColumnChart from './StackedColumnChart';
 import LegendComp from './LegendComp';
 
 //takes data, xval, yREal and yval as props
@@ -47,7 +50,7 @@ class ChartHousing extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-9">
-            <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
+            <StackedColumnChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={true}/>
           </div>
           <div className="col-xs-3">
             <LegendComp yVal={this.props.yVal} checkHandle={this._checkHandler} />
@@ -62,3 +65,5 @@ export default ChartHousing;
 
 // <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 // <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+
+// <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
