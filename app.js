@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'] })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.l, xVal: 'date', yVal: ['chn', 'usa', 'ger'], yReal: ['chn', 'usa', 'ger'] })
 	        )
 	      );
 	    }
@@ -22655,8 +22655,6 @@
 	      arr.push(obj);
 	    }
 	    return line(arr);
-	  }).attr('id', function (d) {
-	    return d.name;
 	  });
 
 	  paths.transition().duration(1000).attr('d', function (d) {
@@ -22704,24 +22702,31 @@
 	    return d;
 	  }));
 
-	  //change yreal back to yval
 	  var yValues = [];
 	  props.data.forEach(function (d) {
 	    for (var i in d) {
-	      if (props.yReal.indexOf(i) !== -1) {
+	      if (props.yVal.indexOf(i) !== -1) {
 	        yValues.push(d[i]);
 	      }
 	    }
 	  });
 
-	  var yScale = getYScale(innerH).domain([0, d3.max(yValues, function (d) {
+	  var allY = [];
+	  props.data.forEach(function (d) {
+	    for (var i in d) {
+	      if (props.yReal.indexOf(i) !== -1) {
+	        allY.push(d[i]);
+	      }
+	    }
+	  });
+
+	  var yScale = getYScale(innerH).domain([0, d3.max(allY, function (d) {
 	    return d;
 	  })]);
 
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
 	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
 
-	  //dont update axes
 	  gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
 	  gEnter.select('.y').transition().duration(1000).call(yAxis);
@@ -22743,8 +22748,7 @@
 	  //   };
 	  // });
 
-	  //change yreal to yval
-	  var deps = props.yReal.map(function (name) {
+	  var deps = props.yVal.map(function (name) {
 	    return {
 	      name: name,
 	      values: props.data.map(function (a) {
@@ -22768,20 +22772,12 @@
 	      arr.push(obj);
 	    }
 	    return line(arr);
-	  }).attr('id', function (d) {
-	    return d.name;
 	  });
-	  //
-	  // paths.transition().duration(1000)
-	  //       .attr('d', d => {return line(d.values)})
-	  //       .attr('class', d => {return 'a-path ' + color(d.name)})
-	  //       .attr('id', d => {return d.name});
-	  paths.transition().duration(0).attr('opacity', function (d) {
-	    if (props.check[d.name]) {
-	      return 1;
-	    } else {
-	      return 0;
-	    }
+
+	  paths.transition().duration(0).attr('d', function (d) {
+	    return line(d.values);
+	  }).attr('class', function (d) {
+	    return 'a-path ' + color(d.name);
 	  });
 
 	  var circlesG = g.selectAll('.circle-g').data(deps);
@@ -22796,30 +22792,16 @@
 
 	  circles.exit().remove();
 
-	  // circles.enter().append('circle')
-	  //         .attr('class', d => {return 'connectors ' + color2(d.name)})
-	  //         .attr('r', 4)
-	  //         .attr('cx', d => {return xScale(+d.x) + 25})
-	  //         .attr('cy', innerH);
-	  //
-	  // circles.transition().duration(1000)
-	  //           .attr('cy', d => {return yScale(d.y)})
-	  //           .attr('class', d => {return 'connectors ' + color2(d.name)});
-
 	  circles.enter().append('circle').attr('class', function (d) {
 	    return 'connectors ' + color2(d.name);
 	  }).attr('r', 4).attr('cx', function (d) {
 	    return xScale(+d.x) + 25;
-	  }).attr('cy', function (d) {
-	    return yScale(d.y);
-	  });
+	  }).attr('cy', innerH);
 
-	  circles.transition().duration(0).attr('opacity', function (d) {
-	    if (props.check[d.name]) {
-	      return 1;
-	    } else {
-	      return 0;
-	    }
+	  circles.transition().duration(0).attr('cy', function (d) {
+	    return yScale(d.y);
+	  }).attr('class', function (d) {
+	    return 'connectors ' + color2(d.name);
 	  });
 	};
 
@@ -24307,7 +24289,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_ColumnChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, width: 500, height: 500, title: 'This is a title', yReal: this.props.yVal })
+	            _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -24324,7 +24306,7 @@
 
 	exports.default = ChartHousing;
 
-	// <LineChart check={this.state.checks} data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 
 /***/ },
 /* 193 */
