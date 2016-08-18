@@ -102,6 +102,10 @@
 
 	var _LowerDash2 = _interopRequireDefault(_LowerDash);
 
+	var _ChartHousing = __webpack_require__(192);
+
+	var _ChartHousing2 = _interopRequireDefault(_ChartHousing);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -157,12 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_DonutChart2.default, { data: this.state.n, indy: 'name', dep: 'population', width: 250, height: 250, title: 'Sales' }),
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.clickHandle },
-	            'switch the data up!'
-	          )
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'] })
 	        )
 	      );
 	    }
@@ -177,9 +176,12 @@
 
 
 	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
+	// <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+	// <button onClick={this.clickHandle}>switch the data up!</button>
 
 
 	// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
+
 	// <div className="container-fluid">
 	//   <div className="row">
 	//     <div className="col-md-4">
@@ -21297,7 +21299,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -21321,324 +21323,269 @@
 	// import d3 from 'd3';
 
 	var ColumnChart = function (_React$Component) {
-	  _inherits(ColumnChart, _React$Component);
+	    _inherits(ColumnChart, _React$Component);
 
-	  function ColumnChart() {
-	    _classCallCheck(this, ColumnChart);
+	    function ColumnChart() {
+	        _classCallCheck(this, ColumnChart);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ColumnChart).apply(this, arguments));
-	  }
-
-	  _createClass(ColumnChart, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'vis' });
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ColumnChart).apply(this, arguments));
 	    }
 
-	    //enter
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      //component globals
-	      var data = this.props.data;
-	      var width = this.props.width;
-	      var height = this.props.height;
-	      var margin = {
-	        left: 40,
-	        bottom: 40,
-	        right: 100,
-	        top: 75
-	      };
-	      var showLegend = this.props.legend;
-	      if (!showLegend) {
-	        margin.right = 40;
-	      }
-	      var innerW = width - margin.left - margin.right;
-	      var innerH = height - margin.top - margin.bottom;
-
-	      //element in which to put the chart(s)
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
-
-	      //svg to work with
-	      var svg = cont.selectAll('svg').data([data]);
-
-	      //group for data and axes
-	      var gEnter = svg.enter().append('svg')
-	      // .attr('width', width)
-	      // .attr('height', height)
-	      .attr('viewBox', '0 0 ' + width + ' ' + height).attr("preserveAspectRatio", "xMinYMin meet").attr('class', 'canvas').append('g');
-
-	      //position group
-	      gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
-
-	      //group for x axis
-	      gEnter.append('g').attr('class', 'x axis');
-
-	      //group for y axis
-	      gEnter.append('g').attr('class', 'y axis');
-
-	      //title
-	      gEnter.append('text').attr('class', 'title').text(this.props.title).attr('transform', 'translate(0, -25)');
-
-	      //group scale
-	      /* format x values to start with capitals */
-	      var xGroups = data.map(function (d) {
-	        return d[_this2.props.xVal];
-	      });
-	      var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.4).domain(xGroups);
-
-	      //within group scale
-	      var xValues = this.props.yVal.map(function (d) {
-	        return d;
-	      });
-	      var xScale = d3.scale.ordinal().domain(xValues).rangeRoundBands([0, groupScale.rangeBand()]);
-
-	      //format data to make groups of bars
-	      data.forEach(function (d) {
-	        d.groupDetails = xValues.map(function (name) {
-	          return { name: name, value: +d[name] };
-	        });
-	      });
-
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
-
-	      //y scale
-	      var yScale = d3.scale.linear().domain([0, d3.max(data, function (d) {
-	        return d3.max(d.groupDetails, function (d) {
-	          return d.value;
-	        });
-	      })]).range([innerH, 0]);
-
-	      //set axes
-	      var xAxis = d3.svg.axis().orient('bottom').scale(groupScale).tickPadding(10);
-	      var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).ticks(5).tickPadding(10);
-
-	      //call axes
-	      svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')').transition().duration(1000).call(xAxis);
-
-	      svg.select('.y').transition().duration(1000).call(yAxis);
-
-	      var g = svg.select('.gEnter');
-
-	      var groups = g.selectAll('.groups').data(data);
-
-	      groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	        return 'translate(' + groupScale(d[_this2.props.xVal]) + ', 0)';
-	      });
-
-	      var bars = groups.selectAll('.rect').data(function (d) {
-	        return d.groupDetails;
-	      });
-
-	      bars.enter().append('rect').attr('x', function (d) {
-	        return xScale(d.name);
-	      }).attr('y', innerH).attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('width', xScale.rangeBand()).attr('height', 0);
-
-	      // bars.attr('fill', d => {return color(d.name)});
-
-	      bars.exit().remove();
-
-	      bars.transition().duration(1000).attr('y', function (d) {
-	        return yScale(d.value);
-	      }).attr('height', function (d) {
-	        return innerH - yScale(d.value);
-	      });
-
-	      bars.on('mouseover', function (d) {
-	        bars.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
-
-	      bars.on('mouseout', function (d) {
-	        bars.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
-
-	      var legend = g.selectAll('.legend').data(xValues);
-
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
-
-	      if (showLegend) {
-	        legend.transition().duration(1000).attr('opacity', 1);
-	      }
-
-	      var words = g.selectAll('.legend-text').data(xValues);
-
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
-
-	      if (showLegend) {
-	        words.transition().duration(1000).attr('opacity', 1);
-	      }
-	    }
-
-	    //update
-
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      var _this3 = this;
-
-	      var data = this.props.data;
-	      var width = this.props.width;
-	      var height = this.props.height;
-	      var margin = {
-	        left: 40,
-	        bottom: 40,
-	        right: 100,
-	        top: 75
-	      };
-	      var showLegend = this.props.legend;
-	      if (!showLegend) {
-	        margin.right = 40;
-	      }
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
-
-	      var innerW = width - margin.left - margin.right;
-	      var innerH = height - margin.top - margin.bottom;
-
-	      //element in which to put the chart(s)
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
-
-	      //svg to work with
-	      var svg = cont.selectAll('svg');
-
-	      //update scales
-	      var xGroups = data.map(function (d) {
-	        return d[_this3.props.xVal];
-	      });
-	      var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.2).domain(xGroups);
-
-	      var xValues = this.props.yVal.map(function (d) {
-	        return d;
-	      });
-	      var xScale = d3.scale.ordinal().domain(xValues).rangeRoundBands([0, groupScale.rangeBand()]);
-
-	      data.forEach(function (d) {
-	        d.groupDetails = xValues.map(function (name) {
-	          return { name: name, value: +d[name] };
-	        });
-	      });
-
-	      var yScale = d3.scale.linear().domain([0, d3.max(data, function (d) {
-	        return d3.max(d.groupDetails, function (d) {
-	          return d.value;
-	        });
-	      })]).range([innerH, 0]);
-
-	      //update axes
-	      var xAxis = d3.svg.axis().orient('bottom').scale(groupScale);
-	      var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW);
-
-	      svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')').transition().duration(1000).call(xAxis);
-
-	      svg.select('.y').transition().duration(1000).call(yAxis);
-
-	      //update bars
-	      var g = svg.select('.gEnter');
-
-	      var groups = g.selectAll('.groups').data(data);
-
-	      groups.transition().duration(1000).attr('transform', function (d) {
-	        return 'translate(' + groupScale(d[_this3.props.xVal]) + ', 0)';
-	      });
-
-	      var bars = groups.selectAll('.rect').data(function (d) {
-	        return d.groupDetails;
-	      });
-
-	      //make bars transition out!!!!!!!!!!!!!!!!
-	      bars.exit().transition().duration(1000).attr('height', 0).attr('y', innerH).remove();
-
-	      bars.enter().append('rect').attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('height', 0).attr('y', innerH);
-
-	      bars.transition().duration(1000).attr('x', function (d) {
-	        return xScale(d.name);
-	      }).attr('y', function (d) {
-	        return yScale(d.value);
-	      }).attr('width', xScale.rangeBand()).attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('height', function (d) {
-	        return innerH - yScale(d.value);
-	      });
-
-	      bars.on('mouseover', function (d) {
-	        bars.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
-
-	      bars.on('mouseout', function (d) {
-	        bars.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
-
-	      var legend = g.selectAll('.legend').data(xValues);
-
-	      legend.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-	      legend.enter().append('rect').attr('fill', function (d) {
-	        return color(d);
-	      }).attr('opacity', 0).attr('transform', 'translate(0, 100)');
-
-	      legend.transition().duration(1000).attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('opacity', 0).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      });
-
-	      if (showLegend) {
-	        legend.attr('opacity', 1);
-	      }
-
-	      var words = g.selectAll('.legend-text').data(xValues);
-
-	      words.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-	      words.enter().append('text').text(function (d) {
-	        return d;
-	      }).attr('opacity', 0).attr('transform', 'translate(0, 100)');
-
-	      words.transition().duration(1000).attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('opacity', 0).attr('class', 'legend-text');
-
-	      if (showLegend) {
-	        words.attr('opacity', 1);
-	      }
-	    }
-
-	    //exit remove
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }]);
-
-	  return ColumnChart;
+	    _createClass(ColumnChart, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement('div', { className: 'vis' });
+	        }
+
+	        //enter
+
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            //component globals
+	            var data = this.props.data;
+	            var width = this.props.width;
+	            var height = this.props.height;
+	            var margin = {
+	                left: 40,
+	                bottom: 40,
+	                right: 40,
+	                top: 75
+	            };
+
+	            var innerW = width - margin.left - margin.right;
+	            var innerH = height - margin.top - margin.bottom;
+
+	            //element in which to put the chart(s)
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	            //svg to work with
+	            var svg = cont.selectAll('svg').data([data]);
+
+	            //group for data and axes
+	            var gEnter = svg.enter().append('svg')
+	            // .attr('width', width)
+	            // .attr('height', height)
+	            .attr('viewBox', '0 0 ' + width + ' ' + height).attr("preserveAspectRatio", "xMinYMin meet").attr('class', 'canvas').append('g');
+
+	            //position group
+	            gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+
+	            //group for x axis
+	            gEnter.append('g').attr('class', 'x axis');
+
+	            //group for y axis
+	            gEnter.append('g').attr('class', 'y axis');
+
+	            //title
+	            gEnter.append('text').attr('class', 'title-text').text(this.props.title).attr('transform', 'translate(0, -25)');
+
+	            //group scale
+	            /* format x values to start with capitals */
+	            var xGroups = data.map(function (d) {
+	                return d[_this2.props.xVal];
+	            });
+	            var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.4).domain(xGroups);
+
+	            //within group scale
+	            var xValues = this.props.yVal.map(function (d) {
+	                return d;
+	            });
+	            var xScale = d3.scale.ordinal().domain(xValues).rangeRoundBands([0, groupScale.rangeBand()]);
+
+	            //format data to make groups of bars
+	            data.forEach(function (d) {
+	                d.groupDetails = xValues.map(function (name) {
+	                    return { name: name, value: +d[name] };
+	                });
+	            });
+
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+
+	            //y scale
+	            var yScale = d3.scale.linear().domain([0, d3.max(data, function (d) {
+	                return d3.max(d.groupDetails, function (d) {
+	                    return d.value;
+	                });
+	            })]).range([innerH, 0]);
+
+	            //set axes
+	            var xAxis = d3.svg.axis().orient('bottom').scale(groupScale).tickPadding(10);
+	            var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).ticks(5).tickPadding(10);
+
+	            //call axes
+	            svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	            svg.select('.y').transition().duration(1000).call(yAxis);
+
+	            var g = svg.select('.gEnter');
+
+	            var groups = g.selectAll('.groups').data(data);
+
+	            groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	                return 'translate(' + groupScale(d[_this2.props.xVal]) + ', 0)';
+	            });
+
+	            var bars = groups.selectAll('.rect').data(function (d) {
+	                return d.groupDetails;
+	            });
+
+	            bars.enter().append('rect').attr('x', function (d) {
+	                return xScale(d.name);
+	            }).attr('y', innerH).attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('width', xScale.rangeBand()).attr('height', 0);
+
+	            // bars.attr('fill', d => {return color(d.name)});
+
+	            bars.exit().remove();
+
+	            bars.transition().duration(1000).attr('y', function (d) {
+	                return yScale(d.value);
+	            }).attr('height', function (d) {
+	                return innerH - yScale(d.value);
+	            });
+
+	            bars.on('mouseover', function (d) {
+	                bars.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
+
+	            bars.on('mouseout', function (d) {
+	                bars.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
+	        }
+
+	        //update
+
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            var _this3 = this;
+
+	            var data = this.props.data;
+	            var width = this.props.width;
+	            var height = this.props.height;
+	            var margin = {
+	                left: 40,
+	                bottom: 40,
+	                right: 40,
+	                top: 75
+	            };
+
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(this.props.yReal);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']).domain(this.props.yReal);
+
+	            var innerW = width - margin.left - margin.right;
+	            var innerH = height - margin.top - margin.bottom;
+
+	            //element in which to put the chart(s)
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	            //svg to work with
+	            var svg = cont.selectAll('svg');
+
+	            //update scales
+	            var xGroups = data.map(function (d) {
+	                return d[_this3.props.xVal];
+	            });
+	            var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.2).domain(xGroups);
+
+	            var xValues = this.props.yVal.map(function (d) {
+	                return d;
+	            });
+	            var xScale = d3.scale.ordinal().domain(xValues).rangeRoundBands([0, groupScale.rangeBand()]);
+
+	            data.forEach(function (d) {
+	                d.groupDetails = xValues.map(function (name) {
+	                    return { name: name, value: +d[name] };
+	                });
+	            });
+	            console.log(xValues);
+	            console.log(data);
+
+	            var allVals = [];
+	            data.forEach(function (d) {
+	                _this3.props.yReal.map(function (name) {
+	                    allVals.push(d[name]);
+	                });
+	            });
+
+	            var yScale = d3.scale.linear().domain([0, d3.max(data, function (d) {
+	                return d3.max(allVals);
+	            })]).range([innerH, 0]);
+
+	            //update axes
+	            var xAxis = d3.svg.axis().orient('bottom').scale(groupScale);
+	            var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW);
+
+	            // svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')')
+	            //                 .transition().duration(1000)
+	            //                 .call(xAxis);
+	            //
+	            // svg.select('.y')
+	            //     .transition().duration(1000)
+	            //     .call(yAxis);
+
+	            //update bars
+	            var g = svg.select('.gEnter');
+
+	            var groups = g.selectAll('.groups').data(data);
+
+	            groups.transition().duration(1000).attr('transform', function (d) {
+	                return 'translate(' + groupScale(d[_this3.props.xVal]) + ', 0)';
+	            });
+
+	            var bars = groups.selectAll('.rect').data(function (d) {
+	                return d.groupDetails;
+	            });
+
+	            //make bars transition out!!!!!!!!!!!!!!!!
+	            bars.exit().transition().duration(0).attr('height', 0).attr('y', innerH).remove();
+
+	            bars.enter().append('rect').attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('height', 0).attr('y', innerH);
+
+	            bars.transition().duration(0).attr('x', function (d) {
+	                return xScale(d.name);
+	            }).attr('y', function (d) {
+	                return yScale(d.value);
+	            }).attr('width', xScale.rangeBand()).attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('height', function (d) {
+	                return innerH - yScale(d.value);
+	            });
+
+	            bars.on('mouseover', function (d) {
+	                bars.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
+
+	            bars.on('mouseout', function (d) {
+	                bars.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
+	        }
+
+	        //exit remove
+
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {}
+	    }]);
+
+	    return ColumnChart;
 	}(_react2.default.Component);
 
 	exports.default = ColumnChart;
@@ -21691,7 +21638,7 @@
 	      return {
 	        width: this.props.width,
 	        height: this.props.height,
-	        margin: { top: 75, left: 60, bottom: 40, right: 100 },
+	        margin: { top: 75, left: 60, bottom: 40, right: 40 },
 	        data: this.props.data,
 	        title: this.props.title,
 	        xVal: this.props.yVal,
@@ -21730,7 +21677,7 @@
 	      gEnter.append('g').attr('class', 'y axis');
 
 	      //add text for title
-	      gEnter.append('text').attr('class', 'title').text(globals.title).attr('transform', 'translate(0, -25)');
+	      gEnter.append('text').attr('class', 'title-text').text(globals.title).attr('transform', 'translate(0, -25)');
 
 	      /*---------------set scales --------------------*/
 	      //group scale
@@ -21809,25 +21756,31 @@
 	        return xScale(d.value);
 	      });
 
-	      var legend = g.selectAll('.legend').data(yValues);
-
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
-
-	      legend.transition().duration(1000).attr('opacity', 1);
-
-	      var words = g.selectAll('.legend-text').data(yValues);
-
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
-
-	      words.transition().duration(1000).attr('opacity', 1);
+	      // const legend = g.selectAll('.legend').data(yValues);
+	      //
+	      // legend.enter().append('rect')
+	      //       .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+	      //       .attr('x', innerW + 25)
+	      //       .attr('width', 20)
+	      //       .attr('height', 20)
+	      //       .attr('class', d => {return 'legend ' + color(d)})
+	      //       .attr('opacity', 0);
+	      //
+	      // legend.transition().duration(1000).attr('opacity', 1);
+	      //
+	      // const words = g.selectAll('.legend-text').data(yValues);
+	      //
+	      // words.enter().append('text')
+	      //       .attr('transform', function(d, i) {return 'translate(0, ' + (i * 25) + ')'})
+	      //       .attr('x', innerW + 50)
+	      //       .attr('y', 9)
+	      //       .attr('dy', '.35em')
+	      //       .style('text-anchor', 'start')
+	      //       .text(d => {return d})
+	      //       .attr('class', 'legend-text')
+	      //       .attr('opacity', 0);
+	      //
+	      // words.transition().duration(1000).attr('opacity', 1);
 	    }
 
 	    //updates chart
@@ -21913,34 +21866,6 @@
 	      }).attr('x', 0).attr('y', function (d) {
 	        return yScale(d.name);
 	      }).attr('height', yScale.rangeBand());
-
-	      var legend = g.selectAll('.legend').data(yValues);
-
-	      legend.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-	      legend.enter().append('rect').attr('fill', function (d) {
-	        return color(d);
-	      }).attr('opacity', 0).attr('transform', 'translate(0, 100)');
-
-	      legend.transition().duration(1000).attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', 'legend').attr('fill', function (d) {
-	        return color(d);
-	      }).attr('opacity', 1);
-
-	      var words = g.selectAll('.legend-text').data(yValues);
-
-	      words.exit().transition().duration(1000).attr('opacity', 0).remove();
-
-	      words.enter().append('text').text(function (d) {
-	        return d;
-	      }).attr('opacity', 0).attr('transform', 'translate(0, 100)');
-
-	      words.transition().duration(1000).attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 1);
 	    }
 
 	    //removes chart
@@ -22002,7 +21927,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22024,313 +21949,261 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var StackedColumnChart = function (_React$Component) {
-	  _inherits(StackedColumnChart, _React$Component);
+	    _inherits(StackedColumnChart, _React$Component);
 
-	  function StackedColumnChart() {
-	    _classCallCheck(this, StackedColumnChart);
+	    function StackedColumnChart() {
+	        _classCallCheck(this, StackedColumnChart);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedColumnChart).apply(this, arguments));
-	  }
-
-	  _createClass(StackedColumnChart, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'vis' });
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedColumnChart).apply(this, arguments));
 	    }
 
-	    //create chart
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      //dimensions of data points area
-	      var vars = this.globals();
-	      var innerW = vars.width - vars.margin.left - vars.margin.right;
-	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-
-	      //container to hold everything
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
-
-	      //svg to work with
-	      var svg = cont.selectAll('svg').data([vars.data]);
-
-	      //group that holds all data points and axes and legend
-	      var gEnter = svg.enter().append('svg')
-	      // .attr('width', vars.width)
-	      // .attr('height', vars.height)
-	      .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
-
-	      //position gEnter
-	      gEnter.attr('class', 'gEnter')
-	      // .attr('width', innerW)
-	      // .attr('height', innerH)
-	      .attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
-
-	      //group for x axis
-	      gEnter.append('g').attr('class', 'x axis');
-
-	      //group for y axis
-	      gEnter.append('g').attr('class', 'y axis');
-
-	      //text for title
-	      gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -25)').text(vars.title);
-
-	      /*---------------set scales and format data---------------------------*/
-	      //x scale
-	      var xValues = vars.data.map(function (d) {
-	        return d[vars.xVal];
-	      });
-	      var xScale = this.getXScale(innerW).domain(xValues);
-	      //format data
-	      vars.data.forEach(function (d) {
-	        var y0 = 0;
-	        d.segments = vars.yVal.map(function (type) {
-	          return { name: type, y0: y0, y1: y0 += +d[type] };
-	        });
-	        d.segments.forEach(function (d) {
-	          d.y0 /= y0;d.y1 /= y0;
-	        });
-	      });
-
-	      //y scale
-	      var yScale = this.getYScale(innerH);
-
-	      /*---------------set axes-----------------------------*/
-	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
-
-	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
-
-	      var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
-
-	      gEnter.select('.y').transition().duration(1000).call(yAxis);
-	      /*---------------make stacks----------------------------*/
-	      //reselect data points container, gEnter
-	      var g = svg.select('.gEnter');
-
-	      //'stacks'
-	      var groups = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
-	      });
-
-	      var segs = groups.selectAll('.rect').data(function (d) {
-	        return d.segments;
-	      });
-
-	      segs.enter().append('rect').attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('x', function (d) {
-	        return xScale(d[vars.xVal]);
-	      }).attr('y', function (d) {
-	        return yScale(d.y0);
-	      }).attr('width', xScale.rangeBand()).attr('height', 0);
-
-	      segs.on('mouseover', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
-
-	      segs.on('mouseout', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
-
-	      segs.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('y', function (d) {
-	        return yScale(d.y1);
-	      }).attr('height', function (d) {
-	        return yScale(d.y0) - yScale(d.y1);
-	      });
-
-	      var legend = g.selectAll('.legend').data(vars.yVal);
-
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
-
-	      legend.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('opacity', 1);
-
-	      var words = g.selectAll('.legend-text').data(vars.yVal);
-
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
-
-	      words.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).duration(1000).attr('opacity', 1);
-	    }
-
-	    //update chart
-
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      var vars = this.globals();
-	      var innerW = vars.width - vars.margin.left - vars.margin.right;
-	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-
-	      //container to hold everything
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
-
-	      var svg = cont.selectAll('svg');
-
-	      var gEnter = svg.select('.gEnter');
-
-	      var xValues = vars.data.map(function (d) {
-	        return d[vars.xVal];
-	      });
-	      var xScale = this.getXScale(innerW).domain(xValues);
-	      //format data
-	      vars.data.forEach(function (d) {
-	        var y0 = 0;
-	        d.segments = vars.yVal.map(function (type) {
-	          return { name: type, y0: y0, y1: y0 += +d[type] };
-	        });
-	        d.segments.forEach(function (d) {
-	          d.y0 /= y0;d.y1 /= y0;
-	        });
-	      });
-
-	      //y scale
-	      var yScale = this.getYScale(innerH);
-
-	      var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
-
-	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
-
-	      var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
-
-	      gEnter.select('.y').transition().duration(1000).call(yAxis);
-
-	      var g = svg.select('.gEnter');
-
-	      //'stacks'
-	      var groups = g.selectAll('.groups').data(vars.data);
-
-	      groups.exit().remove();
-
-	      groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	        return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
-	      });
-
-	      var segs = groups.selectAll('.rect').data(function (d) {
-	        return d.segments;
-	      });
-
-	      segs.exit().remove();
-
-	      segs.enter().append('rect').attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('x', function (d) {
-	        return xScale(d[vars.xVal]);
-	      }).attr('y', function (d) {
-	        return yScale(d.y0);
-	      }).attr('width', xScale.rangeBand()).attr('height', 0);
-
-	      segs.on('mouseover', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
-
-	      segs.on('mouseout', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
-
-	      segs.transition().duration(500).attr('y', function (d) {
-	        return yScale(d.y1);
-	      }).attr('height', function (d) {
-	        return yScale(d.y0) - yScale(d.y1);
-	      });
-
-	      var legend = g.selectAll('.legend').data(vars.yVal);
-
-	      legend.exit().remove();
-
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
-
-	      legend.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('opacity', 1);
-
-	      var words = g.selectAll('.legend-text').data(vars.yVal);
-
-	      words.exit().remove();
-
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
-
-	      words.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).duration(1000).attr('opacity', 1);
-	    }
-
-	    //remove chart
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-
-	    /*--------------scales, axes, props functions--------------*/
-
-	    //returns all props in an obj
-
-	  }, {
-	    key: 'globals',
-	    value: function globals() {
-	      return {
-	        width: this.props.width,
-	        height: this.props.height,
-	        margin: { top: 75, left: 60, bottom: 40, right: 100 },
-	        data: this.props.data,
-	        title: this.props.title,
-	        yVal: this.props.yVal,
-	        xVal: this.props.xVal
-	      };
-	    }
-
-	    //returns x scale without domain-- set that later
-
-	  }, {
-	    key: 'getXScale',
-	    value: function getXScale(w) {
-	      return d3.scale.ordinal().rangeRoundBands([0, w], 0.4);
-	    }
-
-	    //returns y scale without domain-- set that later
-
-	  }, {
-	    key: 'getYScale',
-	    value: function getYScale(h) {
-	      return d3.scale.linear().rangeRound([h, 0]);
-	    }
-	  }]);
-
-	  return StackedColumnChart;
+	    _createClass(StackedColumnChart, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement('div', { className: 'vis' });
+	        }
+
+	        //create chart
+
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            //dimensions of data points area
+	            var vars = this.globals();
+	            var innerW = vars.width - vars.margin.left - vars.margin.right;
+	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+
+	            //container to hold everything
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	            //svg to work with
+	            var svg = cont.selectAll('svg').data([vars.data]);
+
+	            //group that holds all data points and axes and legend
+	            var gEnter = svg.enter().append('svg')
+	            // .attr('width', vars.width)
+	            // .attr('height', vars.height)
+	            .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+
+	            //position gEnter
+	            gEnter.attr('class', 'gEnter')
+	            // .attr('width', innerW)
+	            // .attr('height', innerH)
+	            .attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+
+	            //group for x axis
+	            gEnter.append('g').attr('class', 'x axis');
+
+	            //group for y axis
+	            gEnter.append('g').attr('class', 'y axis');
+
+	            //text for title
+	            gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -25)').text(vars.title);
+
+	            /*---------------set scales and format data---------------------------*/
+	            //x scale
+	            var xValues = vars.data.map(function (d) {
+	                return d[vars.xVal];
+	            });
+	            var xScale = this.getXScale(innerW).domain(xValues);
+	            //format data
+	            vars.data.forEach(function (d) {
+	                var y0 = 0;
+	                d.segments = vars.yVal.map(function (type) {
+	                    return { name: type, y0: y0, y1: y0 += +d[type] };
+	                });
+	                d.segments.forEach(function (d) {
+	                    d.y0 /= y0;d.y1 /= y0;
+	                });
+	            });
+
+	            //y scale
+	            var yScale = this.getYScale(innerH);
+
+	            /*---------------set axes-----------------------------*/
+	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+
+	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	            var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+
+	            gEnter.select('.y').transition().duration(1000).call(yAxis);
+	            /*---------------make stacks----------------------------*/
+	            //reselect data points container, gEnter
+	            var g = svg.select('.gEnter');
+
+	            //'stacks'
+	            var groups = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	                return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
+	            });
+
+	            var segs = groups.selectAll('.rect').data(function (d) {
+	                return d.segments;
+	            });
+
+	            segs.enter().append('rect').attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('x', function (d) {
+	                return xScale(d[vars.xVal]);
+	            }).attr('y', function (d) {
+	                return yScale(d.y0);
+	            }).attr('width', xScale.rangeBand()).attr('height', 0);
+
+	            segs.on('mouseover', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
+
+	            segs.on('mouseout', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
+
+	            segs.transition().delay(function (d, i) {
+	                return i * 330;
+	            }).duration(330).attr('y', function (d) {
+	                return yScale(d.y1);
+	            }).attr('height', function (d) {
+	                return yScale(d.y0) - yScale(d.y1);
+	            });
+	        }
+
+	        //update chart
+
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            var vars = this.globals();
+	            var innerW = vars.width - vars.margin.left - vars.margin.right;
+	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+
+	            //container to hold everything
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
+
+	            var svg = cont.selectAll('svg');
+
+	            var gEnter = svg.select('.gEnter');
+
+	            var xValues = vars.data.map(function (d) {
+	                return d[vars.xVal];
+	            });
+	            var xScale = this.getXScale(innerW).domain(xValues);
+	            //format data
+	            vars.data.forEach(function (d) {
+	                var y0 = 0;
+	                d.segments = vars.yVal.map(function (type) {
+	                    return { name: type, y0: y0, y1: y0 += +d[type] };
+	                });
+	                d.segments.forEach(function (d) {
+	                    d.y0 /= y0;d.y1 /= y0;
+	                });
+	            });
+
+	            //y scale
+	            var yScale = this.getYScale(innerH);
+
+	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
+
+	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+
+	            var yAxis = d3.svg.axis().scale(yScale).orient('left').tickFormat(d3.format('.0%')).ticks(5).innerTickSize(-innerW).outerTickSize(0).tickPadding(10);
+
+	            gEnter.select('.y').transition().duration(1000).call(yAxis);
+
+	            var g = svg.select('.gEnter');
+
+	            //'stacks'
+	            var groups = g.selectAll('.groups').data(vars.data);
+
+	            groups.exit().remove();
+
+	            groups.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	                return 'translate(' + xScale(d[vars.xVal]) + ', 0)';
+	            });
+
+	            var segs = groups.selectAll('.rect').data(function (d) {
+	                return d.segments;
+	            });
+
+	            segs.exit().remove();
+
+	            segs.enter().append('rect').attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('x', function (d) {
+	                return xScale(d[vars.xVal]);
+	            }).attr('y', function (d) {
+	                return yScale(d.y0);
+	            }).attr('width', xScale.rangeBand()).attr('height', 0);
+
+	            segs.on('mouseover', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
+
+	            segs.on('mouseout', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
+
+	            segs.transition().duration(500).attr('y', function (d) {
+	                return yScale(d.y1);
+	            }).attr('height', function (d) {
+	                return yScale(d.y0) - yScale(d.y1);
+	            });
+	        }
+
+	        //remove chart
+
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {}
+
+	        /*--------------scales, axes, props functions--------------*/
+
+	        //returns all props in an obj
+
+	    }, {
+	        key: 'globals',
+	        value: function globals() {
+	            return {
+	                width: this.props.width,
+	                height: this.props.height,
+	                margin: { top: 75, left: 60, bottom: 40, right: 40 },
+	                data: this.props.data,
+	                title: this.props.title,
+	                yVal: this.props.yVal,
+	                xVal: this.props.xVal
+	            };
+	        }
+
+	        //returns x scale without domain-- set that later
+
+	    }, {
+	        key: 'getXScale',
+	        value: function getXScale(w) {
+	            return d3.scale.ordinal().rangeRoundBands([0, w], 0.4);
+	        }
+
+	        //returns y scale without domain-- set that later
+
+	    }, {
+	        key: 'getYScale',
+	        value: function getYScale(h) {
+	            return d3.scale.linear().rangeRound([h, 0]);
+	        }
+	    }]);
+
+	    return StackedColumnChart;
 	}(_react2.default.Component);
 
 	exports.default = StackedColumnChart;
@@ -22342,7 +22215,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22364,303 +22237,251 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var StackedBarChart = function (_React$Component) {
-	  _inherits(StackedBarChart, _React$Component);
+	    _inherits(StackedBarChart, _React$Component);
 
-	  function StackedBarChart() {
-	    _classCallCheck(this, StackedBarChart);
+	    function StackedBarChart() {
+	        _classCallCheck(this, StackedBarChart);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedBarChart).apply(this, arguments));
-	  }
-
-	  _createClass(StackedBarChart, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'vis' });
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(StackedBarChart).apply(this, arguments));
 	    }
 
-	    //create
+	    _createClass(StackedBarChart, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement('div', { className: 'vis' });
+	        }
 
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var vars = this.vars();
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-	      var innerW = vars.width - vars.margin.left - vars.margin.right;
-	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	        //create
 
-	      //container
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var vars = this.vars();
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	            var innerW = vars.width - vars.margin.left - vars.margin.right;
+	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
-	      //svg to work with
-	      var svg = cont.selectAll('svg').data([vars.data]);
+	            //container
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
 
-	      //main group to hold actual data points
-	      var gEnter = svg.enter().append('svg')
-	      // .attr('width', vars.width)
-	      // .attr('height', vars.height)
-	      .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+	            //svg to work with
+	            var svg = cont.selectAll('svg').data([vars.data]);
 
-	      //positioning and size
-	      gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
+	            //main group to hold actual data points
+	            var gEnter = svg.enter().append('svg')
+	            // .attr('width', vars.width)
+	            // .attr('height', vars.height)
+	            .attr('viewBox', '0 0 ' + vars.width + ' ' + vars.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
 
-	      //add groups for axes
-	      gEnter.append('g').attr('class', 'x axis');
+	            //positioning and size
+	            gEnter.attr('width', innerW).attr('height', innerH).attr('class', 'gEnter').attr('transform', 'translate(' + vars.margin.left + ', ' + vars.margin.top + ')');
 
-	      gEnter.append('g').attr('class', 'y axis');
+	            //add groups for axes
+	            gEnter.append('g').attr('class', 'x axis');
 
-	      //add text for title
-	      gEnter.append('text').attr('class', 'title').text(vars.title).attr('transform', 'translate(0, -25)');
+	            gEnter.append('g').attr('class', 'y axis');
 
-	      /*---------------------set scales, format data---------------------------------------*/
-	      //y scale
-	      var yValues = vars.data.map(function (d) {
-	        return d[vars.yVal];
-	      });
-	      var yScale = this.getYScale(innerH).domain(yValues);
+	            //add text for title
+	            gEnter.append('text').attr('class', 'title-text').text(vars.title).attr('transform', 'translate(0, -25)');
 
-	      //x scale
-	      var xScale = this.getXScale(innerW);
+	            /*---------------------set scales, format data---------------------------------------*/
+	            //y scale
+	            var yValues = vars.data.map(function (d) {
+	                return d[vars.yVal];
+	            });
+	            var yScale = this.getYScale(innerH).domain(yValues);
 
-	      //format data
-	      vars.data.forEach(function (d) {
-	        var x0 = 0;
-	        d.segments = vars.xVal.map(function (type) {
-	          return { name: type, x0: x0, x1: x0 += +d[type] };
-	        });
-	        d.segments.forEach(function (d) {
-	          d.x0 /= x0;d.x1 /= x0;
-	        });
-	      });
+	            //x scale
+	            var xScale = this.getXScale(innerW);
 
-	      /*------------------------set axes-------------------------------------*/
-	      var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
+	            //format data
+	            vars.data.forEach(function (d) {
+	                var x0 = 0;
+	                d.segments = vars.xVal.map(function (type) {
+	                    return { name: type, x0: x0, x1: x0 += +d[type] };
+	                });
+	                d.segments.forEach(function (d) {
+	                    d.x0 /= x0;d.x1 /= x0;
+	                });
+	            });
 
-	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	            /*------------------------set axes-------------------------------------*/
+	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
 
-	      var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
-	      gEnter.select('.y').transition().duration(1000).call(yAxis);
+	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	      /*--------------------------actual data points--------------------------*/
-	      //reselect gEnter
-	      var g = svg.select('.gEnter');
+	            var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
+	            gEnter.select('.y').transition().duration(1000).call(yAxis);
 
-	      var stacks = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
-	      });
+	            /*--------------------------actual data points--------------------------*/
+	            //reselect gEnter
+	            var g = svg.select('.gEnter');
 
-	      var segs = stacks.selectAll('.rect').data(function (d) {
-	        return d.segments;
-	      });
+	            var stacks = g.selectAll('.groups').data(vars.data).enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	                return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
+	            });
 
-	      segs.enter().append('rect').attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('y', function (d) {
-	        return yScale(d[vars.yVal]);
-	      }).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', 0).attr('height', yScale.rangeBand());
+	            var segs = stacks.selectAll('.rect').data(function (d) {
+	                return d.segments;
+	            });
 
-	      segs.on('mouseover', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
+	            segs.enter().append('rect').attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('y', function (d) {
+	                return yScale(d[vars.yVal]);
+	            }).attr('x', function (d) {
+	                return xScale(d.x0);
+	            }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	      segs.on('mouseout', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
+	            segs.on('mouseover', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
 
-	      segs.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', function (d) {
-	        return xScale(d.x1) - xScale(d.x0);
-	      });
+	            segs.on('mouseout', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
 
-	      var legend = g.selectAll('.legend').data(vars.xVal);
+	            segs.transition().delay(function (d, i) {
+	                return i * 330;
+	            }).duration(330).attr('x', function (d) {
+	                return xScale(d.x0);
+	            }).attr('width', function (d) {
+	                return xScale(d.x1) - xScale(d.x0);
+	            });
+	        }
 
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
+	        //update
 
-	      legend.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('opacity', 1);
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            var vars = this.vars();
+	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	            var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
+	            var innerW = vars.width - vars.margin.left - vars.margin.right;
+	            var innerH = vars.height - vars.margin.top - vars.margin.bottom;
 
-	      var words = g.selectAll('.legend-text').data(vars.xVal);
+	            //container
+	            var cont = d3.select(_reactDom2.default.findDOMNode(this));
 
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
+	            var svg = cont.selectAll('svg');
 
-	      words.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).duration(1000).attr('opacity', 1);
-	    }
+	            var gEnter = svg.select('.gEnter');
 
-	    //update
+	            var yValues = vars.data.map(function (d) {
+	                return d[vars.yVal];
+	            });
+	            var yScale = this.getYScale(innerH).domain(yValues);
 
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      var vars = this.vars();
-	      var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	      var color2 = d3.scale.ordinal().range(['half-blue', 'half-orange', 'half-teal', 'half-purple', 'half-green', 'half-brown']);
-	      var innerW = vars.width - vars.margin.left - vars.margin.right;
-	      var innerH = vars.height - vars.margin.top - vars.margin.bottom;
+	            //x scale
+	            var xScale = this.getXScale(innerW);
 
-	      //container
-	      var cont = d3.select(_reactDom2.default.findDOMNode(this));
+	            //format data
+	            vars.data.forEach(function (d) {
+	                var x0 = 0;
+	                d.segments = vars.xVal.map(function (type) {
+	                    return { name: type, x0: x0, x1: x0 += +d[type] };
+	                });
+	                d.segments.forEach(function (d) {
+	                    d.x0 /= x0;d.x1 /= x0;
+	                });
+	            });
 
-	      var svg = cont.selectAll('svg');
+	            var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
 
-	      var gEnter = svg.select('.gEnter');
+	            gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	      var yValues = vars.data.map(function (d) {
-	        return d[vars.yVal];
-	      });
-	      var yScale = this.getYScale(innerH).domain(yValues);
+	            var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
+	            gEnter.select('.y').transition().duration(1000).call(yAxis);
+	            var g = svg.select('.gEnter');
 
-	      //x scale
-	      var xScale = this.getXScale(innerW);
+	            var stacks = g.selectAll('.groups').data(vars.data);
 
-	      //format data
-	      vars.data.forEach(function (d) {
-	        var x0 = 0;
-	        d.segments = vars.xVal.map(function (type) {
-	          return { name: type, x0: x0, x1: x0 += +d[type] };
-	        });
-	        d.segments.forEach(function (d) {
-	          d.x0 /= x0;d.x1 /= x0;
-	        });
-	      });
+	            stacks.exit().remove();
 
-	      var xAxis = d3.svg.axis().orient('bottom').scale(xScale).tickFormat(d3.format('.0%')).innerTickSize(-innerH).outerTickSize(0).ticks(5).tickPadding(10);
+	            stacks.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
+	                return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
+	            });
 
-	      gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	            var segs = stacks.selectAll('.rect').data(function (d) {
+	                return d.segments;
+	            });
 
-	      var yAxis = d3.svg.axis().orient('left').scale(yScale).outerTickSize(0).tickPadding(10);
-	      gEnter.select('.y').transition().duration(1000).call(yAxis);
-	      var g = svg.select('.gEnter');
+	            segs.exit().remove();
 
-	      var stacks = g.selectAll('.groups').data(vars.data);
+	            segs.enter().append('rect').attr('class', function (d) {
+	                return 'rect ' + color(d.name);
+	            }).attr('y', function (d) {
+	                return yScale(d[vars.yVal]);
+	            }).attr('x', function (d) {
+	                return xScale(d.x0);
+	            }).attr('width', 0).attr('height', yScale.rangeBand());
 
-	      stacks.exit().remove();
+	            segs.on('mouseover', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color2(d.name);
+	                });
+	                d3.select(this).attr('class', 'rect ' + color(d.name));
+	            });
 
-	      stacks.enter().append('g').attr('class', 'groups').attr('transform', function (d) {
-	        return 'translate(0, ' + yScale(d[vars.yVal]) + ')';
-	      });
+	            segs.on('mouseout', function (d) {
+	                segs.attr('class', function (d) {
+	                    return 'rect ' + color(d.name);
+	                });
+	            });
 
-	      var segs = stacks.selectAll('.rect').data(function (d) {
-	        return d.segments;
-	      });
+	            segs.transition().duration(500).attr('x', function (d) {
+	                return xScale(d.x0);
+	            }).attr('width', function (d) {
+	                return xScale(d.x1) - xScale(d.x0);
+	            });
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {}
 
-	      segs.exit().remove();
+	        /*-------------const and scales functions------------------*/
 
-	      segs.enter().append('rect').attr('class', function (d) {
-	        return 'rect ' + color(d.name);
-	      }).attr('y', function (d) {
-	        return yScale(d[vars.yVal]);
-	      }).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', 0).attr('height', yScale.rangeBand());
+	        //returns all props in obj
 
-	      segs.on('mouseover', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color2(d.name);
-	        });
-	        d3.select(this).attr('class', 'rect ' + color(d.name));
-	      });
+	    }, {
+	        key: 'vars',
+	        value: function vars() {
+	            return {
+	                width: this.props.width,
+	                height: this.props.height,
+	                margin: { top: 75, left: 60, bottom: 40, right: 40 },
+	                data: this.props.data,
+	                title: this.props.title,
+	                xVal: this.props.yVal,
+	                yVal: this.props.xVal
+	            };
+	        }
 
-	      segs.on('mouseout', function (d) {
-	        segs.attr('class', function (d) {
-	          return 'rect ' + color(d.name);
-	        });
-	      });
+	        //sets x scale with given width passed in for range.
 
-	      segs.transition().duration(500).attr('x', function (d) {
-	        return xScale(d.x0);
-	      }).attr('width', function (d) {
-	        return xScale(d.x1) - xScale(d.x0);
-	      });
+	    }, {
+	        key: 'getXScale',
+	        value: function getXScale(w) {
+	            return d3.scale.linear().rangeRound([0, w]);
+	        }
 
-	      var legend = g.selectAll('.legend').data(vars.xVal);
+	        //sets y scale w/ given height passed for range. Set domain later
 
-	      legend.exit().remove();
+	    }, {
+	        key: 'getYScale',
+	        value: function getYScale(h) {
+	            return d3.scale.ordinal().rangeRoundBands([h, 0], 0.4);
+	        }
+	    }]);
 
-	      legend.enter().append('rect').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	        return 'legend ' + color(d);
-	      }).attr('opacity', 0);
-
-	      legend.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).attr('opacity', 1);
-
-	      var words = g.selectAll('.legend-text').data(vars.xVal);
-
-	      words.exit().remove();
-
-	      words.enter().append('text').attr('transform', function (d, i) {
-	        return 'translate(0, ' + i * 25 + ')';
-	      }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	        return d;
-	      }).attr('class', 'legend-text').attr('opacity', 0);
-
-	      words.transition().delay(function (d, i) {
-	        return i * 330;
-	      }).duration(330).duration(1000).attr('opacity', 1);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-
-	    /*-------------const and scales functions------------------*/
-
-	    //returns all props in obj
-
-	  }, {
-	    key: 'vars',
-	    value: function vars() {
-	      return {
-	        width: this.props.width,
-	        height: this.props.height,
-	        margin: { top: 75, left: 60, bottom: 40, right: 100 },
-	        data: this.props.data,
-	        title: this.props.title,
-	        xVal: this.props.yVal,
-	        yVal: this.props.xVal
-	      };
-	    }
-
-	    //sets x scale with given width passed in for range.
-
-	  }, {
-	    key: 'getXScale',
-	    value: function getXScale(w) {
-	      return d3.scale.linear().rangeRound([0, w]);
-	    }
-
-	    //sets y scale w/ given height passed for range. Set domain later
-
-	  }, {
-	    key: 'getYScale',
-	    value: function getYScale(h) {
-	      return d3.scale.ordinal().rangeRoundBands([h, 0], 0.4);
-	    }
-	  }]);
-
-	  return StackedBarChart;
+	    return StackedBarChart;
 	}(_react2.default.Component);
 
 	exports.default = StackedBarChart;
@@ -22740,12 +22561,12 @@
 	//create chart
 	var create = function create(elem, props) {
 	  //variables
-	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var margin = { left: 40, bottom: 40, right: 40, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
-	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
-	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']).domain(props.yReal);
+	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']).domain(props.yReal);
+	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 
 	  //container
 	  var cont = d3.select(elem);
@@ -22765,7 +22586,7 @@
 	  //groups for axes and title
 	  gEnter.append('g').attr('class', 'x axis');
 	  gEnter.append('g').attr('class', 'y axis');
-	  gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -40)').text(props.title);
+	  gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -40)').text(props.title);
 
 	  /*-------------------set scales---------------------------*/
 	  var xValues = props.data.map(function (d) {
@@ -22803,9 +22624,16 @@
 	    return yScale(d.y);
 	  });
 
-	  var deps = d3.keys(props.data[0]).filter(function (key) {
-	    return key !== props.xVal;
-	  }).map(function (name) {
+	  // const deps = d3.keys(props.data[0]).filter(key => {return key !== props.xVal}).map(name => {
+	  //   return {
+	  //     name: name,
+	  //     values: props.data.map(a => {
+	  //       return {x: d3.time.format('%Y-%m').parse(a[props.xVal]), y: +a[name], name: name};
+	  //     })
+	  //   };
+	  // });
+
+	  var deps = props.yVal.map(function (name) {
 	    return {
 	      name: name,
 	      values: props.data.map(function (a) {
@@ -22827,6 +22655,8 @@
 	      arr.push(obj);
 	    }
 	    return line(arr);
+	  }).attr('id', function (d) {
+	    return d.name;
 	  });
 
 	  paths.transition().duration(1000).attr('d', function (d) {
@@ -22850,36 +22680,16 @@
 	  circles.transition().duration(1000).attr('cy', function (d) {
 	    return yScale(d.y);
 	  });
-
-	  var legend = g.selectAll('.legend').data(props.yVal);
-
-	  legend.enter().append('rect').attr('transform', function (d, i) {
-	    return 'translate(0, ' + i * 25 + ')';
-	  }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	    return 'legend ' + color3(d);
-	  }).attr('opacity', 0);
-
-	  legend.transition().duration(1000).attr('opacity', 1);
-
-	  var words = g.selectAll('.legend-text').data(props.yVal);
-
-	  words.enter().append('text').attr('transform', function (d, i) {
-	    return 'translate(0, ' + i * 25 + ')';
-	  }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	    return d;
-	  }).attr('class', 'legend-text').attr('opacity', 0);
-
-	  words.transition().duration(1000).attr('opacity', 1);
 	};
 
 	//update chart
 	var update = function update(elem, props) {
-	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var margin = { left: 40, bottom: 40, right: 40, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']);
-	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']);
-	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color = d3.scale.ordinal().range(['line-blue', 'line-orange', 'line-teal', 'line-purple', 'line-green', 'line-brown']).domain(props.yReal);
+	  var color2 = d3.scale.ordinal().range(['circle-blue', 'circle-orange', 'circle-teal', 'circle-purple', 'circle-green', 'circle-brown']).domain(props.yReal);
+	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 
 	  var cont = d3.select(elem);
 
@@ -22894,10 +22704,11 @@
 	    return d;
 	  }));
 
+	  //change yreal back to yval
 	  var yValues = [];
 	  props.data.forEach(function (d) {
 	    for (var i in d) {
-	      if (props.yVal.indexOf(i) !== -1) {
+	      if (props.yReal.indexOf(i) !== -1) {
 	        yValues.push(d[i]);
 	      }
 	    }
@@ -22910,6 +22721,7 @@
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
 	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
 
+	  //dont update axes
 	  gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
 	  gEnter.select('.y').transition().duration(1000).call(yAxis);
@@ -22922,9 +22734,17 @@
 	    return yScale(d.y);
 	  });
 
-	  var deps = d3.keys(props.data[0]).filter(function (key) {
-	    return key !== props.xVal;
-	  }).map(function (name) {
+	  // const deps = d3.keys(props.data[0]).filter(key => {return key !== props.xVal}).map(name => {
+	  //   return {
+	  //     name: name,
+	  //     values: props.data.map(a => {
+	  //       return {x: d3.time.format('%Y-%m').parse(a[props.xVal]), y: +a[name], name: name};
+	  //     })
+	  //   };
+	  // });
+
+	  //change yreal to yval
+	  var deps = props.yReal.map(function (name) {
 	    return {
 	      name: name,
 	      values: props.data.map(function (a) {
@@ -22948,10 +22768,20 @@
 	      arr.push(obj);
 	    }
 	    return line(arr);
+	  }).attr('id', function (d) {
+	    return d.name;
 	  });
-
-	  paths.transition().duration(1000).attr('d', function (d) {
-	    return line(d.values);
+	  //
+	  // paths.transition().duration(1000)
+	  //       .attr('d', d => {return line(d.values)})
+	  //       .attr('class', d => {return 'a-path ' + color(d.name)})
+	  //       .attr('id', d => {return d.name});
+	  paths.transition().duration(0).attr('opacity', function (d) {
+	    if (props.check[d.name]) {
+	      return 1;
+	    } else {
+	      return 0;
+	    }
 	  });
 
 	  var circlesG = g.selectAll('.circle-g').data(deps);
@@ -22966,39 +22796,31 @@
 
 	  circles.exit().remove();
 
+	  // circles.enter().append('circle')
+	  //         .attr('class', d => {return 'connectors ' + color2(d.name)})
+	  //         .attr('r', 4)
+	  //         .attr('cx', d => {return xScale(+d.x) + 25})
+	  //         .attr('cy', innerH);
+	  //
+	  // circles.transition().duration(1000)
+	  //           .attr('cy', d => {return yScale(d.y)})
+	  //           .attr('class', d => {return 'connectors ' + color2(d.name)});
+
 	  circles.enter().append('circle').attr('class', function (d) {
 	    return 'connectors ' + color2(d.name);
 	  }).attr('r', 4).attr('cx', function (d) {
 	    return xScale(+d.x) + 25;
-	  }).attr('cy', innerH);
-
-	  circles.transition().duration(1000).attr('cy', function (d) {
+	  }).attr('cy', function (d) {
 	    return yScale(d.y);
 	  });
 
-	  var legend = g.selectAll('.legend').data(props.yVal);
-
-	  legend.exit().remove();
-
-	  legend.enter().append('rect').attr('transform', function (d, i) {
-	    return 'translate(0, ' + i * 25 + ')';
-	  }).attr('x', innerW + 25).attr('width', 20).attr('height', 20).attr('class', function (d) {
-	    return 'legend ' + color3(d);
-	  }).attr('opacity', 0);
-
-	  legend.transition().duration(1000).attr('opacity', 1);
-
-	  var words = g.selectAll('.legend-text').data(props.yVal);
-
-	  words.exit().remove();
-
-	  words.enter().append('text').attr('transform', function (d, i) {
-	    return 'translate(0, ' + i * 25 + ')';
-	  }).attr('x', innerW + 50).attr('y', 9).attr('dy', '.35em').style('text-anchor', 'start').text(function (d) {
-	    return d;
-	  }).attr('class', 'legend-text').attr('opacity', 0);
-
-	  words.transition().duration(1000).attr('opacity', 1);
+	  circles.transition().duration(0).attr('opacity', function (d) {
+	    if (props.check[d.name]) {
+	      return 1;
+	    } else {
+	      return 0;
+	    }
+	  });
 	};
 
 	//returns an x scale. Set domain later
@@ -23113,7 +22935,7 @@
 	  //groups for axes and title
 	  gEnter.append('g').attr('class', 'x axis');
 	  gEnter.append('g').attr('class', 'y axis');
-	  gEnter.append('text').attr('class', 'title').text(props.title).attr('transform', 'translate(0, -25)');
+	  gEnter.append('text').attr('class', 'title-text').text(props.title).attr('transform', 'translate(0, -25)');
 
 	  /*---------------- set scales----------------*/
 	  var xMax = d3.max(props.data, function (d) {
@@ -23132,8 +22954,8 @@
 	  })]);
 
 	  /*--------------- set axes ------------------*/
-	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10);
-	  var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
+	  var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10).ticks(5);
 
 	  gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 	  gEnter.select('.y').transition().duration(1000).call(yAxis);
@@ -23222,8 +23044,8 @@
 	    return d[props.yVal];
 	  })]);
 
-	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10);
-	  var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10);
+	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
+	  var yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10).ticks(5);
 
 	  var gEnter = svg.select('.gEnter');
 
@@ -23830,97 +23652,97 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	            value: true
+	  value: true
 	});
 	var create = function create(elem, props) {
-	            //variables
-	            var margin = { left: 40, bottom: 40, right: 40, top: 75 };
-	            var innerW = props.width - margin.left - margin.right;
-	            var innerH = props.height - margin.top - margin.bottom;
-	            var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color2 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	            var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  //variables
+	  var margin = { left: 40, bottom: 40, right: 40, top: 75 };
+	  var innerW = props.width - margin.left - margin.right;
+	  var innerH = props.height - margin.top - margin.bottom;
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color2 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color3 = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
 
-	            //container
-	            var cont = d3.select(elem);
+	  //container
+	  var cont = d3.select(elem);
 
-	            //svg
-	            var svg = cont.selectAll('svg').data([props.data]);
+	  //svg
+	  var svg = cont.selectAll('svg').data([props.data]);
 
-	            //area for data points
-	            var gEnter = svg.enter().append('svg')
-	            // .attr('width', props.width)
-	            // .attr('height', props.height)
-	            .attr('viewBox', '0 0 ' + props.width + ' ' + props.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
+	  //area for data points
+	  var gEnter = svg.enter().append('svg')
+	  // .attr('width', props.width)
+	  // .attr('height', props.height)
+	  .attr('viewBox', '0 0 ' + props.width + ' ' + props.height).attr("preserveAspectRatio", "xMinYMin meet").append('g');
 
-	            //position area for data points
-	            gEnter.attr('class', 'gEnter').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')').attr('width', innerW).attr('height', innerH);
+	  //position area for data points
+	  gEnter.attr('class', 'gEnter').attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')').attr('width', innerW).attr('height', innerH);
 
-	            //groups for axes and title
-	            gEnter.append('g').attr('class', 'x-bullet');
-	            gEnter.append('g').attr('class', 'y axis');
-	            gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -40)').text(props.title);
+	  //groups for axes and title
+	  gEnter.append('g').attr('class', 'x-bullet');
+	  gEnter.append('g').attr('class', 'y axis');
+	  gEnter.append('text').attr('class', 'title').attr('transform', 'translate(0, -40)').text(props.title);
 
-	            var yValues = props.data.map(function (d) {
-	                        return d[props.yVal];
-	            });
-	            var yScale = d3.scale.ordinal().rangeRoundBands([innerH, 0], 0.2).domain(yValues);
+	  var yValues = props.data.map(function (d) {
+	    return d[props.yVal];
+	  });
+	  var yScale = d3.scale.ordinal().rangeRoundBands([innerH, 0], 0.2).domain(yValues);
 
-	            var xValues = [];
-	            xValues.push(d3.max(props.data, function (d) {
-	                        return d[props.target];
-	            }));
-	            xValues.push(d3.max(props.data, function (d) {
-	                        return d[props.range];
-	            }));
-	            xValues.push(d3.max(props.data, function (d) {
-	                        return d[props.actual];
-	            }));
-	            var xScale = d3.scale.linear().range([0, innerW]).domain([0, d3.max(xValues)]);
+	  var xValues = [];
+	  xValues.push(d3.max(props.data, function (d) {
+	    return d[props.target];
+	  }));
+	  xValues.push(d3.max(props.data, function (d) {
+	    return d[props.range];
+	  }));
+	  xValues.push(d3.max(props.data, function (d) {
+	    return d[props.actual];
+	  }));
+	  var xScale = d3.scale.linear().range([0, innerW]).domain([0, d3.max(xValues)]);
 
-	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(2);
-	            gEnter.select('.x-bullet').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(2);
+	  gEnter.select('.x-bullet').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
-	            // const yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(2);
-	            // gEnter.select('.y').call(yAxis);
+	  // const yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(2);
+	  // gEnter.select('.y').call(yAxis);
 
-	            var g = svg.select('.gEnter');
+	  var g = svg.select('.gEnter');
 
-	            var secondaryBars = g.selectAll('.second-bar').data(props.data);
+	  var secondaryBars = g.selectAll('.second-bar').data(props.data);
 
-	            secondaryBars.enter().append('rect').attr('class', function (d) {
-	                        console.log(d);return 'second-bar ' + color(d[props.yVal]);
-	            }).attr('x', 0).attr('y', function (d) {
-	                        return yScale(d[props.yVal]);
-	            }).attr('width', 0).attr('height', yScale.rangeBand()).attr('opacity', 0.25);
+	  secondaryBars.enter().append('rect').attr('class', function (d) {
+	    console.log(d);return 'second-bar ' + color(d[props.yVal]);
+	  }).attr('x', 0).attr('y', function (d) {
+	    return yScale(d[props.yVal]);
+	  }).attr('width', 0).attr('height', yScale.rangeBand()).attr('opacity', 0.25);
 
-	            secondaryBars.transition().duration(1000).attr('width', function (d) {
-	                        return xScale(d[props.range]);
-	            });
+	  secondaryBars.transition().duration(1000).attr('width', function (d) {
+	    return xScale(d[props.range]);
+	  });
 
-	            var actualBars = g.selectAll('.actual-bar').data(props.data);
+	  var actualBars = g.selectAll('.actual-bar').data(props.data);
 
-	            actualBars.enter().append('rect').attr('class', function (d) {
-	                        console.log(d);return 'actual-bar ' + color2(d[props.yVal]);
-	            }).attr('x', 0).attr('y', function (d) {
-	                        return yScale(d[props.yVal]) + yScale.rangeBand() * 0.25;
-	            }).attr('width', 0).attr('height', yScale.rangeBand() * 0.5);
+	  actualBars.enter().append('rect').attr('class', function (d) {
+	    console.log(d);return 'actual-bar ' + color2(d[props.yVal]);
+	  }).attr('x', 0).attr('y', function (d) {
+	    return yScale(d[props.yVal]) + yScale.rangeBand() * 0.25;
+	  }).attr('width', 0).attr('height', yScale.rangeBand() * 0.5);
 
-	            actualBars.transition().duration(1000).attr('width', function (d) {
-	                        return xScale(d[props.actual]);
-	            });
+	  actualBars.transition().duration(1000).attr('width', function (d) {
+	    return xScale(d[props.actual]);
+	  });
 
-	            var targetBar = g.selectAll('.target-bar').data(props.data);
+	  var targetBar = g.selectAll('.target-bar').data(props.data);
 
-	            targetBar.enter().append('rect').attr('class', function (d) {
-	                        console.log(d);return 'targer-bar ' + color3(d[props.yVal]);
-	            }).attr('y', function (d) {
-	                        return yScale(d[props.yVal]) + yScale.rangeBand() * (1 / 6) * .5;
-	            }).attr('x', 0).attr('height', yScale.rangeBand() * (5 / 6)).attr('width', 0);
+	  targetBar.enter().append('rect').attr('class', function (d) {
+	    console.log(d);return 'targer-bar ' + color3(d[props.yVal]);
+	  }).attr('y', function (d) {
+	    return yScale(d[props.yVal]) + yScale.rangeBand() * (1 / 6) * .5;
+	  }).attr('x', 0).attr('height', yScale.rangeBand() * (5 / 6)).attr('width', 0);
 
-	            targetBar.transition().duration(1000).attr('x', function (d) {
-	                        return xScale(d[props.target]);
-	            }).attr('width', yScale.rangeBand() * (1 / 3) * 0.5);
+	  targetBar.transition().duration(1000).attr('x', function (d) {
+	    return xScale(d[props.target]);
+	  }).attr('width', yScale.rangeBand() * (1 / 3) * 0.5);
 	};
 
 	exports.create = create;
@@ -24042,6 +23864,8 @@
 	  });
 	  props.data.total = total;
 
+	  var cover2 = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+
 	  //actual arcs
 	  var arcs = gEnter.selectAll('path').data(donut(props.data)).enter().append('path').attr('d', arc).attr('class', function (d) {
 	    return color(d.data[props.indy]);
@@ -24049,10 +23873,18 @@
 	    this._current = d;
 	  });
 
-	  console.log(arcs);
+	  var first = d3.select('.blue').transition().duration(500).attr('d', cover2);
+
+	  var format = d3.format('%');
+	  console.log(props.data);
+
+	  gEnter.select('.big-num').text(format(props.data[0][props.dep] / props.data.total));
+	  gEnter.select('.small-num').text(props.data[0][props.indy]);
 
 	  //Enlarge arc size on mouseover
 	  arcs.on('mouseover', function (d) {
+	    var fir = d3.select('.blue').transition().duration(500).attr('d', arc);
+
 	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
 
 	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
@@ -24364,6 +24196,275 @@
 	  _createClass(Checkbox, [{
 	    key: "clickHandle",
 	    value: function clickHandle() {
+	      this.props.checkHandle(this.props.value, !this.state.isChecked);
+	      this.setState({ isChecked: !this.state.isChecked });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement("input", { type: "checkbox", value: this.props.value, className: this.props.currClass, onChange: this.clickHandle, checked: this.state.isChecked });
+	    }
+	  }]);
+
+	  return Checkbox;
+	}(_react2.default.Component);
+
+	exports.default = Checkbox;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LineChart = __webpack_require__(176);
+
+	var _LineChart2 = _interopRequireDefault(_LineChart);
+
+	var _ColumnChart = __webpack_require__(172);
+
+	var _ColumnChart2 = _interopRequireDefault(_ColumnChart);
+
+	var _LegendComp = __webpack_require__(193);
+
+	var _LegendComp2 = _interopRequireDefault(_LegendComp);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//import all other charts besides line....
+
+
+	//takes data, xval, yREal and yval as props
+	var ChartHousing = function (_React$Component) {
+	  _inherits(ChartHousing, _React$Component);
+
+	  function ChartHousing(props) {
+	    _classCallCheck(this, ChartHousing);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChartHousing).call(this, props));
+
+	    _this._checkHandler = _this._checkHandler.bind(_this);
+
+	    //initialize checks as empty, populate after
+	    _this.state = {
+	      data: props.data,
+	      checks: {},
+	      currY: []
+	    };
+
+	    props.yVal.forEach(function (d) {
+	      //push an object containing check id and its state (checked vs unchecked)
+	      _this.state.checks[d] = true;
+	      _this.state.currY.push(d);
+	    });
+	    return _this;
+	  }
+
+	  //callback function passed down to children components to change state
+
+
+	  _createClass(ChartHousing, [{
+	    key: '_checkHandler',
+	    value: function _checkHandler(name, val) {
+
+	      //filter currY
+	      var currChecks = this.state.checks;
+	      currChecks[name] = val;
+	      this.setState({ checks: currChecks });
+	      var filterY = [];
+	      for (var i in this.state.checks) {
+	        if (this.state.checks[i] == true) {
+	          filterY.push(i);
+	        }
+	      }
+	      this.setState({ currY: filterY });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'container-fluid' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-9' },
+	            _react2.default.createElement(_ColumnChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, width: 500, height: 500, title: 'This is a title', yReal: this.props.yVal })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-xs-3' },
+	            _react2.default.createElement(_LegendComp2.default, { yVal: this.props.yVal, checkHandle: this._checkHandler })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ChartHousing;
+	}(_react2.default.Component);
+
+	exports.default = ChartHousing;
+
+	// <LineChart check={this.state.checks} data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _LegendItem = __webpack_require__(194);
+
+	var _LegendItem2 = _interopRequireDefault(_LegendItem);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LegendComp = function (_React$Component) {
+	  _inherits(LegendComp, _React$Component);
+
+	  function LegendComp() {
+	    _classCallCheck(this, LegendComp);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LegendComp).apply(this, arguments));
+	  }
+
+	  _createClass(LegendComp, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var boxes = ['checkbox-blue', 'checkbox-orange', 'checkbox-teal', 'checkbox-purple', 'checkbox-green', 'checkbox-brown'];
+	      var i = -1;
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'legend-console' },
+	        this.props.yVal.map(function (item) {
+	          i++;
+	          return _react2.default.createElement(_LegendItem2.default, { currClass: boxes[i], value: item, checkHandle: _this2.props.checkHandle });
+	        })
+	      );
+	    }
+	  }]);
+
+	  return LegendComp;
+	}(_react2.default.Component);
+
+	exports.default = LegendComp;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Checkbox = __webpack_require__(195);
+
+	var _Checkbox2 = _interopRequireDefault(_Checkbox);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var LegendItem = function LegendItem(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(_Checkbox2.default, { currClass: props.currClass, value: props.value, checkHandle: props.checkHandle }),
+	    _react2.default.createElement(
+	      'span',
+	      null,
+	      props.value
+	    )
+	  );
+	};
+
+	exports.default = LegendItem;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Checkbox = function (_React$Component) {
+	  _inherits(Checkbox, _React$Component);
+
+	  function Checkbox() {
+	    _classCallCheck(this, Checkbox);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Checkbox).call(this));
+
+	    _this.clickHandle = _this.clickHandle.bind(_this);
+	    _this.state = { isChecked: true };
+	    return _this;
+	  }
+
+	  //handles change to checkbox
+
+
+	  _createClass(Checkbox, [{
+	    key: "clickHandle",
+	    value: function clickHandle() {
+	      console.log(this.props.value);
 	      this.props.checkHandle(this.props.value, !this.state.isChecked);
 	      this.setState({ isChecked: !this.state.isChecked });
 	    }

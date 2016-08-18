@@ -23,10 +23,7 @@ class ColumnChart extends React.Component {
       right: 40,
       top: 75
     };
-    let showLegend = this.props.legend;
-    if (!showLegend) {
-      margin.right = 40;
-    }
+
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
@@ -131,8 +128,6 @@ class ColumnChart extends React.Component {
     bars.on('mouseout', function(d) {
       bars.attr('class', d => {return 'rect ' + color(d.name)});
     });
-
-
   }
 
   //update
@@ -169,22 +164,31 @@ class ColumnChart extends React.Component {
     data.forEach(d => {
       d.groupDetails = xValues.map(name => {return {name: name, value: +d[name]}});
     });
+    console.log(xValues);
+    console.log(data);
+
+    const allVals = [];
+    data.forEach(d => {
+      this.props.yReal.map(name => {
+        allVals.push(d[name]);
+      })
+    });
 
     const yScale = d3.scale.linear()
-                    .domain([0, d3.max(data, d => {return d3.max(d.groupDetails, d => {return d.value})})])
+                    .domain([0, d3.max(data, d => {return d3.max(allVals)})])
                     .range([innerH, 0]);
 
     //update axes
     const xAxis = d3.svg.axis().orient('bottom').scale(groupScale);
     const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW);
 
-    svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')')
-                    .transition().duration(1000)
-                    .call(xAxis);
-
-    svg.select('.y')
-        .transition().duration(1000)
-        .call(yAxis);
+    // svg.select('.x').attr('transform', 'translate(' + 0 + ', ' + innerH + ')')
+    //                 .transition().duration(1000)
+    //                 .call(xAxis);
+    //
+    // svg.select('.y')
+    //     .transition().duration(1000)
+    //     .call(yAxis);
 
     //update bars
     const g = svg.select('.gEnter');
@@ -197,28 +201,19 @@ class ColumnChart extends React.Component {
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
 
     //make bars transition out!!!!!!!!!!!!!!!!
-    // bars.exit().transition().duration(1000).attr('height', 0).attr('y', innerH).remove();
-    //
-    // bars.enter().append('rect')
-    //     .attr('class', d => {return 'rect ' + color(d.name)})
-    //     .attr('height', 0)
-    //     .attr('y', innerH);
-    //
-    // bars.transition().duration(1000)
-    //   .attr('x', d => {return xScale(d.name)})
-    //   .attr('y', d => {return yScale(d.value)})
-    //   .attr('width', xScale.rangeBand())
-    //   .attr('class', d => {return 'rect ' + color(d.name)})
-    //   .attr('height', d => {return (innerH - yScale(d.value))});
-    bars.exit().remove();
+    bars.exit().transition().duration(0).attr('height', 0).attr('y', innerH).remove();
 
     bars.enter().append('rect')
-          .attr('class', d => {return 'rect ' + color(d.name)})
-          .attr('x', d => {return xScale(d.name)})
-          .attr('y', d => {return yScale(d.value)})
-          .attr('width', xScale.rangeBand())
-          .attr('height', d => {return (innerH - yScale(d.value))});
+        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('height', 0)
+        .attr('y', innerH);
 
+    bars.transition().duration(0)
+      .attr('x', d => {return xScale(d.name)})
+      .attr('y', d => {return yScale(d.value)})
+      .attr('width', xScale.rangeBand())
+      .attr('class', d => {return 'rect ' + color(d.name)})
+      .attr('height', d => {return (innerH - yScale(d.value))});
 
       bars.on('mouseover', function(d) {
         bars.attr('class', d => {return 'rect ' + color2(d.name)});
@@ -228,8 +223,6 @@ class ColumnChart extends React.Component {
       bars.on('mouseout', function(d) {
         bars.attr('class', d => {return 'rect ' + color(d.name)});
       });
-
-
   }
 
   //exit remove
