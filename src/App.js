@@ -43,57 +43,44 @@ class App extends React.Component {
           <h1>Data Visualization</h1>
         </div>
         <div className="container">
-          <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2']} yReal={['freq1', 'freq2']} x={'x'} y={'y'} scatIden={'name'} type={'column'} />
+          <ChartHousing data={this.state.data} donutDep={'name'} donutInd={'population'} yVal={['gomez', 'wong po', 'barret']} type={'donut'}/>
         </div>
-
       </div>
     );
   }
 }
 
-/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
-// <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
-// <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
-
-
-// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
-// <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
-// <button onClick={this.clickHandle}>switch the data up!</button>
-
-
-// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
-
 // <div className="container-fluid">
 //   <div className="row">
-//     <div className="col-md-4">
-//       <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.s} x={'x'} y={'y'} yVal ={['wayne', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} scatIden={'name'}/>
 //     </div>
-//     <div className="col-md-4">
-//       <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
 //     </div>
-//     <div className="col-md-4">
-//       <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-//     </div>
-//   </div>
-//   <div className="row">
-//     <div className="col-md-4">
-//       <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
-//     </div>
-//     <div className="col-md-4">
-//       <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-//     </div>
-//     <div className="col-md-4">
-//       <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'bar'} />
 //     </div>
 //   </div>
 //   <div className="row">
-//     <div className="col-md-4">
-//       <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={false}/>
 //     </div>
-//     <div className="col-md-4">
-//       <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={true} />
 //     </div>
-//     <div className="col-md-4">
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={false}/>
+//     </div>
+//   </div>
+//   <div className="row">
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={true} />
+//     </div>
+//     <div className="col-xs-4">
+//       <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger']} yReal={['usa', 'chn', 'ger']} type={'line'} />
+//     </div>
+//     <div className="col-xs-4">
 //
 //     </div>
 //   </div>

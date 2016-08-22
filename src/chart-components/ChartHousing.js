@@ -52,15 +52,15 @@ class ChartHousing extends React.Component {
     } else if (this.props.type == 'column') {
       chartType = <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />;
     } else if (this.props.type == 'donut') {
-      chartType = <DonutChart />
+      chartType = <DonutChart data={this.state.data} dep={this.props.donutDep} indy={this.props.donutInd} curr={this.state.currY} yReal={this.props.yReal} title={'This is a title'} width={500} height={500} />
     } else if (this.props.type == 'line') {
       chartType = <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />;
     } else if (this.props.type == 'scatter') {
       chartType = <ScatterPlot data={this.state.data} x={this.props.x} y={this.props.y} curr={this.state.currY} yReal={this.props.yVal} width={500} height={500} title={'Title'} iden={this.props.scatIden} />
     } else if (this.props.type == 'stackedbar') {
-      chartType = <StackedBarChart />
-    } else {
-      chartType = <StackedColumnChart />
+      chartType = <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={this.props.normalized} />
+    } else if (this.props.type == 'stackedcolumn') {
+      chartType = <StackedColumnChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={this.props.normalized} />
     }
     return (
       <div className="container-fluid">
@@ -81,5 +81,5 @@ export default ChartHousing;
 
 // <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 //
-// <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
+//
 //

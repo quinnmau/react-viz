@@ -3,10 +3,12 @@ const create = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 40};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
   const radius = Math.min(innerW, innerH) / 2;
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+
+  console.log(props.data);
 
   const donut = d3.layout.pie().sort(null).value(d => {return d[props.dep]});
 
@@ -110,7 +112,7 @@ const update = (elem, props) => {
   const margin = {left: 40, bottom: 40, right: 40, top: 40};
   const innerW = props.width - margin.left - margin.right;
   const innerH = props.height - margin.top - margin.bottom;
-  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+  const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
   const radius = Math.min(innerW, innerH) / 2;
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));

@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2'], yReal: ['freq1', 'freq2'], x: 'x', y: 'y', scatIden: 'name', type: 'column' })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.data, donutDep: 'name', donutInd: 'population', yVal: ['gomez', 'wong po', 'barret'], type: 'donut' })
 	        )
 	      );
 	    }
@@ -170,49 +170,37 @@
 	  return App;
 	}(_react2.default.Component);
 
-	/*<Card className="tile" name={'Growth'} des={'value in percent'} number={'19.1%'} data={this.state.l}/>*/
-	// <Legend data={this.state.c} width={100} height={100} dep={'name'} yVal={['freq1', 'freq2', 'freq3']} />
-	// <Card2 className="tile" name={'Distribution'} des={'value in units'} number={'709'} data={this.state.c} />
-
-
-	// <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={this.state.cYVal} title={'This is a title'} />
-	// <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
-	// <button onClick={this.clickHandle}>switch the data up!</button>
-
-
-	// <LowerDash data={this.state.c} xVal={'name'} yVal={this.state.cYVal} />
-
 	// <div className="container-fluid">
 	//   <div className="row">
-	//     <div className="col-md-4">
-	//       <DonutChart data={this.state.n} indy={'name'} dep={'population'} width={250} height={250} title={'Sales'}/>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.s} x={'x'} y={'y'} yVal ={['wayne', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} scatIden={'name'}/>
 	//     </div>
-	//     <div className="col-md-4">
-	//       <ScatterPlot data={this.state.s2} width={500} height={500} iden={'name'} xVal={'x'} yVal={'y'} title={'This is a title'} fit={true}/>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
 	//     </div>
-	//     <div className="col-md-4">
-	//       <StackedColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-	//     </div>
-	//   </div>
-	//   <div className="row">
-	//     <div className="col-md-4">
-	//       <ColumnChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} yReal={['freq1', 'freq2']}/>
-	//     </div>
-	//     <div className="col-md-4">
-	//       <StackedBarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
-	//     </div>
-	//     <div className="col-md-4">
-	//       <BarChart data={this.state.c} width={500} height={500} xVal={'name'} yVal={['freq1', 'freq2']} title={'This is a title'} />
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'bar'} />
 	//     </div>
 	//   </div>
 	//   <div className="row">
-	//     <div className="col-md-4">
-	//       <LineChart data={this.state.l} width={500} height={500} xVal={'date'} yVal={['usa', 'ger', 'chn']} title={'This is a title'} ticks={5}/>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={false}/>
 	//     </div>
-	//     <div className="col-md-4">
-	//       <BulletChart data={this.state.b} width={500} height={200} yVal={'id'} target={'target'} actual={'actual'} range={'range'} />
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={true} />
 	//     </div>
-	//     <div className="col-md-4">
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={false}/>
+	//     </div>
+	//   </div>
+	//   <div className="row">
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={true} />
+	//     </div>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger']} yReal={['usa', 'chn', 'ger']} type={'line'} />
+	//     </div>
+	//     <div className="col-xs-4">
 	//
 	//     </div>
 	//   </div>
@@ -23940,9 +23928,11 @@
 	  var margin = { left: 40, bottom: 40, right: 40, top: 40 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
+
+	  console.log(props.data);
 
 	  var donut = d3.layout.pie().sort(null).value(function (d) {
 	    return d[props.dep];
@@ -24027,7 +24017,7 @@
 	  var margin = { left: 40, bottom: 40, right: 40, top: 40 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
@@ -24439,15 +24429,15 @@
 	      } else if (this.props.type == 'column') {
 	        chartType = _react2.default.createElement(_ColumnChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, width: 500, height: 500, title: 'This is a title', yReal: this.props.yVal });
 	      } else if (this.props.type == 'donut') {
-	        chartType = _react2.default.createElement(_DonutChart2.default, null);
+	        chartType = _react2.default.createElement(_DonutChart2.default, { data: this.state.data, dep: this.props.donutDep, indy: this.props.donutInd, curr: this.state.currY, yReal: this.props.yReal, title: 'This is a title', width: 500, height: 500 });
 	      } else if (this.props.type == 'line') {
 	        chartType = _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal });
 	      } else if (this.props.type == 'scatter') {
 	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden });
 	      } else if (this.props.type == 'stackedbar') {
-	        chartType = _react2.default.createElement(_StackedBarChart2.default, null);
-	      } else {
-	        chartType = _react2.default.createElement(_StackedColumnChart2.default, null);
+	        chartType = _react2.default.createElement(_StackedBarChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: this.props.normalized });
+	      } else if (this.props.type == 'stackedcolumn') {
+	        chartType = _react2.default.createElement(_StackedColumnChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: this.props.normalized });
 	      }
 	      return _react2.default.createElement(
 	        'div',
@@ -24477,7 +24467,7 @@
 
 	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 	//
-	// <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
+	//
 	//
 
 /***/ },
