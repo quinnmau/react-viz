@@ -33,8 +33,6 @@ class ChartHousing extends React.Component {
 
   //callback function passed down to children components to change state
   _checkHandler(name, val) {
-
-    //filter currY
     let currChecks = this.state.checks;
     currChecks[name] = val;
     this.setState({checks: currChecks});
@@ -48,11 +46,27 @@ class ChartHousing extends React.Component {
   }
 
   render() {
+    let chartType;
+    if (this.props.type == 'bar') {
+      chartType = <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>;
+    } else if (this.props.type == 'column') {
+      chartType = <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />;
+    } else if (this.props.type == 'donut') {
+      chartType = <DonutChart />
+    } else if (this.props.type == 'line') {
+      chartType = <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />;
+    } else if (this.props.type == 'scatter') {
+      chartType = <ScatterPlot data={this.state.data} x={this.props.x} y={this.props.y} curr={this.state.currY} yReal={this.props.yVal} width={500} height={500} title={'Title'} iden={this.props.scatIden} />
+    } else if (this.props.type == 'stackedbar') {
+      chartType = <StackedBarChart />
+    } else {
+      chartType = <StackedColumnChart />
+    }
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-xs-9">
-            <ScatterPlot data={this.state.data} x={this.props.x} y={this.props.y} curr={this.state.currY} yReal={this.props.yVal} width={500} height={500} title={'Title'} iden={this.props.scatIden} />
+            {chartType}
           </div>
           <div className="col-xs-3">
             <LegendComp yVal={this.props.yVal} checkHandle={this._checkHandler} />
@@ -66,6 +80,6 @@ class ChartHousing extends React.Component {
 export default ChartHousing;
 
 // <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
-// <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+//
 // <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
-// <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
+//

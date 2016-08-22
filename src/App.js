@@ -43,7 +43,7 @@ class App extends React.Component {
           <h1>Data Visualization</h1>
         </div>
         <div className="container">
-          <ChartHousing data={this.state.s} yVal={['wayne', 'steve']} x={'x'} y={'y'} scatIden={'name'} />
+          <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2']} yReal={['freq1', 'freq2']} x={'x'} y={'y'} scatIden={'name'} type={'column'} />
         </div>
 
       </div>

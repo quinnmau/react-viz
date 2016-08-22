@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, yVal: ['wayne', 'steve'], x: 'x', y: 'y', scatIden: 'name' })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2'], yReal: ['freq1', 'freq2'], x: 'x', y: 'y', scatIden: 'name', type: 'column' })
 	        )
 	      );
 	    }
@@ -23052,14 +23052,14 @@
 	    return d[props.x];
 	  });
 
-	  var xScale = getXScale(innerW).domain([d3.min(newData, function (d) {
+	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
 	    return d[props.x];
-	  }), d3.max(newData, function (d) {
+	  }), d3.max(props.data, function (d) {
 	    return d[props.x];
 	  })]);
-	  var yScale = getYScale(innerH).domain([d3.min(newData, function (d) {
+	  var yScale = getYScale(innerH).domain([d3.min(props.data, function (d) {
 	    return d[props.y];
-	  }), d3.max(newData, function (d) {
+	  }), d3.max(props.data, function (d) {
 	    return d[props.y];
 	  })]);
 
@@ -23153,14 +23153,14 @@
 
 	  console.log(newData);
 
-	  var xScale = getXScale(innerW).domain([d3.min(newData, function (d) {
+	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
 	    return d[props.x];
-	  }), d3.max(newData, function (d) {
+	  }), d3.max(props.data, function (d) {
 	    return d[props.x];
 	  })]);
-	  var yScale = getYScale(innerH).domain([d3.min(newData, function (d) {
+	  var yScale = getYScale(innerH).domain([d3.min(props.data, function (d) {
 	    return d[props.y];
-	  }), d3.max(newData, function (d) {
+	  }), d3.max(props.data, function (d) {
 	    return d[props.y];
 	  })]);
 
@@ -24419,8 +24419,6 @@
 	  _createClass(ChartHousing, [{
 	    key: '_checkHandler',
 	    value: function _checkHandler(name, val) {
-
-	      //filter currY
 	      var currChecks = this.state.checks;
 	      currChecks[name] = val;
 	      this.setState({ checks: currChecks });
@@ -24435,6 +24433,22 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var chartType = void 0;
+	      if (this.props.type == 'bar') {
+	        chartType = _react2.default.createElement(_BarChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, yReal: this.props.yReal, width: 500, height: 500, title: 'This is a title' });
+	      } else if (this.props.type == 'column') {
+	        chartType = _react2.default.createElement(_ColumnChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, width: 500, height: 500, title: 'This is a title', yReal: this.props.yVal });
+	      } else if (this.props.type == 'donut') {
+	        chartType = _react2.default.createElement(_DonutChart2.default, null);
+	      } else if (this.props.type == 'line') {
+	        chartType = _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal });
+	      } else if (this.props.type == 'scatter') {
+	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden });
+	      } else if (this.props.type == 'stackedbar') {
+	        chartType = _react2.default.createElement(_StackedBarChart2.default, null);
+	      } else {
+	        chartType = _react2.default.createElement(_StackedColumnChart2.default, null);
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container-fluid' },
@@ -24444,7 +24458,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden })
+	            chartType
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -24462,9 +24476,9 @@
 	exports.default = ChartHousing;
 
 	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
-	// <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
+	//
 	// <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
-	// <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
+	//
 
 /***/ },
 /* 193 */

@@ -54,8 +54,8 @@ const create = (elem, props) => {
 
   const xMax = d3.max(newData, d => {return d[props.x]});
 
-  const xScale = getXScale(innerW).domain([d3.min(newData, d => {return d[props.x]}), d3.max(newData, d => {return d[props.x]})]);
-  const yScale = getYScale(innerH).domain([d3.min(newData, d => {return d[props.y]}), d3.max(newData, d => {return d[props.y]})]);
+  const xScale = getXScale(innerW).domain([d3.min(props.data, d => {return d[props.x]}), d3.max(props.data, d => {return d[props.x]})]);
+  const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.y]}), d3.max(props.data, d => {return d[props.y]})]);
 
   /*--------------- set axes ------------------*/
   const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
@@ -148,8 +148,8 @@ const update = (elem, props) => {
 
   console.log(newData);
 
-  const xScale = getXScale(innerW).domain([d3.min(newData, d => {return d[props.x]}), d3.max(newData, d => {return d[props.x]})]);
-  const yScale = getYScale(innerH).domain([d3.min(newData, d => {return d[props.y]}), d3.max(newData, d => {return d[props.y]})]);
+  const xScale = getXScale(innerW).domain([d3.min(props.data, d => {return d[props.x]}), d3.max(props.data, d => {return d[props.x]})]);
+  const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.y]}), d3.max(props.data, d => {return d[props.y]})]);
 
   const xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
   const yAxis = d3.svg.axis().orient('left').scale(yScale).innerTickSize(-innerW).tickPadding(10).ticks(5);
