@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'] })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, yVal: ['wayne', 'steve'], x: 'x', y: 'y', scatIden: 'name' })
 	        )
 	      );
 	    }
@@ -23000,18 +23000,37 @@
 	});
 	var create = function create(elem, props) {
 	  //global variables
-	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var margin = { left: 40, bottom: 40, right: 40, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
+	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']).domain(props.yReal);
 	  var isFit = props.fit;
 
 	  //container
 	  var cont = d3.select(elem);
 
 	  //svg
-	  var svg = cont.selectAll('svg').data([props.data]);
+
+	  //format data to make groups for the lines of best fit
+	  var groupedData = d3.nest().key(function (d) {
+	    return d[props.iden];
+	  }).entries(props.data);
+
+	  var filteredData = groupedData.filter(function (d) {
+	    return props.curr.indexOf(d.key) != -1;
+	  });
+
+	  var newData = [];
+	  filteredData.forEach(function (d) {
+	    d.values.map(function (c) {
+	      newData.push(c);
+	    });
+	  });
+
+	  console.log(newData);
+
+	  var svg = cont.selectAll('svg').data([newData]);
 
 	  //area for data points
 	  var gEnter = svg.enter().append('svg')
@@ -23028,19 +23047,20 @@
 	  gEnter.append('text').attr('class', 'title-text').text(props.title).attr('transform', 'translate(0, -25)');
 
 	  /*---------------- set scales----------------*/
-	  var xMax = d3.max(props.data, function (d) {
-	    return d[props.xVal];
+
+	  var xMax = d3.max(newData, function (d) {
+	    return d[props.x];
 	  });
 
-	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
-	    return d[props.xVal];
-	  }), d3.max(props.data, function (d) {
-	    return d[props.xVal];
+	  var xScale = getXScale(innerW).domain([d3.min(newData, function (d) {
+	    return d[props.x];
+	  }), d3.max(newData, function (d) {
+	    return d[props.x];
 	  })]);
-	  var yScale = getYScale(innerH).domain([d3.min(props.data, function (d) {
-	    return d[props.yVal];
-	  }), d3.max(props.data, function (d) {
-	    return d[props.yVal];
+	  var yScale = getYScale(innerH).domain([d3.min(newData, function (d) {
+	    return d[props.y];
+	  }), d3.max(newData, function (d) {
+	    return d[props.y];
 	  })]);
 
 	  /*--------------- set axes ------------------*/
@@ -23055,83 +23075,93 @@
 	  //re-select main area where data points go
 	  var g = svg.select('.gEnter');
 
-	  //format data to make groups for the lines of best fit
-	  var groupedData = d3.nest().key(function (d) {
-	    return d[props.iden];
-	  }).entries(props.data);
-
 	  //select all the nonexistent lines of best fit and data join them to newly formatted data
-	  var bestFit = g.selectAll('.trendline').data(groupedData);
-
-	  //append lines of best fit
-	  bestFit.enter().append('line').attr('class', function (d) {
-	    return 'trendline ' + color2(d.key);
-	  })
-	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
-	  .attr('x1', 0).attr('x2', function (d) {
-	    var max = d.values.map(function (d) {
-	      return d[props.xVal];
-	    });return xScale(d3.max(max));
-	  }).attr('y1', function (d) {
-	    var pointInfo = linearRegression(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }), d.values.map(function (d) {
-	      return d[props.yVal];
-	    }));
-	    return yScale(pointInfo.intercept);
-	  }).attr('y2', function (d) {
-	    var pointInfo = linearRegression(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }), d.values.map(function (d) {
-	      return d[props.yVal];
-	    }));
-	    var max = d3.max(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }));
-	    return yScale(max * pointInfo.slope + pointInfo.intercept);
-	  }).attr('opacity', 0);
-
-	  if (isFit) {
-	    bestFit.attr('opacity', 1);
-	  }
+	  // const bestFit = g.selectAll('.trendline').data(groupedData);
+	  //
+	  // //append lines of best fit
+	  // bestFit.enter().append('line')
+	  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
+	  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+	  //                 .attr('x1', 0)
+	  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
+	  //                 .attr('y1', d => {
+	  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+	  //                   return yScale(pointInfo.intercept);
+	  //                 })
+	  //                 .attr('y2', d => {
+	  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+	  //                   let max = d3.max(d.values.map(d => {return d[props.x]}));
+	  //                   return yScale((max * pointInfo.slope + pointInfo.intercept));
+	  //                 })
+	  //                 .attr('opacity', 0);
+	  //
+	  // if (isFit) {
+	  //   bestFit.attr('opacity', 1);
+	  // }
 
 	  //data-join cirlces
-	  var circles = g.selectAll('circle').data(props.data);
+	  var circles = g.selectAll('circle').data(newData);
 
 	  //append and transition cirlces
 	  circles.enter().append('circle').attr('cx', function (d) {
-	    return xScale(d[props.xVal]);
-	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('class', function (d) {
+	    return xScale(d[props.x]);
+	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('title', function (d) {
+	    return d[props.iden];
+	  }).attr('class', function (d) {
 	    return color(d[props.iden]);
 	  });
 
-	  circles.transition().delay(300).duration(1000).attr('opacity', 1).attr('cy', function (d) {
-	    return yScale(d[props.yVal]);
+	  circles.transition().duration(1000).attr('opacity', 1).attr('cy', function (d) {
+	    return yScale(d[props.y]);
+	  }).attr('r', 7).attr('cx', function (d) {
+	    return xScale(d[props.x]);
+	  }).attr('class', function (d) {
+	    return color(d[props.iden]);
 	  });
+
+	  circles.exit().remove();
 	};
 
 	//update
 	var update = function update(elem, props) {
-	  var margin = { left: 40, bottom: 40, right: 100, top: 75 };
+	  var margin = { left: 40, bottom: 40, right: 40, top: 75 };
 	  var innerW = props.width - margin.left - margin.right;
 	  var innerH = props.height - margin.top - margin.bottom;
-	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']);
-	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']);
+	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
+	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']).domain(props.yReal);
 	  var isFit = props.fit;
 
 	  var cont = d3.select(elem);
 
 	  var svg = cont.selectAll('svg');
 
-	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
-	    return d[props.xVal];
-	  }), d3.max(props.data, function (d) {
-	    return d[props.xVal];
+	  //format data to make groups for the lines of best fit
+	  var groupedData = d3.nest().key(function (d) {
+	    return d[props.iden];
+	  }).entries(props.data);
+
+	  var filteredData = groupedData.filter(function (d) {
+	    return props.curr.indexOf(d.key) != -1;
+	  });
+
+	  var newData = [];
+	  filteredData.forEach(function (d) {
+	    d.values.forEach(function (c) {
+	      newData.push(c);
+	    });
+	  });
+
+	  console.log(newData);
+
+	  var xScale = getXScale(innerW).domain([d3.min(newData, function (d) {
+	    return d[props.x];
+	  }), d3.max(newData, function (d) {
+	    return d[props.x];
 	  })]);
-	  var yScale = getYScale(innerH).domain([d3.min(props.data, function (d) {
-	    return d[props.yVal];
-	  }), d3.max(props.data, function (d) {
-	    return d[props.yVal];
+	  var yScale = getYScale(innerH).domain([d3.min(newData, function (d) {
+	    return d[props.y];
+	  }), d3.max(newData, function (d) {
+	    return d[props.y];
 	  })]);
 
 	  var xAxis = d3.svg.axis().orient('bottom').scale(xScale).innerTickSize(-innerH).tickPadding(10).ticks(5);
@@ -23145,59 +23175,55 @@
 	  //re-select main area where data points go
 	  var g = svg.select('.gEnter');
 
-	  //format data to make groups for the lines of best fit
-	  var groupedData = d3.nest().key(function (d) {
-	    return d[props.iden];
-	  }).entries(props.data);
+	  // //select all the nonexistent lines of best fit and data join them to newly formatted data
+	  // const bestFit = g.selectAll('.trendline').data(groupedData);
+	  //
+	  // bestFit.exit().remove();
+	  //
+	  // //transition lines of best fit
+	  // bestFit.enter().append('line')
+	  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
+	  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+	  //                 .attr('x1', 0)
+	  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
+	  //                 .attr('y1', innerH)
+	  //                 .attr('y2', innerH)
+	  //                 .attr('opacity', 0);
+	  //
+	  // bestFit.transition().duration(1000)
+	  //             .attr('y1', d => {
+	  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+	  //               return yScale(pointInfo.intercept);
+	  //             })
+	  //             .attr('y2', d => {
+	  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+	  //               let max = d3.max(d.values.map(d => {return d[props.x]}));
+	  //               return yScale((max * pointInfo.slope + pointInfo.intercept));
+	  //             })
+	  //             .attr('opacity', 1);
 
-	  //select all the nonexistent lines of best fit and data join them to newly formatted data
-	  var bestFit = g.selectAll('.trendline').data(groupedData);
-
-	  bestFit.exit().remove();
-
-	  //transition lines of best fit
-	  bestFit.enter().append('line').attr('class', function (d) {
-	    return 'trendline ' + color2(d.key);
-	  })
-	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.xVal]}); return xScale(d3.min(max))})
-	  .attr('x1', 0).attr('x2', function (d) {
-	    var max = d.values.map(function (d) {
-	      return d[props.xVal];
-	    });return xScale(d3.max(max));
-	  }).attr('y1', innerH).attr('y2', innerH).attr('opacity', 0);
-
-	  bestFit.transition().duration(1000).attr('y1', function (d) {
-	    var pointInfo = linearRegression(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }), d.values.map(function (d) {
-	      return d[props.yVal];
-	    }));
-	    return yScale(pointInfo.intercept);
-	  }).attr('y2', function (d) {
-	    var pointInfo = linearRegression(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }), d.values.map(function (d) {
-	      return d[props.yVal];
-	    }));
-	    var max = d3.max(d.values.map(function (d) {
-	      return d[props.xVal];
-	    }));
-	    return yScale(max * pointInfo.slope + pointInfo.intercept);
-	  }).attr('opacity', 1);
 	  //data-join cirlces
-	  var circles = g.selectAll('circle').data(props.data);
+	  var circles = g.selectAll('circle').data(newData);
 
 	  circles.exit().remove();
 
 	  //append and transition cirlces
 	  circles.enter().append('circle').attr('cx', function (d) {
-	    return xScale(d[props.xVal]);
-	  }).attr('cy', innerH).attr('r', 7).attr('opacity', 0).attr('filter', 'blur(10px)').attr('class', function (d) {
+	    return xScale(d[props.x]);
+	  }).attr('cy', innerH).attr('r', 7).attr('title', function (d) {
+	    return d[props.iden];
+	  }).attr('class', function (d) {
 	    return color(d[props.iden]);
 	  });
 
-	  circles.transition().delay(300).duration(1000).attr('opacity', 1).attr('cy', function (d) {
-	    return yScale(d[props.yVal]);
+	  circles.transition().duration(0).attr('cx', function (d) {
+	    return xScale(d[props.x]);
+	  }).attr('cy', function (d) {
+	    return yScale(d[props.y]);
+	  }).attr('r', 7);
+
+	  circles.attr('class', function (d) {
+	    return color(d[props.iden]);
 	  });
 	};
 
@@ -24341,6 +24367,10 @@
 
 	var _StackedColumnChart2 = _interopRequireDefault(_StackedColumnChart);
 
+	var _ScatterPlot = __webpack_require__(178);
+
+	var _ScatterPlot2 = _interopRequireDefault(_ScatterPlot);
+
 	var _LegendComp = __webpack_require__(193);
 
 	var _LegendComp2 = _interopRequireDefault(_LegendComp);
@@ -24374,6 +24404,7 @@
 	      currY: []
 	    };
 
+	    //yVal is an array where each item in array is a series of the data
 	    props.yVal.forEach(function (d) {
 	      //push an object containing check id and its state (checked vs unchecked)
 	      _this.state.checks[d] = true;
@@ -24413,7 +24444,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-xs-9' },
-	            _react2.default.createElement(_StackedBarChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: false })
+	            _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -24432,7 +24463,7 @@
 
 	// <ColumnChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} width={500} height={500} title={'This is a title'} yReal={this.props.yVal} />
 	// <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />
-
+	// <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={false}/>
 	// <BarChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} yReal={this.props.yReal} width={500} height={500} title={'This is a title'}/>
 
 /***/ },
