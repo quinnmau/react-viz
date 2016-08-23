@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.data, donutDep: 'name', donutInd: 'population', yVal: ['gomez', 'wong po', 'barret'], type: 'donut' })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.n, donutDep: 'population', donutInd: 'name', yVal: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], type: 'donut' })
 	        )
 	      );
 	    }
@@ -23932,7 +23932,35 @@
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
-	  console.log(props.data);
+	  var groupedData = d3.nest().key(function (d) {
+	    return d[props.indy];
+	  }).entries(props.data);
+
+	  //format data
+	  var total = 0;
+	  groupedData.forEach(function (d) {
+	    total += d.values[0][props.dep];
+	  });
+	  groupedData.total = total;
+
+	  var filteredData = groupedData.filter(function (d) {
+	    return props.curr.indexOf(d.key) != -1;
+	  });
+
+	  var newData = [];
+	  filteredData.forEach(function (d) {
+	    d.values.map(function (c) {
+	      newData.push(c);
+	    });
+	  });
+
+	  var total2 = 0;
+	  newData.forEach(function (d) {
+	    total2 += d[props.dep];
+	  });
+	  newData.total = total2;
+
+	  console.log(newData);
 
 	  var donut = d3.layout.pie().sort(null).value(function (d) {
 	    return d[props.dep];
@@ -23940,7 +23968,7 @@
 
 	  var cont = d3.select(elem);
 
-	  var svg = cont.selectAll('svg').data([props.data]);
+	  var svg = cont.selectAll('svg').data([newData]);
 
 	  //svg for the donut
 	  var gEnter = svg.enter().append('svg')
@@ -23963,17 +23991,14 @@
 
 	  textGroup.append('text').attr('class', 'h3 small-num').attr('dy', '2em').style('font-size', innerW * 0.0575);
 
-	  //format data
-	  var total = 0;
-	  props.data.forEach(function (d) {
-	    total += d[props.dep];
-	  });
-	  props.data.total = total;
-
 	  var cover2 = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
 
+	  newData.forEach(function (d) {
+	    return type(d);
+	  });
+
 	  //actual arcs
-	  var arcs = gEnter.selectAll('path').data(donut(props.data)).enter().append('path').attr('d', arc).attr('class', function (d) {
+	  var arcs = gEnter.selectAll('path').data(donut(newData)).enter().append('path').attr('d', arc).attr('class', function (d) {
 	    return color(d.data[props.indy]);
 	  }).each(function (d) {
 	    this._current = d;
@@ -23982,10 +24007,9 @@
 	  var first = d3.select('.blue').transition().duration(500).attr('d', cover2);
 
 	  var format = d3.format('%');
-	  console.log(props.data);
 
-	  gEnter.select('.big-num').text(format(props.data[0][props.dep] / props.data.total));
-	  gEnter.select('.small-num').text(props.data[0][props.indy]);
+	  gEnter.select('.big-num').text(format(newData[0][props.dep] / newData.total));
+	  gEnter.select('.small-num').text(newData[0][props.indy]);
 
 	  //Enlarge arc size on mouseover
 	  arcs.on('mouseover', function (d) {
@@ -23997,7 +24021,7 @@
 
 	    var format = d3.format('%');
 
-	    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
+	    g.select('.big-num').text(format(d.data[props.dep] / newData.total));
 	    g.select('.small-num').text(d.data[props.indy]);
 	  });
 
@@ -24010,6 +24034,12 @@
 	    g.select('.big-num').text('');
 	    g.select('.small-num').text('');
 	  });
+
+	  function type(d) {
+	    console.log(d[props.dep]);
+	    d[props.dep] = +d[props.dep] || 0;
+	    return d;
+	  }
 	};
 
 	//UPDATE
@@ -24021,11 +24051,39 @@
 	  var radius = Math.min(innerW, innerH) / 2;
 	  var arc = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
+	  var groupedData = d3.nest().key(function (d) {
+	    return d[props.indy];
+	  }).entries(props.data);
+
+	  //format data
 	  var total = 0;
-	  props.data.forEach(function (d) {
-	    total += d[props.dep];
+	  groupedData.forEach(function (d) {
+	    total += d.values[0][props.dep];
 	  });
-	  props.data.total = total;
+	  groupedData.total = total;
+
+	  var filteredData = groupedData.filter(function (d) {
+	    return props.curr.indexOf(d.key) != -1;
+	  });
+
+	  var newData = [];
+	  filteredData.forEach(function (d) {
+	    d.values.map(function (c) {
+	      newData.push(c);
+	    });
+	  });
+
+	  newData.forEach(function (d) {
+	    return type(d);
+	  });
+
+	  var total2 = 0;
+	  newData.forEach(function (d) {
+	    total2 += d[props.dep];
+	  });
+	  newData.total = total2;
+
+	  console.log(newData);
 
 	  var cont = d3.select(elem);
 
@@ -24037,7 +24095,7 @@
 	    return d[props.dep];
 	  });
 
-	  var paths = g.selectAll('path').data(donut(props.data));
+	  var paths = g.selectAll('path').data(donut(newData));
 
 	  paths.transition().duration(750).attrTween("d", arcTween);
 
@@ -24049,6 +24107,12 @@
 	      return arc(i(t));
 	    };
 	  };
+
+	  function type(d) {
+	    console.log(d[props.dep]);
+	    d[props.dep] = +d[props.dep] || 0;
+	    return d;
+	  }
 	};
 
 	exports.create = create;

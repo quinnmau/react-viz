@@ -8,13 +8,39 @@ const create = (elem, props) => {
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
-  console.log(props.data);
+  let groupedData = d3.nest().key(d => {return d[props.indy]}).entries(props.data);
+
+  //format data
+  let total = 0;
+  groupedData.forEach(d => {
+    total += d.values[0][props.dep];
+  });
+  groupedData.total = total;
+
+  let filteredData = groupedData.filter(d => {
+    return props.curr.indexOf(d.key) != -1;
+  });
+
+  let newData = [];
+  filteredData.forEach(d => {
+    d.values.map(c => {
+      newData.push(c);
+    });
+  });
+
+  let total2 = 0;
+  newData.forEach(d => {
+    total2 += d[props.dep];
+  });
+  newData.total = total2;
+
+  console.log(newData);
 
   const donut = d3.layout.pie().sort(null).value(d => {return d[props.dep]});
 
   const cont = d3.select(elem);
 
-  const svg = cont.selectAll('svg').data([props.data]);
+  const svg = cont.selectAll('svg').data([newData]);
 
   //svg for the donut
   const gEnter = svg.enter().append('svg')
@@ -48,32 +74,29 @@ const create = (elem, props) => {
                           .attr('dy', '2em')
                           .style('font-size', innerW * 0.0575);
 
-  //format data
-  let total = 0;
-  props.data.forEach(d => {
-    total += d[props.dep];
-  });
-  props.data.total = total;
-
   const cover2 = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
+  newData.forEach(d => {
+    return type(d);
+  });
+
   //actual arcs
-  const arcs = gEnter.selectAll('path').data(donut(props.data))
+  const arcs = gEnter.selectAll('path').data(donut(newData))
         .enter().append('path')
         .attr('d', arc)
         .attr('class', d => {return color(d.data[props.indy])})
         .each(function(d) {this._current = d});
 
+
+
   const first = d3.select('.blue').transition().duration(500)
                   .attr('d', cover2);
 
   let format = d3.format('%');
-  console.log(props.data);
 
-
-  gEnter.select('.big-num').text(format(props.data[0][props.dep] / props.data.total));
-  gEnter.select('.small-num').text(props.data[0][props.indy]);
+  gEnter.select('.big-num').text(format(newData[0][props.dep] / newData.total));
+  gEnter.select('.small-num').text(newData[0][props.indy]);
 
   //Enlarge arc size on mouseover
   arcs.on('mouseover', function(d) {
@@ -88,7 +111,7 @@ const create = (elem, props) => {
 
     let format = d3.format('%');
 
-    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
+    g.select('.big-num').text(format(d.data[props.dep] / newData.total));
     g.select('.small-num').text(d.data[props.indy]);
   });
 
@@ -105,6 +128,12 @@ const create = (elem, props) => {
     g.select('.small-num').text('');
   });
 
+  function type(d) {
+    console.log(d[props.dep]);
+    d[props.dep] = +d[props.dep] || 0;
+    return d;
+  }
+
 }
 
 //UPDATE
@@ -117,11 +146,37 @@ const update = (elem, props) => {
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
+  let groupedData = d3.nest().key(d => {return d[props.indy]}).entries(props.data);
+
+  //format data
   let total = 0;
-  props.data.forEach(d => {
-    total += d[props.dep];
+  groupedData.forEach(d => {
+    total += d.values[0][props.dep];
   });
-  props.data.total = total;
+  groupedData.total = total;
+
+  let filteredData = groupedData.filter(d => {
+    return props.curr.indexOf(d.key) != -1;
+  });
+
+  let newData = [];
+  filteredData.forEach(d => {
+    d.values.map(c => {
+      newData.push(c);
+    });
+  });
+
+  newData.forEach(d => {
+    return type(d);
+  })
+
+  let total2 = 0;
+  newData.forEach(d => {
+    total2 += d[props.dep];
+  });
+  newData.total = total2;
+
+  console.log(newData);
 
   const cont = d3.select(elem);
 
@@ -131,7 +186,7 @@ const update = (elem, props) => {
 
   const donut = d3.layout.pie().sort(null).value(d => {return d[props.dep]});
 
-  const paths = g.selectAll('path').data(donut(props.data));
+  const paths = g.selectAll('path').data(donut(newData));
 
   paths.transition().duration(750).attrTween("d", arcTween);
 
@@ -143,6 +198,12 @@ const update = (elem, props) => {
       return arc(i(t));
     };
   };
+
+  function type(d) {
+    console.log(d[props.dep]);
+    d[props.dep] = +d[props.dep] || 0;
+    return d;
+  }
 }
 
 export {create, update};
