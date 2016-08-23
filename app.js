@@ -23963,9 +23963,12 @@
 	  // });
 	  //
 	  // console.log(newData);
+	  var total = 0;
 	  props.data.forEach(function (d) {
 	    d.real = d[props.dep];
+	    total += d[props.dep];
 	  });
+	  props.data.total = total;
 
 	  console.log(props.data);
 
@@ -24011,38 +24014,32 @@
 
 	  var format = d3.format('%');
 
-	  // gEnter.select('.big-num').text(format(newData[0][props.dep] / newData.total));
-	  // gEnter.select('.small-num').text(newData[0][props.indy]);
+	  gEnter.select('.big-num').text(format(props.data[0][props.dep] / props.data.total));
+	  gEnter.select('.small-num').text(props.data[0][props.indy]);
 
-	  //Enlarge arc size on mouseover
-	  // arcs.on('mouseover', function(d) {
-	  //   const fir = d3.select('.blue').transition().duration(500)
-	  //         .attr('d', arc);
-	  //
-	  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
-	  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
-	  //
-	  //   const curr = d3.select(this).transition().duration(500)
-	  //           .attr('d', cover);
-	  //
-	  //   let format = d3.format('%');
-	  //
-	  //   g.select('.big-num').text(format(d.data[props.dep] / newData.total));
-	  //   g.select('.small-num').text(d.data[props.indy]);
-	  // });
-	  //
-	  // //make size normal when mouse leaves arc
-	  // arcs.on('mouseout', function() {
-	  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
-	  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
-	  //
-	  //   const curr = d3.select(this)
-	  //                   .transition().duration(500)
-	  //                   .attr('d', cover);
-	  //
-	  //   g.select('.big-num').text('');
-	  //   g.select('.small-num').text('');
-	  // });
+	  // Enlarge arc size on mouseover
+	  arcs.on('mouseover', function (d) {
+	    var fir = d3.select('.blue').transition().duration(500).attr('d', arc);
+
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
+
+	    var format = d3.format('%');
+
+	    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
+	    g.select('.small-num').text(d.data[props.indy]);
+	  });
+
+	  //make size normal when mouse leaves arc
+	  arcs.on('mouseout', function () {
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
+
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
+
+	    g.select('.big-num').text('');
+	    g.select('.small-num').text('');
+	  });
 	};
 
 	//UPDATE
@@ -24073,6 +24070,12 @@
 	    });
 	  });
 
+	  var total = 0;
+	  newData.forEach(function (d) {
+	    total += d[props.dep];
+	  });
+	  newData.total = total;
+
 	  console.log(newData);
 
 	  var cont = d3.select(elem);
@@ -24086,6 +24089,29 @@
 	  });
 
 	  var paths = g.selectAll('path').data(donut(newData));
+
+	  paths.on('mouseover', function (d) {
+	    var fir = d3.select('.blue').transition().duration(500).attr('d', arc);
+
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
+
+	    var format = d3.format('%');
+
+	    g.select('.big-num').text(format(d.data[props.dep] / newData.total));
+	    g.select('.small-num').text(d.data[props.indy]);
+	  });
+
+	  //make size normal when mouse leaves arc
+	  paths.on('mouseout', function () {
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
+
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
+
+	    g.select('.big-num').text('');
+	    g.select('.small-num').text('');
+	  });
 
 	  paths.transition().duration(750).attrTween("d", arcTween);
 
