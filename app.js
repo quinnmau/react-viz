@@ -160,8 +160,64 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, x: 'x', y: 'y', scatIden: 'name', yVal: ['wayne', 'steve'], fit: true, type: 'scatter' })
+	          { className: 'container-fluid' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, x: 'x', y: 'y', yVal: ['wayne', 'steve'], yReal: ['wayne', 'steve'], type: 'scatter', fit: true, scatIden: 'name' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'column' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'bar' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'stackedbar', normalized: false })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'stackedbar', normalized: true })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'stackedcolumn', normalized: false })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'stackedcolumn', normalized: true })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.l, xVal: 'date', yVal: ['usa', 'chn', 'ger'], yReal: ['usa', 'chn', 'ger'], type: 'line' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-4' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.n, donutDep: 'population', donutInd: 'name', yVal: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], type: 'donut' })
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -169,43 +225,6 @@
 
 	  return App;
 	}(_react2.default.Component);
-
-	// <div className="container-fluid">
-	//   <div className="row">
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.s} x={'x'} y={'y'} yVal ={['wayne', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} scatIden={'name'}/>
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'bar'} />
-	//     </div>
-	//   </div>
-	//   <div className="row">
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={false}/>
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={true} />
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={false}/>
-	//     </div>
-	//   </div>
-	//   <div className="row">
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={true} />
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger']} yReal={['usa', 'chn', 'ger']} type={'line'} />
-	//     </div>
-	//     <div className="col-xs-4">
-	//
-	//     </div>
-	//   </div>
-	// </div>
-
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
