@@ -161,7 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.n, donutDep: 'population', donutInd: 'name', yVal: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], type: 'donut' })
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, x: 'x', y: 'y', scatIden: 'name', yVal: ['wayne', 'steve'], fit: true, type: 'scatter' })
 	        )
 	      );
 	    }
@@ -22994,6 +22994,7 @@
 	  var color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
 	  var color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']).domain(props.yReal);
 	  var isFit = props.fit;
+	  console.log(isFit);
 
 	  //container
 	  var cont = d3.select(elem);
@@ -23015,8 +23016,6 @@
 	      newData.push(c);
 	    });
 	  });
-
-	  console.log(newData);
 
 	  var svg = cont.selectAll('svg').data([newData]);
 
@@ -23064,28 +23063,40 @@
 	  var g = svg.select('.gEnter');
 
 	  //select all the nonexistent lines of best fit and data join them to newly formatted data
-	  // const bestFit = g.selectAll('.trendline').data(groupedData);
-	  //
-	  // //append lines of best fit
-	  // bestFit.enter().append('line')
-	  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
-	  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
-	  //                 .attr('x1', 0)
-	  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
-	  //                 .attr('y1', d => {
-	  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-	  //                   return yScale(pointInfo.intercept);
-	  //                 })
-	  //                 .attr('y2', d => {
-	  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-	  //                   let max = d3.max(d.values.map(d => {return d[props.x]}));
-	  //                   return yScale((max * pointInfo.slope + pointInfo.intercept));
-	  //                 })
-	  //                 .attr('opacity', 0);
-	  //
-	  // if (isFit) {
-	  //   bestFit.attr('opacity', 1);
-	  // }
+	  var bestFit = g.selectAll('.trendline').data(groupedData);
+
+	  //append lines of best fit
+	  bestFit.enter().append('line').attr('class', function (d) {
+	    return 'trendline ' + color2(d.key);
+	  })
+	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+	  .attr('x1', 0).attr('x2', function (d) {
+	    var max = d.values.map(function (d) {
+	      return d[props.x];
+	    });return xScale(d3.max(max));
+	  }).attr('y1', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.x];
+	    }), d.values.map(function (d) {
+	      return d[props.y];
+	    }));
+	    return yScale(pointInfo.intercept);
+	  }).attr('y2', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.x];
+	    }), d.values.map(function (d) {
+	      return d[props.y];
+	    }));
+	    var max = d3.max(d.values.map(function (d) {
+	      return d[props.x];
+	    }));
+	    return yScale(max * pointInfo.slope + pointInfo.intercept);
+	  }).style('opacity', function () {
+	    if (isFit) {
+	      return 1;
+	    }
+	    return 0;
+	  });
 
 	  //data-join cirlces
 	  var circles = g.selectAll('circle').data(newData);
@@ -23139,8 +23150,6 @@
 	    });
 	  });
 
-	  console.log(newData);
-
 	  var xScale = getXScale(innerW).domain([d3.min(props.data, function (d) {
 	    return d[props.x];
 	  }), d3.max(props.data, function (d) {
@@ -23164,31 +23173,46 @@
 	  var g = svg.select('.gEnter');
 
 	  // //select all the nonexistent lines of best fit and data join them to newly formatted data
-	  // const bestFit = g.selectAll('.trendline').data(groupedData);
-	  //
-	  // bestFit.exit().remove();
-	  //
-	  // //transition lines of best fit
-	  // bestFit.enter().append('line')
-	  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
-	  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
-	  //                 .attr('x1', 0)
-	  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
-	  //                 .attr('y1', innerH)
-	  //                 .attr('y2', innerH)
-	  //                 .attr('opacity', 0);
-	  //
-	  // bestFit.transition().duration(1000)
-	  //             .attr('y1', d => {
-	  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-	  //               return yScale(pointInfo.intercept);
-	  //             })
-	  //             .attr('y2', d => {
-	  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-	  //               let max = d3.max(d.values.map(d => {return d[props.x]}));
-	  //               return yScale((max * pointInfo.slope + pointInfo.intercept));
-	  //             })
-	  //             .attr('opacity', 1);
+	  var bestFit = g.selectAll('.trendline').data(filteredData);
+
+	  bestFit.exit().remove();
+
+	  //transition lines of best fit
+	  bestFit.enter().append('line').attr('class', function (d) {
+	    return 'trendline ' + color2(d.key);
+	  })
+	  // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+	  .attr('x1', 0).attr('x2', function (d) {
+	    var max = d.values.map(function (d) {
+	      return d[props.x];
+	    });return xScale(d3.max(max));
+	  }).attr('y1', innerH).attr('y2', innerH).attr('opacity', 0);
+
+	  bestFit.transition().duration(0).attr('y1', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.x];
+	    }), d.values.map(function (d) {
+	      return d[props.y];
+	    }));
+	    return yScale(pointInfo.intercept);
+	  }).attr('y2', function (d) {
+	    var pointInfo = linearRegression(d.values.map(function (d) {
+	      return d[props.x];
+	    }), d.values.map(function (d) {
+	      return d[props.y];
+	    }));
+	    var max = d3.max(d.values.map(function (d) {
+	      return d[props.x];
+	    }));
+	    return yScale(max * pointInfo.slope + pointInfo.intercept);
+	  }).attr('opacity', function () {
+	    if (isFit) {
+	      return 1;
+	    }
+	    return 0;
+	  }).attr('class', function (d) {
+	    return 'trendline ' + color2(d.key);
+	  });
 
 	  //data-join cirlces
 	  var circles = g.selectAll('circle').data(newData);
@@ -24506,7 +24530,7 @@
 	      } else if (this.props.type == 'line') {
 	        chartType = _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal });
 	      } else if (this.props.type == 'scatter') {
-	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden });
+	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden, fit: this.props.fit });
 	      } else if (this.props.type == 'stackedbar') {
 	        chartType = _react2.default.createElement(_StackedBarChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: this.props.normalized });
 	      } else if (this.props.type == 'stackedcolumn') {

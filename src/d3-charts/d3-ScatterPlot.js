@@ -6,6 +6,7 @@ const create = (elem, props) => {
   const color = d3.scale.ordinal().range(['blue', 'orange', 'teal', 'purple', 'green', 'brown']).domain(props.yReal);
   const color2 = d3.scale.ordinal().range(['trendline-blue', 'trendline-orange', 'trendline-teal', 'trendline-purple', 'trendline-green', 'trendline-brown']).domain(props.yReal);
   const isFit = props.fit;
+  console.log(isFit);
 
   //container
   const cont = d3.select(elem);
@@ -25,8 +26,6 @@ const create = (elem, props) => {
       newData.push(c);
     });
   });
-
-  console.log(newData);
 
   const svg = cont.selectAll('svg').data([newData]);
 
@@ -74,28 +73,29 @@ const create = (elem, props) => {
 
 
   //select all the nonexistent lines of best fit and data join them to newly formatted data
-  // const bestFit = g.selectAll('.trendline').data(groupedData);
-  //
-  // //append lines of best fit
-  // bestFit.enter().append('line')
-  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
-  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
-  //                 .attr('x1', 0)
-  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
-  //                 .attr('y1', d => {
-  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-  //                   return yScale(pointInfo.intercept);
-  //                 })
-  //                 .attr('y2', d => {
-  //                   let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-  //                   let max = d3.max(d.values.map(d => {return d[props.x]}));
-  //                   return yScale((max * pointInfo.slope + pointInfo.intercept));
-  //                 })
-  //                 .attr('opacity', 0);
-  //
-  // if (isFit) {
-  //   bestFit.attr('opacity', 1);
-  // }
+  const bestFit = g.selectAll('.trendline').data(groupedData);
+
+  //append lines of best fit
+  bestFit.enter().append('line')
+                  .attr('class', d => {return 'trendline ' + color2(d.key)})
+                  // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+                  .attr('x1', 0)
+                  .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
+                  .attr('y1', d => {
+                    let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+                    return yScale(pointInfo.intercept);
+                  })
+                  .attr('y2', d => {
+                    let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+                    let max = d3.max(d.values.map(d => {return d[props.x]}));
+                    return yScale((max * pointInfo.slope + pointInfo.intercept));
+                  })
+                  .style('opacity', () => {
+                    if (isFit) {
+                      return 1;
+                    }
+                    return 0;
+                  });
 
   //data-join cirlces
   const circles = g.selectAll('circle').data(newData);
@@ -146,8 +146,6 @@ const update = (elem, props) => {
     });
   });
 
-  console.log(newData);
-
   const xScale = getXScale(innerW).domain([d3.min(props.data, d => {return d[props.x]}), d3.max(props.data, d => {return d[props.x]})]);
   const yScale = getYScale(innerH).domain([d3.min(props.data, d => {return d[props.y]}), d3.max(props.data, d => {return d[props.y]})]);
 
@@ -166,31 +164,37 @@ const update = (elem, props) => {
 
 
   // //select all the nonexistent lines of best fit and data join them to newly formatted data
-  // const bestFit = g.selectAll('.trendline').data(groupedData);
-  //
-  // bestFit.exit().remove();
-  //
-  // //transition lines of best fit
-  // bestFit.enter().append('line')
-  //                 .attr('class', d => {return 'trendline ' + color2(d.key)})
-  //                 // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
-  //                 .attr('x1', 0)
-  //                 .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
-  //                 .attr('y1', innerH)
-  //                 .attr('y2', innerH)
-  //                 .attr('opacity', 0);
-  //
-  // bestFit.transition().duration(1000)
-  //             .attr('y1', d => {
-  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-  //               return yScale(pointInfo.intercept);
-  //             })
-  //             .attr('y2', d => {
-  //               let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-  //               let max = d3.max(d.values.map(d => {return d[props.x]}));
-  //               return yScale((max * pointInfo.slope + pointInfo.intercept));
-  //             })
-  //             .attr('opacity', 1);
+  const bestFit = g.selectAll('.trendline').data(filteredData);
+
+  bestFit.exit().remove();
+
+  //transition lines of best fit
+  bestFit.enter().append('line')
+                  .attr('class', d => {return 'trendline ' + color2(d.key)})
+                  // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
+                  .attr('x1', 0)
+                  .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
+                  .attr('y1', innerH)
+                  .attr('y2', innerH)
+                  .attr('opacity', 0);
+
+  bestFit.transition().duration(0)
+              .attr('y1', d => {
+                let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+                return yScale(pointInfo.intercept);
+              })
+              .attr('y2', d => {
+                let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+                let max = d3.max(d.values.map(d => {return d[props.x]}));
+                return yScale((max * pointInfo.slope + pointInfo.intercept));
+              })
+              .attr('opacity', () => {
+                if (isFit) {
+                  return 1;
+                }
+                return 0;
+              })
+              .attr('class', d => {return 'trendline ' + color2(d.key)});
 
   //data-join cirlces
   const circles = g.selectAll('circle').data(newData);
