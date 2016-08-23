@@ -4,7 +4,7 @@ import Checkbox from './Checkbox';
 const LegendItem = (props) =>
   <div>
     <Checkbox currClass={props.currClass} value={props.value} checkHandle={props.checkHandle}/>
-    <span>{props.value}</span>
+    <span className="legend-label">{props.value}</span>
   </div>
 
 export default LegendItem;

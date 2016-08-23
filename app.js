@@ -24673,7 +24673,7 @@
 	    _react2.default.createElement(_Checkbox2.default, { currClass: props.currClass, value: props.value, checkHandle: props.checkHandle }),
 	    _react2.default.createElement(
 	      'span',
-	      null,
+	      { className: 'legend-label' },
 	      props.value
 	    )
 	  );

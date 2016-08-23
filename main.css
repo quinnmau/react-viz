@@ -4,7 +4,7 @@
 }
 
 .axis line {
-  stroke: #CED2D4;
+  stroke: #CED3D6;
   stroke-width: 2px;
   fill: none;
 }
@@ -12,22 +12,23 @@
 .axis text {
   font-family: "Proxima Nova Light";
   stroke: none;
-  fill: #9ca7ac;
+  fill: #7C7B7A;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 24px;
   stroke: none;
-  fill: #9ca7ac;
+  fill: #7C7B7A;
+  font-family: "Proxima Nova Light";
 }
 
 .legend-text {
   stroke: none;
-  fill: #9ca7ac;
+  fill: #7C7B7A;
 }
 
 .blue {
-  fill: #2975e9;
+  fill: #297DFD;
 }
 
 .orange {
@@ -35,11 +36,11 @@
 }
 
 .teal {
-  fill: #3ed6cf;
+  fill: #37D6CC;
 }
 
 .purple {
-  fill: #b35cff;
+  fill: #995BB5;
 }
 
 .green {
@@ -76,15 +77,16 @@
 
 .title-text {
   font-family: "Proxima Nova Light";
-  font-size: 16px;
+  font-size: 24px;
   stroke: none;
-  fill: #9ca7ac;
+  fill: #3A4F5A;
 }
 
 .label-text {
   font-family: "Proxima Nova Light";
   stroke: none;
-  fill: #9ca7ac;
+  fill: #7C7B7A;
+  font-size: 10px;
 }
 
 .checkbox-blue {
@@ -143,6 +145,13 @@
   margin-top: 50%;
 }
 
+.legend-label {
+  font-family: "Proxima Nova Light";
+  font-size: 10px;
+  stroke: none;
+  fill: #7C7B7A;
+}
+
 .a-path, .connectors {
   stroke-width: 2px;
 }
@@ -156,7 +165,7 @@
 }
 
 .circle-blue, .line-blue {
-  stroke: #2975e9;
+  stroke: #297DFD;
 }
 
 .circle-orange, .line-orange {
@@ -164,11 +173,11 @@
 }
 
 .circle-teal, .line-teal {
-  stroke: #3ed6cf;
+  stroke: #37D6CC;
 }
 
 .circle-purple, .line-purple {
-  stroke: #b35cff;
+  stroke: #995BB5;
 }
 
 .circle-green, .line-green {
@@ -180,14 +189,14 @@
 }
 
 .x-bullet {
-  stroke: #CED2D4;
+  stroke: #CED3D6;
   stroke-width: 2px;
   fill: none;
 }
 
 .x-bullet text {
   stroke: none;
-  fill: #9ca7ac;
+  fill: #7C7B7A;
 }
 
 .trendline-blue, .trendline-orange, .trendline-teal, .trendline-purple, .trendline-green, .trendline-brown {
@@ -196,7 +205,7 @@
 }
 
 .trendline-blue {
-  stroke: #2975e9;
+  stroke: #297DFD;
 }
 
 .trendline-orange {
@@ -204,11 +213,11 @@
 }
 
 .trendline-teal {
-  stroke: #3ed6cf;
+  stroke: #37D6CC;
 }
 
 .trendline-purple {
-  stroke: #b35cff;
+  stroke: #995BB5;
 }
 
 .trendline-green {

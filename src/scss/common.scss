@@ -20,9 +20,10 @@
 }
 
 .title {
-  font-size: 28px;
+  font-size: 24px;
   stroke: none;
   fill: $gridline-text-grey;
+  font-family: "Proxima Nova Light";
 }
 
 .legend-text {
@@ -80,13 +81,14 @@
 
 .title-text {
   font-family: "Proxima Nova Light";
-  font-size: 16px;
+  font-size: 24px;
   stroke: none;
-  fill: $gridline-text-grey;
+  fill: $title-grey;
 }
 
 .label-text {
   font-family: "Proxima Nova Light";
   stroke: none;
   fill: $gridline-text-grey;
+  font-size: 10px;
 }

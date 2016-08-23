@@ -53,3 +53,10 @@
 .legend-console {
   margin-top: 50%;
 }
+
+.legend-label {
+  font-family: "Proxima Nova Light";
+  font-size: 10px;
+  stroke: none;
+  fill: $gridline-text-grey;
+}
