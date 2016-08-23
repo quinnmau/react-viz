@@ -161,6 +161,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
+	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.s, x: 'x', y: 'y', yVal: ['wayne', 'steve'], yReal: ['wayne', 'steve'], type: 'scatter', scatIden: 'name' }),
 	          _react2.default.createElement(_ChartHousing2.default, { data: this.state.n, donutDep: 'population', donutInd: 'name', yVal: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], type: 'donut' })
 	        )
 	      );

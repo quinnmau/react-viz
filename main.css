@@ -87,24 +87,48 @@
   fill: #9ca7ac;
 }
 
+.checkbox-blue {
+  background-image: url("src/svg/checkbox-blue-unchecked.svg") !important;
+}
+
 .checkbox-blue:checked {
   background-image: url("src/svg/checkbox-blue.svg") !important;
+}
+
+.checkbox-orange {
+  background-image: url("src/svg/checkbox-orange-unchecked.svg") !important;
 }
 
 .checkbox-orange:checked {
   background-image: url("src/svg/checkbox-orange.svg") !important;
 }
 
+.checkbox-teal {
+  background-image: url("src/svg/checkbox-teal-unchecked.svg") !important;
+}
+
 .checkbox-teal:checked {
   background-image: url("src/svg/checkbox-teal.svg") !important;
+}
+
+.checkbox-purple {
+  background-image: url("src/svg/checkbox-purple-unchecked.svg") !important;
 }
 
 .checkbox-purple:checked {
   background-image: url("src/svg/checkbox-purple.svg") !important;
 }
 
+.checkbox-green {
+  background-image: url("src/svg/checkbox-green-unchecked.svg") !important;
+}
+
 .checkbox-green:checked {
   background-image: url("src/svg/checkbox-green.svg") !important;
+}
+
+.checkbox-brown {
+  background-image: url("src/svg/checkbox-brown-unchecked.svg") !important;
 }
 
 .checkbox-brown:checked {
