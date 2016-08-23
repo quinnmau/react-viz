@@ -8,39 +8,48 @@ const create = (elem, props) => {
   const arc = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
-  let groupedData = d3.nest().key(d => {return d[props.indy]}).entries(props.data);
+  // let groupedData = d3.nest().key(d => {return d[props.indy]}).entries(props.data);
+  //
+  // //format data
+  // let total = 0;
+  // groupedData.forEach(d => {
+  //   total += d.values[0][props.dep];
+  // });
+  // groupedData.total = total;
+  //
+  // let filteredData = groupedData.filter(d => {
+  //   return props.curr.indexOf(d.key) != -1;
+  // });
+  //
+  // let newData = [];
+  // filteredData.forEach(d => {
+  //   d.values.map(c => {
+  //     newData.push(c);
+  //   });
+  // });
+  //
+  // let total2 = 0;
+  // newData.forEach(d => {
+  //   total2 += d[props.dep];
+  // });
+  // newData.total = total2;
+  //
+  // newData.forEach(d => {
+  //   d[props.dep] = +d[props.dep] || 0;
+  // });
+  //
+  // console.log(newData);
+  props.data.forEach(d => {
+    d.real = d[props.dep];
+  })
 
-  //format data
-  let total = 0;
-  groupedData.forEach(d => {
-    total += d.values[0][props.dep];
-  });
-  groupedData.total = total;
-
-  let filteredData = groupedData.filter(d => {
-    return props.curr.indexOf(d.key) != -1;
-  });
-
-  let newData = [];
-  filteredData.forEach(d => {
-    d.values.map(c => {
-      newData.push(c);
-    });
-  });
-
-  let total2 = 0;
-  newData.forEach(d => {
-    total2 += d[props.dep];
-  });
-  newData.total = total2;
-
-  console.log(newData);
+  console.log(props.data);
 
   const donut = d3.layout.pie().sort(null).value(d => {return d[props.dep]});
 
   const cont = d3.select(elem);
 
-  const svg = cont.selectAll('svg').data([newData]);
+  const svg = cont.selectAll('svg').data([props.data]);
 
   //svg for the donut
   const gEnter = svg.enter().append('svg')
@@ -77,12 +86,8 @@ const create = (elem, props) => {
   const cover2 = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
-  newData.forEach(d => {
-    return type(d);
-  });
-
   //actual arcs
-  const arcs = gEnter.selectAll('path').data(donut(newData))
+  const arcs = gEnter.selectAll('path').data(donut(props.data))
         .enter().append('path')
         .attr('d', arc)
         .attr('class', d => {return color(d.data[props.indy])})
@@ -95,45 +100,38 @@ const create = (elem, props) => {
 
   let format = d3.format('%');
 
-  gEnter.select('.big-num').text(format(newData[0][props.dep] / newData.total));
-  gEnter.select('.small-num').text(newData[0][props.indy]);
+  // gEnter.select('.big-num').text(format(newData[0][props.dep] / newData.total));
+  // gEnter.select('.small-num').text(newData[0][props.indy]);
 
   //Enlarge arc size on mouseover
-  arcs.on('mouseover', function(d) {
-    const fir = d3.select('.blue').transition().duration(500)
-          .attr('d', arc);
-
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
-                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
-
-    const curr = d3.select(this).transition().duration(500)
-            .attr('d', cover);
-
-    let format = d3.format('%');
-
-    g.select('.big-num').text(format(d.data[props.dep] / newData.total));
-    g.select('.small-num').text(d.data[props.indy]);
-  });
-
-  //make size normal when mouse leaves arc
-  arcs.on('mouseout', function() {
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
-                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
-
-    const curr = d3.select(this)
-                    .transition().duration(500)
-                    .attr('d', cover);
-
-    g.select('.big-num').text('');
-    g.select('.small-num').text('');
-  });
-
-  function type(d) {
-    console.log(d[props.dep]);
-    d[props.dep] = +d[props.dep] || 0;
-    return d;
-  }
-
+  // arcs.on('mouseover', function(d) {
+  //   const fir = d3.select('.blue').transition().duration(500)
+  //         .attr('d', arc);
+  //
+  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
+  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
+  //
+  //   const curr = d3.select(this).transition().duration(500)
+  //           .attr('d', cover);
+  //
+  //   let format = d3.format('%');
+  //
+  //   g.select('.big-num').text(format(d.data[props.dep] / newData.total));
+  //   g.select('.small-num').text(d.data[props.indy]);
+  // });
+  //
+  // //make size normal when mouse leaves arc
+  // arcs.on('mouseout', function() {
+  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+  //
+  //   const curr = d3.select(this)
+  //                   .transition().duration(500)
+  //                   .attr('d', cover);
+  //
+  //   g.select('.big-num').text('');
+  //   g.select('.small-num').text('');
+  // });
 }
 
 //UPDATE
@@ -148,33 +146,21 @@ const update = (elem, props) => {
 
   let groupedData = d3.nest().key(d => {return d[props.indy]}).entries(props.data);
 
-  //format data
-  let total = 0;
-  groupedData.forEach(d => {
-    total += d.values[0][props.dep];
-  });
-  groupedData.total = total;
 
-  let filteredData = groupedData.filter(d => {
-    return props.curr.indexOf(d.key) != -1;
+  groupedData.forEach(d => {
+    if (props.curr.indexOf(d.key) == -1) {
+      d.values[0][props.dep] = 0;
+    } else {
+      d.values[0][props.dep] = d.values[0]['real'];
+    }
   });
 
   let newData = [];
-  filteredData.forEach(d => {
+  groupedData.forEach(d => {
     d.values.map(c => {
       newData.push(c);
     });
   });
-
-  newData.forEach(d => {
-    return type(d);
-  })
-
-  let total2 = 0;
-  newData.forEach(d => {
-    total2 += d[props.dep];
-  });
-  newData.total = total2;
 
   console.log(newData);
 
@@ -191,19 +177,12 @@ const update = (elem, props) => {
   paths.transition().duration(750).attrTween("d", arcTween);
 
   function arcTween(a) {
-    console.log(this);
     let i = d3.interpolate(this._current, a);
     this._current = i(0);
     return (t) => {
       return arc(i(t));
     };
   };
-
-  function type(d) {
-    console.log(d[props.dep]);
-    d[props.dep] = +d[props.dep] || 0;
-    return d;
-  }
 }
 
 export {create, update};
