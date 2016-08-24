@@ -78,7 +78,7 @@ class ColumnChart extends React.Component {
 
     //y scale
     const yScale = d3.scale.linear()
-                    .domain([0, d3.max(data, d => {return d3.max(d.groupDetails, d => {return d.value})})])
+                    .domain([0, d3.max(data, d => {return d3.max(d.groupDetails, d => {return d.value})}) + 5])
                     .range([innerH, 0]);
 
     //set axes

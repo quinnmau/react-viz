@@ -21520,7 +21520,7 @@
 	                return d3.max(d.groupDetails, function (d) {
 	                    return d.value;
 	                });
-	            })]).range([innerH, 0]);
+	            }) + 5]).range([innerH, 0]);
 
 	            //set axes
 	            var xAxis = d3.svg.axis().orient('bottom').scale(groupScale).tickPadding(10);
@@ -22170,7 +22170,7 @@
 	            if (!normalized) {
 	                yScale.domain([0, d3.max(vars.data, function (d) {
 	                    return +d.total;
-	                })]);
+	                }) + 5]);
 	            }
 
 	            /*---------------set axes-----------------------------*/
