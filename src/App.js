@@ -45,13 +45,13 @@ class App extends React.Component {
         <div className="container">
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger', 'jpn', 'uk']} yReal={['usa', 'chn', 'ger', 'jpn', 'uk']} type={'line'} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <div className="row">
                 <div className="col-xs-9">
                   <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This right here is a title'} demo={false}/>
@@ -61,7 +61,7 @@ class App extends React.Component {
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
             <div className="row">
               <div className="col-xs-9">
                 <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'Have one highlighted here'} demo={true}/>
@@ -71,19 +71,19 @@ class App extends React.Component {
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3', 'freq4', 'freq5']} yReal={['freq1', 'freq2', 'freq3', 'freq4', 'freq5']} normalized={false} type={'stackedcolumn'} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
             <div className="row">
               <div className="col-xs-9">
                 <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} demo={false}/>
@@ -93,7 +93,7 @@ class App extends React.Component {
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
             <div className="row">
               <div className="col-xs-9">
                 <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} demo={true}/>
@@ -103,19 +103,19 @@ class App extends React.Component {
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'bar'} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-6 col-xs-offset-3">
+            <div className="col-xs-8 col-xs-offset-2">
               <ChartHousing data={this.state.s2} x={'x'} y={'y'} yVal ={['james', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} fit={false} scatIden={'name'}/>
             </div>
           </div>

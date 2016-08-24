@@ -29,6 +29,16 @@ class BarChart extends React.Component {
     const innerW = globals.width - globals.margin.left - globals.margin.right;
     const innerH = globals.height - globals.margin.top - globals.margin.bottom;
     const demo = this.props.demo;
+    const oneSeries = this.props.yVal[0];
+
+
+    // if (this.props.yVal.length == 1) {
+    //   this.props.data.sort(function(a, b) {
+    //     console.log(a);
+    //     console.log(this.props.yVal[0]);
+    //     return d3.ascending(a[oneSeries], b[oneSeries]);
+    //   });
+    // };
 
     //container
     const cont = d3.select(ReactDOM.findDOMNode(this));
@@ -207,7 +217,7 @@ class BarChart extends React.Component {
     const xScale = this.getXScale(innerW).domain([0, d3.max(allX)]);
     //
     //update axes
-    const xAxis = this.getXAxis(xScale).innerTickSize(-innerH);
+    const xAxis = this.getXAxis(xScale).innerTickSize(-innerH).ticks(5);
     gEnter.select('.x').attr('transform', 'translate(0, ' + innerH + ')')
                        .transition()
                        .duration(1000)
