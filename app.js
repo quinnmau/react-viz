@@ -22725,7 +22725,7 @@
 	  })]);
 	  /*-------------------set axes---------------------------*/
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
-	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
+	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);
 
 	  gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')').transition().duration(1000).call(xAxis);
 
@@ -23848,7 +23848,9 @@
 	  var xScale = d3.scale.linear().range([0, innerW]).domain([0, d3.max(xValues)]);
 
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(2);
-	  gEnter.select('.x-bullet').attr('transform', 'translate(0, ' + innerH + ')').transition().duration(1000).call(xAxis);
+	  // gEnter.select('.x-bullet').attr('transform', 'translate(0, ' + innerH + ')')
+	  //                     .transition().duration(1000)
+	  //                     .call(xAxis);
 
 	  // const yAxis = d3.svg.axis().scale(yScale).orient('left').ticks(2);
 	  // gEnter.select('.y').call(yAxis);
