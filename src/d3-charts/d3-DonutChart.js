@@ -184,36 +184,45 @@ const update = (elem, props) => {
 
   const paths = g.selectAll('path').data(donut(newData));
 
-  paths.on('mouseover', function(d) {
-    const fir = d3.select('.blue').transition().duration(500)
-          .attr('d', arc);
+  paths.on('click', function(d) {
+    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
+    paths.transition().duration(500).attr('d', cover);
+
+    const cover2 = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                             .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
     const curr = d3.select(this).transition().duration(500)
-            .attr('d', cover);
+            .attr('d', cover2);
 
     let format = d3.format('%');
 
-    g.select('.big-num').text(format(d.data[props.dep] / newData.total));
+    g.select('.big-num').text(format(d.data[props.dep] / props.data.total));
     g.select('.small-num').text(d.data[props.indy]);
   });
 
   //make size normal when mouse leaves arc
-  paths.on('mouseout', function() {
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
-                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+  // paths.on('mouseout', function() {
+  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+  //
+  //   const curr = d3.select(this)
+  //                   .transition().duration(500)
+  //                   .attr('d', cover);
+  //
+  //   g.select('.big-num').text('');
+  //   g.select('.small-num').text('');
+  // });
 
-    const curr = d3.select(this)
-                    .transition().duration(500)
-                    .attr('d', cover);
-
-    g.select('.big-num').text('');
-    g.select('.small-num').text('');
+  // paths.transition().duration(750).attrTween("d", arcTween);
+  paths.attr('class', d => {
+    if (d.data[props.dep] == 0) {
+      return 'white';
+    } else {
+      return color(d.data[props.indy]);
+    }
   });
-
-  paths.transition().duration(750).attrTween("d", arcTween);
 
   function arcTween(a) {
     let i = d3.interpolate(this._current, a);
