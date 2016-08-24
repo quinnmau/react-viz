@@ -120,14 +120,14 @@ class StackedBarChart extends React.Component {
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
 
-      segs.on('mouseover', function(d) {
-        segs.attr('class', d => {return 'rect ' + color2(d.name)});
-        d3.select(this).attr('class', 'rect ' + color(d.name));
-      });
-
-      segs.on('mouseout', function(d) {
-        segs.attr('class', d => {return 'rect ' + color(d.name)});
-      });
+      // segs.on('mouseover', function(d) {
+      //   segs.attr('class', d => {return 'rect ' + color2(d.name)});
+      //   d3.select(this).attr('class', 'rect ' + color(d.name));
+      // });
+      //
+      // segs.on('mouseout', function(d) {
+      //   segs.attr('class', d => {return 'rect ' + color(d.name)});
+      // });
 
     segs.transition().delay(function(d, i) {return i * 330}).duration(330)
             .attr('x', d => {return xScale(d.x0)})
@@ -219,14 +219,14 @@ class StackedBarChart extends React.Component {
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
 
-      segs.on('mouseover', function(d) {
-        segs.attr('class', d => {return 'rect ' + color2(d.name)});
-        d3.select(this).attr('class', 'rect ' + color(d.name));
-      });
-
-      segs.on('mouseout', function(d) {
-        segs.attr('class', d => {return 'rect ' + color(d.name)});
-      });
+      // segs.on('mouseover', function(d) {
+      //   segs.attr('class', d => {return 'rect ' + color2(d.name)});
+      //   d3.select(this).attr('class', 'rect ' + color(d.name));
+      // });
+      //
+      // segs.on('mouseout', function(d) {
+      //   segs.attr('class', d => {return 'rect ' + color(d.name)});
+      // });
 
     segs.transition().duration(0)
             .attr('x', d => {return xScale(d.x0)})

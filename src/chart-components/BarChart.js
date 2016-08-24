@@ -28,6 +28,7 @@ class BarChart extends React.Component {
     const globals = this.globals();
     const innerW = globals.width - globals.margin.left - globals.margin.right;
     const innerH = globals.height - globals.margin.top - globals.margin.bottom;
+    const demo = this.props.demo;
 
     //container
     const cont = d3.select(ReactDOM.findDOMNode(this));
@@ -110,26 +111,37 @@ class BarChart extends React.Component {
 
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
 
+    let count = 0;
     bars.enter().append('rect')
-        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('class', d => {
+          if (demo && count == 2) {
+            count++;
+            console.log('im in');
+            return 'rect orange';
+          } else {
+            count++;
+            return 'rect ' + color(d.name);
+          }
+        })
         .attr('x', 0)
         .attr('y', d => {return yScale(d.name)})
         .attr('width', 0)
         .attr('height', yScale.rangeBand());
 
-    bars.on('mouseover', function(d) {
-      bars.attr('class', d => {return 'rect ' + color2(d.name)});
-      d3.select(this).attr('class', 'rect ' + color(d.name));
-    });
-
-    bars.on('mouseout', function(d) {
-      bars.attr('class', d => {return 'rect ' + color(d.name)});
-    });
+    // bars.on('mouseover', function(d) {
+    //   bars.attr('class', d => {return 'rect ' + color2(d.name)});
+    //   d3.select(this).attr('class', 'rect ' + color(d.name));
+    // });
+    //
+    // bars.on('mouseout', function(d) {
+    //   bars.attr('class', d => {return 'rect ' + color(d.name)});
+    // });
 
     bars.exit().remove();
 
     bars.transition().duration(1000)
         .attr('width', d => {return xScale(d.value)});
+
 
     // const legend = g.selectAll('.legend').data(yValues);
     //
@@ -227,14 +239,14 @@ class BarChart extends React.Component {
      bars.enter().append('rect')
          .attr('width', 0);
 
-     bars.on('mouseover', function(d) {
-       bars.attr('class', d => {return 'rect ' + color2(d.name)});
-       d3.select(this).attr('class', 'rect ' + color(d.name));
-     });
-
-     bars.on('mouseout', function(d) {
-       bars.attr('class', d => {return 'rect ' + color(d.name)});
-     });
+    //  bars.on('mouseover', function(d) {
+    //    bars.attr('class', d => {return 'rect ' + color2(d.name)});
+    //    d3.select(this).attr('class', 'rect ' + color(d.name));
+    //  });
+     //
+    //  bars.on('mouseout', function(d) {
+    //    bars.attr('class', d => {return 'rect ' + color(d.name)});
+    //  });
 
      bars.transition().duration(0)
           .attr('width', d => {return xScale(d.value)})

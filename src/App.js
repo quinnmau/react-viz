@@ -54,7 +54,7 @@ class App extends React.Component {
             <div className="col-xs-6 col-xs-offset-3">
               <div className="row">
                 <div className="col-xs-9">
-                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This right here is a title'} />
+                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This right here is a title'} demo={false}/>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@ class App extends React.Component {
             <div className="col-xs-6 col-xs-offset-3">
             <div className="row">
               <div className="col-xs-9">
-                <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'Have one highlighted here'} />
+                <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'Have one highlighted here'} demo={true}/>
               </div>
             </div>
             </div>
@@ -86,7 +86,7 @@ class App extends React.Component {
             <div className="col-xs-6 col-xs-offset-3">
             <div className="row">
               <div className="col-xs-9">
-                <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} />
+                <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} demo={false}/>
               </div>
             </div>
             </div>
@@ -96,7 +96,7 @@ class App extends React.Component {
             <div className="col-xs-6 col-xs-offset-3">
             <div className="row">
               <div className="col-xs-9">
-                <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'Have one highlighted here'} />
+                <BarChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} demo={true}/>
               </div>
             </div>
             </div>

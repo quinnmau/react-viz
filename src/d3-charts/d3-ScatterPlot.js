@@ -79,11 +79,24 @@ const create = (elem, props) => {
   bestFit.enter().append('line')
                   .attr('class', d => {return 'trendline ' + color2(d.key)})
                   // .attr('x1', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.min(max))})
-                  .attr('x1', 0)
+                  .attr('x1', d => {
+                    let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
+                    let max = d3.max(d.values.map(d => {return d[props.x]}));
+                    if (yScale(pointInfo.intercept) < 0) {
+                      console.log(((d3.max(yScale.domain()) - pointInfo.intercept) / pointInfo.slope));
+                      return ((d3.max(yScale.domain()) - pointInfo.intercept) / pointInfo.slope);
+                    } else {
+                      return 0;
+                    }
+                  })
                   .attr('x2', d => {let max = d.values.map(d => {return d[props.x]}); return xScale(d3.max(max))})
                   .attr('y1', d => {
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
-                    return yScale(pointInfo.intercept);
+                    if (pointInfo.intercept < 0) {
+                      return yScale(d3.max(yScale.domain()));
+                    } else {
+                      return yScale(pointInfo.intercept);
+                    }
                   })
                   .attr('y2', d => {
                     let pointInfo = linearRegression(d.values.map(d => {return d[props.x]}), d.values.map(d => {return d[props.y]}));
@@ -230,7 +243,7 @@ const getYScale = (h) => {
 //calculates line of best fit
 const linearRegression = (x, y) => {
   const lr = {};
-  let n = y.length;
+  let n = y.length - 1;
   let sumX = 0;
   let sumY = 0;
   let sumXY = 0;
@@ -246,7 +259,7 @@ const linearRegression = (x, y) => {
   }
 
   lr.slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-  lr.intercept = (sumY - lr.slope * sumX) / n;
+  lr.intercept = (sumXX * sumY - sumX * sumXY) / (n * sumXX - sumX * sumX);
   return lr;
 }
 

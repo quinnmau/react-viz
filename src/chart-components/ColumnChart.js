@@ -23,6 +23,7 @@ class ColumnChart extends React.Component {
       right: 40,
       top: 75
     };
+    const demo = this.props.demo;
 
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
@@ -105,10 +106,20 @@ class ColumnChart extends React.Component {
 
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
 
+    let count = 0;
     bars.enter().append('rect')
         .attr('x', d => {return xScale(d.name)})
         .attr('y', innerH)
-        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('class', d => {
+          if (demo && count == 2) {
+            count++;
+            console.log('shoes');
+            return 'rect orange';
+          } else {
+            count++;
+            return 'rect ' + color(d.name);
+          }
+        })
         .attr('width', xScale.rangeBand())
         .attr('height', 0);
 
@@ -120,14 +131,14 @@ class ColumnChart extends React.Component {
         .attr('y', d => {return yScale(d.value)})
         .attr('height', d => {return (innerH - yScale(d.value))});
 
-    bars.on('mouseover', function(d) {
-      bars.attr('class', d => {return 'rect ' + color2(d.name)});
-      d3.select(this).attr('class', 'rect ' + color(d.name));
-    });
-
-    bars.on('mouseout', function(d) {
-      bars.attr('class', d => {return 'rect ' + color(d.name)});
-    });
+    // bars.on('mouseover', function(d) {
+    //   bars.attr('class', d => {return 'rect ' + color2(d.name)});
+    //   d3.select(this).attr('class', 'rect ' + color(d.name));
+    // });
+    //
+    // bars.on('mouseout', function(d) {
+    //   bars.attr('class', d => {return 'rect ' + color(d.name)});
+    // });
   }
 
   //update
@@ -135,6 +146,7 @@ class ColumnChart extends React.Component {
     const data = this.props.data;
     const width = this.props.width;
     const height = this.props.height;
+    const demo = this.props.demo;
     const margin = {
       left: 40,
       bottom: 40,
@@ -204,10 +216,11 @@ class ColumnChart extends React.Component {
     bars.exit().transition().duration(0).attr('height', 0).attr('y', innerH).remove();
 
     bars.enter().append('rect')
-        .attr('class', d => {return 'rect ' + color(d.name)})
+        .attr('class', d => {return 'rect ' + color(d.name);})
         .attr('height', 0)
         .attr('y', innerH);
 
+    let count = 0;
     bars.transition().duration(0)
       .attr('x', d => {return xScale(d.name)})
       .attr('y', d => {return yScale(d.value)})
@@ -215,14 +228,14 @@ class ColumnChart extends React.Component {
       .attr('class', d => {return 'rect ' + color(d.name)})
       .attr('height', d => {return (innerH - yScale(d.value))});
 
-      bars.on('mouseover', function(d) {
-        bars.attr('class', d => {return 'rect ' + color2(d.name)});
-        d3.select(this).attr('class', 'rect ' + color(d.name));
-      });
-
-      bars.on('mouseout', function(d) {
-        bars.attr('class', d => {return 'rect ' + color(d.name)});
-      });
+      // bars.on('mouseover', function(d) {
+      //   bars.attr('class', d => {return 'rect ' + color2(d.name)});
+      //   d3.select(this).attr('class', 'rect ' + color(d.name));
+      // });
+      //
+      // bars.on('mouseout', function(d) {
+      //   bars.attr('class', d => {return 'rect ' + color(d.name)});
+      // });
   }
 
   //exit remove

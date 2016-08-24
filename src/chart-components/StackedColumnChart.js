@@ -108,14 +108,14 @@ class StackedColumnChart extends React.Component {
         .attr('width', xScale.rangeBand())
         .attr('height', 0);
 
-    segs.on('mouseover', function(d) {
-      segs.attr('class', d => {return 'rect ' + color2(d.name)});
-      d3.select(this).attr('class', 'rect ' + color(d.name));
-    });
-
-    segs.on('mouseout', function(d) {
-      segs.attr('class', d => {return 'rect ' + color(d.name)});
-    });
+    // segs.on('mouseover', function(d) {
+    //   segs.attr('class', d => {return 'rect ' + color2(d.name)});
+    //   d3.select(this).attr('class', 'rect ' + color(d.name));
+    // });
+    //
+    // segs.on('mouseout', function(d) {
+    //   segs.attr('class', d => {return 'rect ' + color(d.name)});
+    // });
 
     segs.transition().delay(function(d, i) {return i * 330}).duration(330)
             .attr('y', d => {return yScale(d.y1)})
@@ -176,7 +176,7 @@ class StackedColumnChart extends React.Component {
     if (normalized) {
       yAxis.tickFormat(d3.format('.0%'));
     }
-    
+
     gEnter.select('.y').transition().duration(1000).call(yAxis);
 
     const g = svg.select('.gEnter');
@@ -201,14 +201,14 @@ class StackedColumnChart extends React.Component {
         .attr('width', xScale.rangeBand())
         .attr('height', 0);
 
-    segs.on('mouseover', function(d) {
-      segs.attr('class', d => {return 'rect ' + color2(d.name)});
-      d3.select(this).attr('class', 'rect ' + color(d.name));
-    });
-
-    segs.on('mouseout', function(d) {
-      segs.attr('class', d => {return 'rect ' + color(d.name)});
-    });
+    // segs.on('mouseover', function(d) {
+    //   segs.attr('class', d => {return 'rect ' + color2(d.name)});
+    //   d3.select(this).attr('class', 'rect ' + color(d.name));
+    // });
+    //
+    // segs.on('mouseout', function(d) {
+    //   segs.attr('class', d => {return 'rect ' + color(d.name)});
+    // });
 
     segs.transition().duration(0)
             .attr('y', d => {return yScale(d.y1)})
