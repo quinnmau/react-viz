@@ -54,7 +54,7 @@ class App extends React.Component {
             <div className="col-xs-6 col-xs-offset-3">
               <div className="row">
                 <div className="col-xs-9">
-                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This is a title'} />
+                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['freq1']} yReal={['freq1']} width={500} height={500} title={'This right here is a title'} />
                 </div>
               </div>
             </div>
@@ -73,6 +73,12 @@ class App extends React.Component {
           <div className="row">
             <div className="col-xs-6 col-xs-offset-3">
               <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-xs-offset-3">
+              <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3', 'freq4', 'freq5']} yReal={['freq1', 'freq2', 'freq3', 'freq4', 'freq5']} normalized={false} type={'stackedcolumn'} />
             </div>
           </div>
 
@@ -110,7 +116,7 @@ class App extends React.Component {
 
           <div className="row">
             <div className="col-xs-6 col-xs-offset-3">
-              <ChartHousing data={this.state.s2} x={'x'} y={'y'} yVal ={['james', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} fit={true} scatIden={'name'}/>
+              <ChartHousing data={this.state.s2} x={'x'} y={'y'} yVal ={['james', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} fit={false} scatIden={'name'}/>
             </div>
           </div>
 
@@ -156,5 +162,6 @@ class App extends React.Component {
 //     </div>
 //   </div>
 // </div>
+
 
 ReactDOM.render(<App />, document.getElementById('app'));

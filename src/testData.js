@@ -46,7 +46,7 @@ const scatter = () => {
 const scatter2 = (width, height) => {
   let randomX = d3.random.normal(width / 2, 20);
   let randomY = d3.random.normal(height / 2, 20);
-  let points = d3.range(10).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
+  let points = d3.range(30).map(() => { return {name: randID(), x: randomX(), y: randomY()}});
   return points;
 }
 
@@ -75,19 +75,25 @@ const column = () => {
       name: 'steve',
       freq1: 12,
       freq2: 10,
-      freq3: 14
+      freq3: 14,
+      freq4: 11,
+      freq5: 9
     },
     {
       name: 'earl',
-      freq1: 9,
-      freq2: 13,
-      freq3: 15
+      freq1: 4,
+      freq2: 15,
+      freq3: 14,
+      freq4: 2,
+      freq5: 14
     },
     {
       name: 'jimi',
-      freq1: 15,
-      freq2: 12,
-      freq3: 6
+      freq1: 23,
+      freq2: 5,
+      freq3: 6,
+      freq4: 17,
+      freq5: 20
     }
   ];
 }

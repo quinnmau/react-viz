@@ -90,16 +90,15 @@ const create = (elem, props) => {
                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
   //actual arcs
+  let checker = 0;
   const arcs = gEnter.selectAll('path').data(donut(props.data))
         .enter().append('path')
         .attr('d', arc)
-        .attr('class', d => {return color(d.data[props.indy])})
+        .attr('class', d => {return 'arc ' + color(d.data[props.indy])})
         .each(function(d) {this._current = d});
 
-
-
-  const first = d3.select('.blue').transition().duration(500)
-                  .attr('d', cover2);
+  console.log(d3.select('path.blue'));
+  const first = d3.select('path.blue').transition().duration(500).attr('d', cover2);
 
   let format = d3.format('%');
 
@@ -107,15 +106,17 @@ const create = (elem, props) => {
   gEnter.select('.small-num').text(props.data[0][props.indy]);
 
   // Enlarge arc size on mouseover
-  arcs.on('mouseover', function(d) {
-    const fir = d3.select('.blue').transition().duration(500)
-          .attr('d', arc);
+  arcs.on('click', function(d) {
+    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
 
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
+    arcs.transition().duration(500).attr('d', cover);
+
+    const cover2 = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.075))
                             .outerRadius(radius - (Math.min(innerW, innerH) * 0.225));
 
     const curr = d3.select(this).transition().duration(500)
-            .attr('d', cover);
+            .attr('d', cover2);
 
     let format = d3.format('%');
 
@@ -124,17 +125,17 @@ const create = (elem, props) => {
   });
 
   //make size normal when mouse leaves arc
-  arcs.on('mouseout', function() {
-    const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
-                            .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
-
-    const curr = d3.select(this)
-                    .transition().duration(500)
-                    .attr('d', cover);
-
-    g.select('.big-num').text('');
-    g.select('.small-num').text('');
-  });
+  // arcs.on('mouseout', function() {
+  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+  //
+  //   const curr = d3.select(this)
+  //                   .transition().duration(500)
+  //                   .attr('d', cover);
+  //
+  //   g.select('.big-num').text('');
+  //   g.select('.small-num').text('');
+  // });
 }
 
 //UPDATE

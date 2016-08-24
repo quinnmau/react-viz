@@ -182,7 +182,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'This is a title' })
+	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'This right here is a title' })
 	                )
 	              )
 	            )
@@ -211,6 +211,15 @@
 	              'div',
 	              { className: 'col-xs-6 col-xs-offset-3' },
 	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'column' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-6 col-xs-offset-3' },
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3', 'freq4', 'freq5'], yReal: ['freq1', 'freq2', 'freq3', 'freq4', 'freq5'], normalized: false, type: 'stackedcolumn' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -271,7 +280,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-6 col-xs-offset-3' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.s2, x: 'x', y: 'y', yVal: ['james', 'steve'], yReal: ['wayne', 'steve'], type: 'scatter', fit: true, scatIden: 'name' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.s2, x: 'x', y: 'y', yVal: ['james', 'steve'], yReal: ['wayne', 'steve'], type: 'scatter', fit: false, scatIden: 'name' })
 	            )
 	          )
 	        )
@@ -317,6 +326,7 @@
 	//     </div>
 	//   </div>
 	// </div>
+
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
@@ -23434,7 +23444,7 @@
 	var scatter2 = function scatter2(width, height) {
 	  var randomX = d3.random.normal(width / 2, 20);
 	  var randomY = d3.random.normal(height / 2, 20);
-	  var points = d3.range(10).map(function () {
+	  var points = d3.range(30).map(function () {
 	    return { name: randID(), x: randomX(), y: randomY() };
 	  });
 	  return points;
@@ -23462,17 +23472,23 @@
 	    name: 'steve',
 	    freq1: 12,
 	    freq2: 10,
-	    freq3: 14
+	    freq3: 14,
+	    freq4: 11,
+	    freq5: 9
 	  }, {
 	    name: 'earl',
-	    freq1: 9,
-	    freq2: 13,
-	    freq3: 15
+	    freq1: 4,
+	    freq2: 15,
+	    freq3: 14,
+	    freq4: 2,
+	    freq5: 14
 	  }, {
 	    name: 'jimi',
-	    freq1: 15,
-	    freq2: 12,
-	    freq3: 6
+	    freq1: 23,
+	    freq2: 5,
+	    freq3: 6,
+	    freq4: 17,
+	    freq5: 20
 	  }];
 	};
 
@@ -24153,13 +24169,15 @@
 	  var cover2 = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
 
 	  //actual arcs
+	  var checker = 0;
 	  var arcs = gEnter.selectAll('path').data(donut(props.data)).enter().append('path').attr('d', arc).attr('class', function (d) {
-	    return color(d.data[props.indy]);
+	    return 'arc ' + color(d.data[props.indy]);
 	  }).each(function (d) {
 	    this._current = d;
 	  });
 
-	  var first = d3.select('.blue').transition().duration(500).attr('d', cover2);
+	  console.log(d3.select('path.blue'));
+	  var first = d3.select('path.blue').transition().duration(500).attr('d', cover2);
 
 	  var format = d3.format('%');
 
@@ -24167,12 +24185,14 @@
 	  gEnter.select('.small-num').text(props.data[0][props.indy]);
 
 	  // Enlarge arc size on mouseover
-	  arcs.on('mouseover', function (d) {
-	    var fir = d3.select('.blue').transition().duration(500).attr('d', arc);
+	  arcs.on('click', function (d) {
+	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
 
-	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+	    arcs.transition().duration(500).attr('d', cover);
 
-	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
+	    var cover2 = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.075).outerRadius(radius - Math.min(innerW, innerH) * 0.225);
+
+	    var curr = d3.select(this).transition().duration(500).attr('d', cover2);
 
 	    var format = d3.format('%');
 
@@ -24181,14 +24201,17 @@
 	  });
 
 	  //make size normal when mouse leaves arc
-	  arcs.on('mouseout', function () {
-	    var cover = d3.svg.arc().innerRadius(radius - Math.min(innerW, innerH) * 0.1).outerRadius(radius - Math.min(innerW, innerH) * 0.2);
-
-	    var curr = d3.select(this).transition().duration(500).attr('d', cover);
-
-	    g.select('.big-num').text('');
-	    g.select('.small-num').text('');
-	  });
+	  // arcs.on('mouseout', function() {
+	  //   const cover = d3.svg.arc().innerRadius(radius - (Math.min(innerW, innerH) * 0.1))
+	  //                           .outerRadius(radius - (Math.min(innerW, innerH) * 0.2));
+	  //
+	  //   const curr = d3.select(this)
+	  //                   .transition().duration(500)
+	  //                   .attr('d', cover);
+	  //
+	  //   g.select('.big-num').text('');
+	  //   g.select('.small-num').text('');
+	  // });
 	};
 
 	//UPDATE
