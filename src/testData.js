@@ -155,37 +155,49 @@ const line = () => {
       date: '2016-03',
       usa: 1,
       chn: 4,
-      ger: 9
+      ger: 9,
+      jpn: 2,
+      uk: 3
     },
     {
       date: '2016-04',
       usa: 0,
       chn: 2,
-      ger: 8
+      ger: 8,
+      jpn: 5,
+      uk: 4
     },
     {
       date: '2016-05',
       usa: 1,
       chn: 3,
-      ger: 7
+      ger: 7,
+      jpn: 7,
+      uk: 6
     },
     {
       date: '2016-06',
       usa: 12,
       chn: 1,
-      ger: 9
+      ger: 9,
+      jpn: 4,
+      uk: 2
     },
     {
       date: '2016-07',
       usa: 0,
       chn: 5,
-      ger: 6
+      ger: 6,
+      jpn: 9,
+      uk: 8
     },
     {
       date: '2016-08',
       usa: 1,
       chn: 10,
-      ger: 4
+      ger: 4,
+      jpn: 3,
+      uk: 2
     }
   ];
 }

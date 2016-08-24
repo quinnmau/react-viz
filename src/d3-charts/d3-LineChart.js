@@ -31,7 +31,7 @@ const create = (elem, props) => {
   //groups for axes and title
   gEnter.append('g').attr('class', 'x axis');
   gEnter.append('g').attr('class', 'y axis');
-  gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -40)').text(props.title);
+  gEnter.append('text').attr('class', 'title-text').attr('transform', 'translate(0, -25)').text(props.title);
 
   /*-------------------set scales---------------------------*/
   const xValues = props.data.map(d => {
@@ -160,7 +160,7 @@ const update = (elem, props) => {
   const yScale = getYScale(innerH).domain([0, d3.max(allY, d => {return d})]);
 
   const xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
-  const yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10);
+  const yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);
 
   gEnter.select('.x').attr('transform', 'translate(25, ' + innerH + ')')
                       .transition().duration(1000)
