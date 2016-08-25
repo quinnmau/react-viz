@@ -164,8 +164,9 @@ class StackedColumnChart extends React.Component {
     //y scale
     const yScale = this.getYScale(innerH);
     if (!normalized) {
-      yScale.domain([0, d3.max(vars.data, d => {return +d.total})]);
+      yScale.domain([0, d3.max(vars.data, d => {return +d.total + 5})]);
     }
+    console.log(vars.data);
 
     const xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
 

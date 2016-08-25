@@ -21842,7 +21842,7 @@
 
 	      var xScale = this.getXScale(innerW).domain([0, d3.max(globals.data, function (d) {
 	        return d3.max(d.groupDetails, function (d) {
-	          return d.value;
+	          return d.value + 5;
 	        });
 	      })]);
 
@@ -21966,7 +21966,7 @@
 	        });
 	      });
 
-	      var xScale = this.getXScale(innerW).domain([0, d3.max(allX)]);
+	      var xScale = this.getXScale(innerW).domain([0, d3.max(allX) + 5]);
 	      //
 	      //update axes
 	      var xAxis = this.getXAxis(xScale).innerTickSize(-innerH).ticks(5);
@@ -22291,9 +22291,10 @@
 	            var yScale = this.getYScale(innerH);
 	            if (!normalized) {
 	                yScale.domain([0, d3.max(vars.data, function (d) {
-	                    return +d.total;
+	                    return +d.total + 5;
 	                })]);
 	            }
+	            console.log(vars.data);
 
 	            var xAxis = d3.svg.axis().scale(xScale).orient('bottom').outerTickSize(0).tickPadding(10);
 
@@ -22836,7 +22837,7 @@
 
 	  var yScale = getYScale(innerH).domain([0, d3.max(yValues, function (d) {
 	    return d;
-	  })]);
+	  }) + 5]);
 	  /*-------------------set axes---------------------------*/
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
 	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);
@@ -22951,7 +22952,7 @@
 
 	  var yScale = getYScale(innerH).domain([0, d3.max(allY, function (d) {
 	    return d;
-	  })]);
+	  }) + 5]);
 
 	  var xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
 	  var yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);

@@ -48,7 +48,7 @@ const create = (elem, props) => {
     }
   });
 
-  const yScale = getYScale(innerH).domain([0, d3.max(yValues, d => {return d})]);
+  const yScale = getYScale(innerH).domain([0, d3.max(yValues, d => {return d}) + 5]);
   /*-------------------set axes---------------------------*/
   const xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
   const yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);
@@ -157,7 +157,7 @@ const update = (elem, props) => {
     }
   });
 
-  const yScale = getYScale(innerH).domain([0, d3.max(allY, d => {return d})]);
+  const yScale = getYScale(innerH).domain([0, d3.max(allY, d => {return d}) + 5]);
 
   const xAxis = d3.svg.axis().scale(xScale).orient('bottom').ticks(4).tickPadding(10);
   const yAxis = d3.svg.axis().scale(yScale).orient('left').innerTickSize(-innerW).tickPadding(10).ticks(5);

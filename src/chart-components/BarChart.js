@@ -91,7 +91,7 @@ class BarChart extends React.Component {
 
     const xScale = this.getXScale(innerW).domain([0, d3.max(globals.data, d => {
       return d3.max(d.groupDetails, d => {
-        return d.value;
+        return d.value + 5;
       });
     })]);
 
@@ -214,7 +214,7 @@ class BarChart extends React.Component {
       })
     })
 
-    const xScale = this.getXScale(innerW).domain([0, d3.max(allX)]);
+    const xScale = this.getXScale(innerW).domain([0, d3.max(allX) + 5]);
     //
     //update axes
     const xAxis = this.getXAxis(xScale).innerTickSize(-innerH).ticks(5);
