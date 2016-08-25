@@ -54,7 +54,7 @@ class App extends React.Component {
             <div className="col-xs-8 col-xs-offset-2">
               <div className="row">
                 <div className="col-xs-9">
-                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['Freq1']} yReal={['Freq1']} width={500} height={500} title={'This right here is a title'} demo={false}/>
+                  <ColumnChart data={this.state.c} xVal={'name'} yVal={['Freq1']} yReal={['Freq1']} width={500} height={500} title={'This is a title'} demo={false}/>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@ class App extends React.Component {
             <div className="col-xs-8 col-xs-offset-2">
             <div className="row">
               <div className="col-xs-9">
-                <ColumnChart data={this.state.c} xVal={'name'} yVal={['Freq1']} yReal={['Freq1']} width={500} height={500} title={'Have one highlighted here'} demo={true}/>
+                <ColumnChart data={this.state.c} xVal={'name'} yVal={['Freq1']} yReal={['Freq1']} width={500} height={500} title={'This is a title'} demo={true}/>
               </div>
             </div>
             </div>

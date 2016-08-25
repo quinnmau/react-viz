@@ -182,7 +182,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This right here is a title', demo: false })
+	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This is a title', demo: false })
 	                )
 	              )
 	            )
@@ -199,7 +199,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'Have one highlighted here', demo: true })
+	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This is a title', demo: true })
 	                )
 	              )
 	            )
