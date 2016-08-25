@@ -21626,7 +21626,7 @@
 	            var xGroups = data.map(function (d) {
 	                return d[_this3.props.xVal];
 	            });
-	            var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.2).domain(xGroups);
+	            var groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.4).domain(xGroups);
 
 	            var xValues = this.props.yVal.map(function (d) {
 	                return d;
@@ -21669,7 +21669,7 @@
 
 	            var groups = g.selectAll('.groups').data(data);
 
-	            groups.transition().duration(1000).attr('transform', function (d) {
+	            groups.transition().duration(0).attr('transform', function (d) {
 	                return 'translate(' + groupScale(d[_this3.props.xVal]) + ', 0)';
 	            });
 

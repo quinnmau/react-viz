@@ -168,7 +168,7 @@ class ColumnChart extends React.Component {
 
     //update scales
     const xGroups = data.map(d => {return d[this.props.xVal]});
-    const groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.2).domain(xGroups);
+    const groupScale = d3.scale.ordinal().rangeRoundBands([0, innerW], 0.4).domain(xGroups);
 
     const xValues = this.props.yVal.map(d => {return d});
     const xScale = d3.scale.ordinal().domain(xValues).rangeRoundBands([0, groupScale.rangeBand()]);
@@ -207,7 +207,7 @@ class ColumnChart extends React.Component {
 
     const groups = g.selectAll('.groups').data(data);
 
-    groups.transition().duration(1000)
+    groups.transition().duration(0)
             .attr('transform', d => {return 'translate(' + groupScale(d[this.props.xVal]) + ', 0)'});
 
     const bars = groups.selectAll('.rect').data(d => {return d.groupDetails});
