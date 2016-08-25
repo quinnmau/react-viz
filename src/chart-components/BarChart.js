@@ -124,7 +124,7 @@ class BarChart extends React.Component {
     let count = 0;
     bars.enter().append('rect')
         .attr('class', d => {
-          if (demo && count == 2) {
+          if (demo && count == 4) {
             count++;
             console.log('im in');
             return 'rect orange';

@@ -152,9 +152,10 @@
 
 .legend-label {
   font-family: "Proxima Nova Light";
-  font-size: 10px;
+  font-size: 18px;
   stroke: none;
   fill: #7C7B7A;
+  padding-left: 5px;
 }
 
 .a-path, .connectors {

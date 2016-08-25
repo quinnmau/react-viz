@@ -111,7 +111,7 @@ class ColumnChart extends React.Component {
         .attr('x', d => {return xScale(d.name)})
         .attr('y', innerH)
         .attr('class', d => {
-          if (demo && count == 2) {
+          if (demo && count == 4) {
             count++;
             console.log('shoes');
             return 'rect orange';

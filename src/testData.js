@@ -1,42 +1,42 @@
 const scatter = () => {
   return [
     {
-      name: 'steve',
+      name: 'Steve',
       x: 1,
       y: 1
     },
     {
-      name: 'steve',
+      name: 'Steve',
       x: 2,
       y: 2
     },
     {
-      name: 'steve',
+      name: 'Steve',
       x: 3,
       y: 3
     },
     {
-      name: 'steve',
+      name: 'Steve',
       x: 0,
       y: 0
     },
     {
-      name: 'wayne',
+      name: 'Wayne',
       x: 0,
       y: 3
     },
     {
-      name: 'wayne',
+      name: 'Wayne',
       x: 1,
       y: 2
     },
     {
-      name: 'wayne',
+      name: 'Wayne',
       x: 2,
       y: 1
     },
     {
-      name: 'wayne',
+      name: 'Wayne',
       x: 3,
       y: 0
     }
@@ -53,9 +53,9 @@ const scatter2 = (width, height) => {
 const randID = () => {
   let random = Math.round(Math.random());
   if (random > 0) {
-    return 'steve';
+    return 'Steve';
   }
-  return 'james';
+  return 'James';
 }
 
 const bullet = () => {
@@ -72,28 +72,44 @@ const bullet = () => {
 const column = () => {
   return [
     {
-      name: 'steve',
-      freq1: 12,
-      freq2: 10,
-      freq3: 14,
-      freq4: 11,
-      freq5: 9
+      name: 'Elliott',
+      Freq1: 12,
+      Freq2: 10,
+      Freq3: 14,
+      Freq4: 11,
+      Freq5: 9
     },
     {
-      name: 'earl',
-      freq1: 14,
-      freq2: 15,
-      freq3: 14,
-      freq4: 2,
-      freq5: 14
+      name: 'Tom',
+      Freq1: 14,
+      Freq2: 15,
+      Freq3: 14,
+      Freq4: 2,
+      Freq5: 14
     },
     {
-      name: 'jimi',
-      freq1: 23,
-      freq2: 5,
-      freq3: 6,
-      freq4: 17,
-      freq5: 20
+      name: 'Todd',
+      Freq1: 17,
+      Freq2: 16,
+      Freq3: 15,
+      Freq4: 17,
+      Freq5: 20
+    },
+    {
+      name: 'Elise',
+      Freq1: 19,
+      Freq2: 15,
+      Freq3: 9,
+      Freq4: 17,
+      Freq5: 20
+    },
+    {
+      name: 'Quinn',
+      Freq1: 23,
+      Freq2: 17,
+      Freq3: 18,
+      Freq4: 17,
+      Freq5: 20
     }
   ];
 }
@@ -101,22 +117,22 @@ const column = () => {
 const secondColumn = () => {
   return [
     {
-      name: 'steve',
-      freq1: 6,
-      freq2: 17,
-      freq3: 4
+      name: 'Steve',
+      Freq1: 6,
+      Freq2: 17,
+      Freq3: 4
     },
     {
       name: 'earl',
-      freq1: 15,
-      freq2: 7,
-      freq3: 9
+      Freq1: 15,
+      Freq2: 7,
+      Freq3: 9
     },
     {
       name: 'jimi',
-      freq1: 9,
-      freq2: 2,
-      freq3: 14
+      Freq1: 9,
+      Freq2: 2,
+      Freq3: 14
     }
   ];
 }
@@ -124,15 +140,15 @@ const secondColumn = () => {
 const nut = () => {
   return [
     {
-      name: 'gomez',
+      name: 'Gomez',
       population: 74
     },
     {
-      name: 'wong po',
+      name: 'Wong Po',
       population: 88
     },
     {
-      name: 'barret',
+      name: 'Barret',
       population: 34
     }
   ];
@@ -141,15 +157,15 @@ const nut = () => {
 const nutting = () => {
   return [
     {
-      name: 'gomez',
+      name: 'Gomez',
       population: 50
     },
     {
-      name: 'wong po',
+      name: 'Wong Po',
       population: 30
     },
     {
-      name: 'barret',
+      name: 'Barret',
       population: 78
     }
   ];
@@ -159,51 +175,51 @@ const line = () => {
   return [
     {
       date: '2016-03',
-      usa: 1,
-      chn: 4,
-      ger: 9,
-      jpn: 2,
-      uk: 3
+      USA: 1,
+      CHN: 4,
+      GER: 9,
+      JPN: 2,
+      UK: 3
     },
     {
       date: '2016-04',
-      usa: 0,
-      chn: 2,
-      ger: 8,
-      jpn: 5,
-      uk: 4
+      USA: 0,
+      CHN: 2,
+      GER: 8,
+      JPN: 5,
+      UK: 4
     },
     {
       date: '2016-05',
-      usa: 1,
-      chn: 3,
-      ger: 7,
-      jpn: 7,
-      uk: 6
+      USA: 1,
+      CHN: 3,
+      GER: 7,
+      JPN: 7,
+      UK: 6
     },
     {
       date: '2016-06',
-      usa: 12,
-      chn: 1,
-      ger: 9,
-      jpn: 4,
-      uk: 2
+      USA: 12,
+      CHN: 1,
+      GER: 9,
+      JPN: 4,
+      UK: 2
     },
     {
       date: '2016-07',
-      usa: 0,
-      chn: 5,
-      ger: 6,
-      jpn: 9,
-      uk: 8
+      USA: 0,
+      CHN: 5,
+      GER: 6,
+      JPN: 9,
+      UK: 8
     },
     {
       date: '2016-08',
-      usa: 1,
-      chn: 10,
-      ger: 4,
-      jpn: 3,
-      uk: 2
+      USA: 1,
+      CHN: 10,
+      GER: 4,
+      JPN: 3,
+      UK: 2
     }
   ];
 }
@@ -212,39 +228,39 @@ const l2 = () => {
   return [
     {
       date: '2016-03',
-      usa: 4,
-      chn: 2,
-      ger: 7
+      USA: 4,
+      CHN: 2,
+      GER: 7
     },
     {
       date: '2016-04',
-      usa: 9,
-      chn: 4,
-      ger: 0
+      USA: 9,
+      CHN: 4,
+      GER: 0
     },
     {
       date: '2016-05',
-      usa: 3,
-      chn: 3,
-      ger: 1
+      USA: 3,
+      CHN: 3,
+      GER: 1
     },
     {
       date: '2016-06',
-      usa: 15,
-      chn: 4,
-      ger: 8
+      USA: 15,
+      CHN: 4,
+      GER: 8
     },
     {
       date: '2016-07',
-      usa: 4,
-      chn: 0,
-      ger: 9
+      USA: 4,
+      CHN: 0,
+      GER: 9
     },
     {
       date: '2016-08',
-      usa: 2,
-      chn: 0,
-      ger: 1
+      USA: 2,
+      CHN: 0,
+      GER: 1
     }
   ];
 }

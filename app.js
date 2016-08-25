@@ -133,7 +133,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
 
 	    _this.state = { s: scatterData, c: columnData, l: lineData, b: bulletData, n: nutData, s2: scat,
-	      cYVal: ['freq1', 'freq2', 'freq3'], change: _this.changeData };
+	      cYVal: ['Freq1', 'Freq2', 'Freq3'], change: _this.changeData };
 	    _this.clickHandle = _this.clickHandle.bind(_this);
 	    return _this;
 	  }
@@ -167,7 +167,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.l, xVal: 'date', yVal: ['usa', 'chn', 'ger', 'jpn', 'uk'], yReal: ['usa', 'chn', 'ger', 'jpn', 'uk'], type: 'line' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.l, xVal: 'date', yVal: ['USA', 'CHN', 'GER', 'JPN', 'UK'], yReal: ['USA', 'CHN', 'GER', 'JPN', 'UK'], type: 'line' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -182,7 +182,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'This right here is a title', demo: false })
+	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This right here is a title', demo: false })
 	                )
 	              )
 	            )
@@ -199,7 +199,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'Have one highlighted here', demo: true })
+	                  _react2.default.createElement(_ColumnChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'Have one highlighted here', demo: true })
 	                )
 	              )
 	            )
@@ -210,7 +210,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'column' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1', 'Freq2', 'Freq3'], yReal: ['Freq1', 'Freq2', 'Freq3'], type: 'column' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -219,7 +219,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3', 'freq4', 'freq5'], yReal: ['freq1', 'freq2', 'freq3', 'freq4', 'freq5'], normalized: false, type: 'stackedcolumn' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1', 'Freq2', 'Freq3', 'Freq4', 'Freq5'], yReal: ['Freq1', 'Freq2', 'Freq3', 'Freq4', 'Freq5'], normalized: false, type: 'stackedcolumn' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -234,7 +234,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_BarChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'This is a title', demo: false })
+	                  _react2.default.createElement(_BarChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This is a title', demo: false })
 	                )
 	              )
 	            )
@@ -251,7 +251,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_BarChart2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1'], yReal: ['freq1'], width: 500, height: 500, title: 'This is a title', demo: true })
+	                  _react2.default.createElement(_BarChart2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1'], yReal: ['Freq1'], width: 500, height: 500, title: 'This is a title', demo: true })
 	                )
 	              )
 	            )
@@ -262,7 +262,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['freq1', 'freq2', 'freq3'], yReal: ['freq1', 'freq2', 'freq3'], type: 'bar' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.c, xVal: 'name', yVal: ['Freq1', 'Freq2', 'Freq3'], yReal: ['Freq1', 'Freq2', 'Freq3'], type: 'bar' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -277,7 +277,7 @@
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'col-xs-9' },
-	                  _react2.default.createElement(_DonutChart2.default, { data: this.state.n, dep: 'population', indy: 'name', curr: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], title: 'This is a title', width: 500, height: 500 })
+	                  _react2.default.createElement(_DonutChart2.default, { data: this.state.n, dep: 'population', indy: 'name', curr: ['Gomez', 'Wong Po', 'Barret'], yReal: ['Gomez', 'Wong Po', 'Barret'], title: 'This is a title', width: 500, height: 500 })
 	                )
 	              )
 	            )
@@ -288,7 +288,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.s2, x: 'x', y: 'y', yVal: ['james', 'steve'], yReal: ['wayne', 'steve'], type: 'scatter', fit: false, scatIden: 'name' })
+	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.s2, x: 'x', y: 'y', yVal: ['James', 'Steve'], yReal: ['Wayne', 'Steve'], type: 'scatter', fit: false, scatIden: 'name' })
 	            )
 	          )
 	        )
@@ -301,7 +301,7 @@
 
 	// <div className="row">
 	//   <div className="col-xs-8 col-xs-offset-2">
-	//     <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
+	//     <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['Gomez', 'Wong Po', 'Barret']} yReal={['Gomez', 'Wong Po', 'Barret']} type={'donut'} />
 	//   </div>
 	// </div>
 
@@ -309,35 +309,35 @@
 	// <div className="container-fluid">
 	//   <div className="row">
 	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.s} x={'x'} y={'y'} yVal ={['wayne', 'steve']} yReal={['wayne', 'steve']} type={'scatter'} fit={true} scatIden={'name'}/>
+	//       <ChartHousing data={this.state.s} x={'x'} y={'y'} yVal ={['Wayne', 'Steve']} yReal={['Wayne', 'Steve']} type={'scatter'} fit={true} scatIden={'name'}/>
 	//     </div>
 	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'column'} />
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'column'} />
 	//     </div>
 	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'bar'} />
-	//     </div>
-	//   </div>
-	//   <div className="row">
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={false}/>
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedbar'} normalized={true} />
-	//     </div>
-	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={false}/>
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'bar'} />
 	//     </div>
 	//   </div>
 	//   <div className="row">
 	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['freq1', 'freq2', 'freq3']} yReal={['freq1', 'freq2', 'freq3']} type={'stackedcolumn'} normalized={true} />
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'stackedbar'} normalized={false}/>
+	//     </div>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'stackedbar'} normalized={true} />
+	//     </div>
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'stackedcolumn'} normalized={false}/>
+	//     </div>
+	//   </div>
+	//   <div className="row">
+	//     <div className="col-xs-4">
+	//       <ChartHousing data={this.state.c} xVal={'name'} yVal={['Freq1', 'Freq2', 'Freq3']} yReal={['Freq1', 'Freq2', 'Freq3']} type={'stackedcolumn'} normalized={true} />
 	//     </div>
 	//     <div className="col-xs-4">
 	//       <ChartHousing data={this.state.l} xVal={'date'} yVal={['usa', 'chn', 'ger']} yReal={['usa', 'chn', 'ger']} type={'line'} />
 	//     </div>
 	//     <div className="col-xs-4">
-	//       <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
+	//       <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['Gomez', 'Wong Po', 'Barret']} yReal={['Gomez', 'Wong Po', 'Barret']} type={'donut'} />
 	//     </div>
 	//   </div>
 	// </div>
@@ -21562,7 +21562,7 @@
 	            bars.enter().append('rect').attr('x', function (d) {
 	                return xScale(d.name);
 	            }).attr('y', innerH).attr('class', function (d) {
-	                if (demo && count == 2) {
+	                if (demo && count == 4) {
 	                    count++;
 	                    console.log('shoes');
 	                    return 'rect orange';
@@ -21870,7 +21870,7 @@
 
 	      var count = 0;
 	      bars.enter().append('rect').attr('class', function (d) {
-	        if (demo && count == 2) {
+	        if (demo && count == 4) {
 	          count++;
 	          console.log('im in');
 	          return 'rect orange';
@@ -23438,35 +23438,35 @@
 	});
 	var scatter = function scatter() {
 	  return [{
-	    name: 'steve',
+	    name: 'Steve',
 	    x: 1,
 	    y: 1
 	  }, {
-	    name: 'steve',
+	    name: 'Steve',
 	    x: 2,
 	    y: 2
 	  }, {
-	    name: 'steve',
+	    name: 'Steve',
 	    x: 3,
 	    y: 3
 	  }, {
-	    name: 'steve',
+	    name: 'Steve',
 	    x: 0,
 	    y: 0
 	  }, {
-	    name: 'wayne',
+	    name: 'Wayne',
 	    x: 0,
 	    y: 3
 	  }, {
-	    name: 'wayne',
+	    name: 'Wayne',
 	    x: 1,
 	    y: 2
 	  }, {
-	    name: 'wayne',
+	    name: 'Wayne',
 	    x: 2,
 	    y: 1
 	  }, {
-	    name: 'wayne',
+	    name: 'Wayne',
 	    x: 3,
 	    y: 0
 	  }];
@@ -23484,9 +23484,9 @@
 	var randID = function randID() {
 	  var random = Math.round(Math.random());
 	  if (random > 0) {
-	    return 'steve';
+	    return 'Steve';
 	  }
-	  return 'james';
+	  return 'James';
 	};
 
 	var bullet = function bullet() {
@@ -23500,70 +23500,84 @@
 
 	var column = function column() {
 	  return [{
-	    name: 'steve',
-	    freq1: 12,
-	    freq2: 10,
-	    freq3: 14,
-	    freq4: 11,
-	    freq5: 9
+	    name: 'Elliott',
+	    Freq1: 12,
+	    Freq2: 10,
+	    Freq3: 14,
+	    Freq4: 11,
+	    Freq5: 9
 	  }, {
-	    name: 'earl',
-	    freq1: 14,
-	    freq2: 15,
-	    freq3: 14,
-	    freq4: 2,
-	    freq5: 14
+	    name: 'Tom',
+	    Freq1: 14,
+	    Freq2: 15,
+	    Freq3: 14,
+	    Freq4: 2,
+	    Freq5: 14
 	  }, {
-	    name: 'jimi',
-	    freq1: 23,
-	    freq2: 5,
-	    freq3: 6,
-	    freq4: 17,
-	    freq5: 20
+	    name: 'Todd',
+	    Freq1: 17,
+	    Freq2: 16,
+	    Freq3: 15,
+	    Freq4: 17,
+	    Freq5: 20
+	  }, {
+	    name: 'Elise',
+	    Freq1: 19,
+	    Freq2: 15,
+	    Freq3: 9,
+	    Freq4: 17,
+	    Freq5: 20
+	  }, {
+	    name: 'Quinn',
+	    Freq1: 23,
+	    Freq2: 17,
+	    Freq3: 18,
+	    Freq4: 17,
+	    Freq5: 20
 	  }];
 	};
 
 	var secondColumn = function secondColumn() {
 	  return [{
-	    name: 'steve',
-	    freq1: 6,
-	    freq2: 17,
-	    freq3: 4
+	    name: 'Steve',
+	    Freq1: 6,
+	    Freq2: 17,
+	    Freq3: 4
 	  }, {
 	    name: 'earl',
-	    freq1: 15,
-	    freq2: 7,
-	    freq3: 9
+	    Freq1: 15,
+	    Freq2: 7,
+	    Freq3: 9
 	  }, {
 	    name: 'jimi',
-	    freq1: 9,
-	    freq2: 2,
-	    freq3: 14
+	    Freq1: 9,
+	    Freq2: 2,
+	    Freq3: 14
 	  }];
 	};
 
 	var nut = function nut() {
 	  return [{
-	    name: 'gomez',
+	    name: 'Gomez',
 	    population: 74
 	  }, {
-	    name: 'wong po',
+	    name: 'Wong Po',
 	    population: 88
 	  }, {
-	    name: 'barret',
+	    name: 'Barret',
 	    population: 34
 	  }];
 	};
 
 	var nutting = function nutting() {
 	  return [{
-	    name: 'gomez',
+	    name: 'Gomez',
 	    population: 50
 	  }, {
-	    name: 'wong po',
+	    name: 'Wong Po',
 	    population: 30
 	  }, {
-	    name: 'barret',
+	    name: 'Barret',
 	    population: 78
 	  }];
 	};
@@ -23571,80 +23585,80 @@
 	var line = function line() {
 	  return [{
 	    date: '2016-03',
-	    usa: 1,
-	    chn: 4,
-	    ger: 9,
-	    jpn: 2,
-	    uk: 3
+	    USA: 1,
+	    CHN: 4,
+	    GER: 9,
+	    JPN: 2,
+	    UK: 3
 	  }, {
 	    date: '2016-04',
-	    usa: 0,
-	    chn: 2,
-	    ger: 8,
-	    jpn: 5,
-	    uk: 4
+	    USA: 0,
+	    CHN: 2,
+	    GER: 8,
+	    JPN: 5,
+	    UK: 4
 	  }, {
 	    date: '2016-05',
-	    usa: 1,
-	    chn: 3,
-	    ger: 7,
-	    jpn: 7,
-	    uk: 6
+	    USA: 1,
+	    CHN: 3,
+	    GER: 7,
+	    JPN: 7,
+	    UK: 6
 	  }, {
 	    date: '2016-06',
-	    usa: 12,
-	    chn: 1,
-	    ger: 9,
-	    jpn: 4,
-	    uk: 2
+	    USA: 12,
+	    CHN: 1,
+	    GER: 9,
+	    JPN: 4,
+	    UK: 2
 	  }, {
 	    date: '2016-07',
-	    usa: 0,
-	    chn: 5,
-	    ger: 6,
-	    jpn: 9,
-	    uk: 8
+	    USA: 0,
+	    CHN: 5,
+	    GER: 6,
+	    JPN: 9,
+	    UK: 8
 	  }, {
 	    date: '2016-08',
-	    usa: 1,
-	    chn: 10,
-	    ger: 4,
-	    jpn: 3,
-	    uk: 2
+	    USA: 1,
+	    CHN: 10,
+	    GER: 4,
+	    JPN: 3,
+	    UK: 2
 	  }];
 	};
 
 	var l2 = function l2() {
 	  return [{
 	    date: '2016-03',
-	    usa: 4,
-	    chn: 2,
-	    ger: 7
+	    USA: 4,
+	    CHN: 2,
+	    GER: 7
 	  }, {
 	    date: '2016-04',
-	    usa: 9,
-	    chn: 4,
-	    ger: 0
+	    USA: 9,
+	    CHN: 4,
+	    GER: 0
 	  }, {
 	    date: '2016-05',
-	    usa: 3,
-	    chn: 3,
-	    ger: 1
+	    USA: 3,
+	    CHN: 3,
+	    GER: 1
 	  }, {
 	    date: '2016-06',
-	    usa: 15,
-	    chn: 4,
-	    ger: 8
+	    USA: 15,
+	    CHN: 4,
+	    GER: 8
 	  }, {
 	    date: '2016-07',
-	    usa: 4,
-	    chn: 0,
-	    ger: 9
+	    USA: 4,
+	    CHN: 0,
+	    GER: 9
 	  }, {
 	    date: '2016-08',
-	    usa: 2,
-	    chn: 0,
-	    ger: 1
+	    USA: 2,
+	    CHN: 0,
+	    GER: 1
 	  }];
 	};
 
