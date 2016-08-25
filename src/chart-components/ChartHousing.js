@@ -56,7 +56,7 @@ class ChartHousing extends React.Component {
     } else if (this.props.type == 'line') {
       chartType = <LineChart data={this.state.data} xVal={this.props.xVal} yVal={this.state.currY} title={'This is a title'} width={500} height={500} yReal={this.props.yReal} />;
     } else if (this.props.type == 'scatter') {
-      chartType = <ScatterPlot data={this.state.data} x={this.props.x} y={this.props.y} curr={this.state.currY} yReal={this.props.yVal} width={500} height={500} title={'Title'} iden={this.props.scatIden} fit={this.props.fit}/>
+      chartType = <ScatterPlot data={this.state.data} x={this.props.x} y={this.props.y} curr={this.state.currY} yReal={this.props.yVal} width={500} height={500} title={'This is a title'} iden={this.props.scatIden} fit={this.props.fit}/>
     } else if (this.props.type == 'stackedbar') {
       chartType = <StackedBarChart data={this.state.data} width={500} height={500} xVal={'name'} yVal={this.state.currY} yReal={this.props.yVal} title={'This is a title'} normalized={this.props.normalized} />
     } else if (this.props.type == 'stackedcolumn') {

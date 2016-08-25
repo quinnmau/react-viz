@@ -81,7 +81,7 @@ const column = () => {
     },
     {
       name: 'earl',
-      freq1: 4,
+      freq1: 14,
       freq2: 15,
       freq3: 14,
       freq4: 2,

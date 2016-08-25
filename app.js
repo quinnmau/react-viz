@@ -271,7 +271,15 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'col-xs-8 col-xs-offset-2' },
-	              _react2.default.createElement(_ChartHousing2.default, { data: this.state.n, donutDep: 'population', donutInd: 'name', yVal: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], type: 'donut' })
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'col-xs-9' },
+	                  _react2.default.createElement(_DonutChart2.default, { data: this.state.n, dep: 'population', indy: 'name', curr: ['gomez', 'wong po', 'barret'], yReal: ['gomez', 'wong po', 'barret'], title: 'This is a title', width: 500, height: 500 })
+	                )
+	              )
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -290,6 +298,13 @@
 
 	  return App;
 	}(_react2.default.Component);
+
+	// <div className="row">
+	//   <div className="col-xs-8 col-xs-offset-2">
+	//     <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
+	//   </div>
+	// </div>
+
 
 	// <div className="container-fluid">
 	//   <div className="row">
@@ -23493,7 +23508,7 @@
 	    freq5: 9
 	  }, {
 	    name: 'earl',
-	    freq1: 4,
+	    freq1: 14,
 	    freq2: 15,
 	    freq3: 14,
 	    freq4: 2,
@@ -24706,7 +24721,7 @@
 	      } else if (this.props.type == 'line') {
 	        chartType = _react2.default.createElement(_LineChart2.default, { data: this.state.data, xVal: this.props.xVal, yVal: this.state.currY, title: 'This is a title', width: 500, height: 500, yReal: this.props.yReal });
 	      } else if (this.props.type == 'scatter') {
-	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'Title', iden: this.props.scatIden, fit: this.props.fit });
+	        chartType = _react2.default.createElement(_ScatterPlot2.default, { data: this.state.data, x: this.props.x, y: this.props.y, curr: this.state.currY, yReal: this.props.yVal, width: 500, height: 500, title: 'This is a title', iden: this.props.scatIden, fit: this.props.fit });
 	      } else if (this.props.type == 'stackedbar') {
 	        chartType = _react2.default.createElement(_StackedBarChart2.default, { data: this.state.data, width: 500, height: 500, xVal: 'name', yVal: this.state.currY, yReal: this.props.yVal, title: 'This is a title', normalized: this.props.normalized });
 	      } else if (this.props.type == 'stackedcolumn') {

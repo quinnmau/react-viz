@@ -110,7 +110,11 @@ class App extends React.Component {
 
           <div className="row">
             <div className="col-xs-8 col-xs-offset-2">
-              <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
+            <div className="row">
+              <div className="col-xs-9">
+                <DonutChart data={this.state.n} dep={'population'} indy={'name'} curr={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} title={'This is a title'} width={500} height={500} />
+              </div>
+            </div>
             </div>
           </div>
 
@@ -125,6 +129,12 @@ class App extends React.Component {
     );
   }
 }
+
+// <div className="row">
+//   <div className="col-xs-8 col-xs-offset-2">
+//     <ChartHousing data={this.state.n} donutDep={'population'} donutInd={'name'} yVal={['gomez', 'wong po', 'barret']} yReal={['gomez', 'wong po', 'barret']} type={'donut'} />
+//   </div>
+// </div>
 
 
 // <div className="container-fluid">
